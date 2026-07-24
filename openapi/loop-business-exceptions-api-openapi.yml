@@ -1,0 +1,152 @@
+openapi: 3.0.0
+info:
+  title: Loop Onboarding artifacts business-exceptions API
+  description: HTTP REST API for Loop Payments Onboarding.
+  version: '1.0'
+  contact: {}
+servers:
+- url: https://onboarding.api.loop.com
+security:
+- bearerAuth: []
+tags:
+- name: business-exceptions
+paths:
+  /v1/business-exceptions/target-entity-qid/{targetEntityQid}:
+    get:
+      description: Returns all business exceptions for the specified target entity
+      operationId: BusinessExceptions_listForTargetEntityQid
+      parameters:
+      - name: targetEntityQid
+        required: true
+        in: path
+        description: QID of the target entity for which to retrieve exceptions
+        schema:
+          format: qid
+          example: qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c5
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BusinessException'
+        '400':
+          description: Invalid QID
+      summary: Retrieve all business exceptions on an entity
+      tags:
+      - business-exceptions
+  /v1/business-exceptions/{qid}:
+    get:
+      description: Returns the business exception with the specified QID
+      operationId: BusinessExceptions_get
+      parameters:
+      - name: qid
+        required: true
+        in: path
+        description: QID of the entity to retrieve
+        schema:
+          format: qid
+          example: qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c5
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessException'
+        '400':
+          description: Invalid QID
+        '404':
+          description: Business exception not found
+      summary: Retrieve a business exception
+      tags:
+      - business-exceptions
+  /v1/business-exceptions/{qid}/resolve:
+    put:
+      description: Resolves the business exception with the provided QID. If the exception is already resolved, a 422 (Unprocessable Entity) will be returned.
+      operationId: BusinessExceptions_resolve
+      parameters:
+      - name: qid
+        required: true
+        in: path
+        description: QID of the exception to resolve
+        schema:
+          format: qid
+          example: qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c5
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResolveBusinessExceptionInput'
+      responses:
+        '200':
+          description: The business exception was successfully resolved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessException'
+        '400':
+          description: Invalid QID
+        '404':
+          description: Business exception not found
+        '422':
+          description: The business exception is already resolved
+      summary: Resolve a business exception
+      tags:
+      - business-exceptions
+components:
+  schemas:
+    ResolveBusinessExceptionInput:
+      type: object
+      properties:
+        note:
+          type: string
+          example: This is a note
+          description: A note to be added to the business exception. If provided, this will overwrite any existing note.
+    BusinessException:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        label:
+          type: string
+          description: The description of the business exception
+          nullable: false
+          example: Variance over threshold
+        resolvedAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+          description: If resolved, the time the exception was resolved. If the exception was resolved and re-opened, this will be null.
+          nullable: true
+        targetQid:
+          type: string
+          description: Qualified unique identifier of the business exception's target entity.
+          format: qid
+          nullable: false
+          example: qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+        note:
+          type: string
+          description: The note on the business exception
+          nullable: true
+      required:
+      - qid
+      - label
+      - resolvedAt
+      - targetQid
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: apiKey
+      name: bearerAuth
+      type: http
+      description: "Bearer HTTP authentication. Allowed headers: \n  Authorization: Bearer <apiKey>"

@@ -1,0 +1,232 @@
+openapi: 3.0.0
+info:
+  title: Loop Onboarding artifacts factoring-relationships API
+  description: HTTP REST API for Loop Payments Onboarding.
+  version: '1.0'
+  contact: {}
+servers:
+- url: https://onboarding.api.loop.com
+security:
+- bearerAuth: []
+tags:
+- name: factoring-relationships
+paths:
+  /v1/factoring-relationships:
+    post:
+      description: 'Creates or updates a factoring relationship between a carrier organization and a factor organization. A carrier can only have one effective factoring relationship at any given time.
+
+
+        If a factoring relationship is currently active between the carrier and the passed factor organization, the existing factoring relationship will be merged with the passed factoring relationship.
+
+
+        If a factoring relationship is currently active between the carrier and a different factor organization, the existing factoring relationship will be terminated and a new factoring relationship will be created with the passed factor organization.'
+      operationId: FactoringRelationships_upsert
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertFactoringRelationshipInput'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FactoringRelationship'
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FactoringRelationship'
+      summary: Upsert a factoring relationship
+      tags:
+      - factoring-relationships
+    get:
+      description: Returns a list of factoring relationships.
+      operationId: FactoringRelationships_list
+      parameters:
+      - name: revisedAfter
+        required: false
+        in: query
+        description: Filter to only results that have been revised after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date.
+        schema:
+          format: utc-timestamp
+          example: '2020-01-01T00:00:00.000Z'
+          type: string
+      - name: revisedBefore
+        required: false
+        in: query
+        description: Filter to only results that have been revised before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date.
+        schema:
+          format: utc-timestamp
+          example: '2020-01-01T00:00:00.000Z'
+          type: string
+      - name: first
+        required: false
+        in: query
+        description: The number of results to return. Default value is 10. Any custom value specified must lie between 0 and 100, inclusive.
+        schema:
+          type: number
+      - name: after
+        required: false
+        in: query
+        description: The cursor to start returning results from
+        schema:
+          type: string
+      - name: factorOrganizationQid
+        required: false
+        in: query
+        description: The factor organization QID to filter by
+        schema:
+          format: qid
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c5
+          type: string
+      - name: carrierOrganizationQid
+        required: false
+        in: query
+        description: The carrier organization QID to filter by
+        schema:
+          format: qid
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c5
+          type: string
+      responses:
+        '200':
+          description: The paginated response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FactoringRelationship'
+                  pageInfo:
+                    type: object
+                    properties:
+                      hasPreviousPage:
+                        type: boolean
+                      hasNextPage:
+                        type: boolean
+                      startCursor:
+                        type: string
+                      endCursor:
+                        type: string
+      summary: List factoring relationships
+      tags:
+      - factoring-relationships
+  /v1/factoring-relationships/{qid}:
+    get:
+      description: Returns the factoring relationship with the specified QID.
+      operationId: FactoringRelationships_get
+      parameters:
+      - name: qid
+        required: true
+        in: path
+        description: QID of the entity to retrieve
+        schema:
+          format: qid
+          example: qid::factoring_relationship:0ca6f700-4137-4d09-b44a-43bb8d7900c5
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FactoringRelationship'
+        '404':
+          description: Factoring relationship not found
+      summary: Retrieve a factoring relationship
+      tags:
+      - factoring-relationships
+components:
+  schemas:
+    UpsertFactoringRelationshipInput:
+      type: object
+      properties:
+        carrierOrganizationQid:
+          type: string
+          description: Qualified unique identifier of the carrier organization.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        factorOrganizationQid:
+          type: string
+          description: Qualified unique identifier of the factoring organization.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        effectiveFrom:
+          type: string
+          description: Timestamp indicating when the factoring relationship becomes active. This timestamp must be in the future. If not specified, the current timestamp will be used (effective immediately).
+          nullable: true
+          example: '2025-05-01T00:00:00.000Z'
+          format: utc-timestamp
+        effectiveTo:
+          type: string
+          description: Timestamp indicating when the factoring relationship is no longer active. This timestamp must be after the effectiveFrom timestamp. If not specified, null will be used (effective indefinitely).
+          nullable: true
+          example: '2025-06-01T00:00:00.000Z'
+          format: utc-timestamp
+      required:
+      - carrierOrganizationQid
+      - factorOrganizationQid
+    FactoringRelationship:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          format: qid
+          example: qid::factoring_relationship:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+        createdAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        revisionNumber:
+          type: number
+          example: 1
+        revisionCreatedAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        carrierOrganizationQid:
+          type: string
+          description: Qualified unique identifier of the carrier organization.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        factorOrganizationQid:
+          type: string
+          description: Qualified unique identifier of the factoring organization.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        effectiveFrom:
+          type: string
+          description: Timestamp indicating when the factoring relationship is effective.
+          nullable: true
+          example: '2025-05-01T00:00:00.000Z'
+          format: utc-timestamp
+        effectiveTo:
+          type: string
+          description: Timestamp indicating when the factoring relationship is no longer effective.
+          nullable: true
+          example: '2025-06-01T00:00:00.000Z'
+          format: utc-timestamp
+      required:
+      - qid
+      - createdAt
+      - revisionNumber
+      - revisionCreatedAt
+      - carrierOrganizationQid
+      - factorOrganizationQid
+      - effectiveFrom
+      - effectiveTo
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: apiKey
+      name: bearerAuth
+      type: http
+      description: "Bearer HTTP authentication. Allowed headers: \n  Authorization: Bearer <apiKey>"

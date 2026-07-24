@@ -1,0 +1,305 @@
+openapi: 3.0.0
+info:
+  title: Loop Onboarding artifacts payable-allocations API
+  description: HTTP REST API for Loop Payments Onboarding.
+  version: '1.0'
+  contact: {}
+servers:
+- url: https://onboarding.api.loop.com
+security:
+- bearerAuth: []
+tags:
+- name: payable-allocations
+paths:
+  /v1/payable-allocations:
+    get:
+      description: Returns a list of payable allocations
+      operationId: PayableAllocations_list
+      parameters:
+      - name: invoiceQids
+        required: false
+        in: query
+        description: When provided, the result set will only include allocations related to the invoices matching the QIDs specified in this list.
+        schema:
+          format: qid
+          example: qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c5
+          type: string
+      - name: first
+        required: false
+        in: query
+        description: The number of results to return. Default value is 10. Any custom value specified must lie between 0 and 100, inclusive.
+        schema:
+          type: number
+      - name: after
+        required: false
+        in: query
+        description: The cursor to start returning results from
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The paginated response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PayableAllocation'
+                  pageInfo:
+                    type: object
+                    properties:
+                      hasPreviousPage:
+                        type: boolean
+                      hasNextPage:
+                        type: boolean
+                      startCursor:
+                        type: string
+                      endCursor:
+                        type: string
+      summary: List payable allocations
+      tags:
+      - payable-allocations
+  /v1/payable-allocations/{qid}:
+    get:
+      description: Returns the payable allocation with the specified QID
+      operationId: PayableAllocations_get
+      parameters:
+      - name: qid
+        required: true
+        in: path
+        description: QID of the entity to retrieve
+        schema:
+          format: qid
+          example: qid::payable_allocation:0ca6f700-4137-4d09-b44a-43bb8d7900c5
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayableAllocation'
+        '400':
+          description: Invalid QID
+      summary: Retrieves a payable allocation
+      tags:
+      - payable-allocations
+components:
+  schemas:
+    CurrencyCode:
+      type: string
+      enum:
+      - AED
+      - AFN
+      - ALL
+      - AMD
+      - AOA
+      - ARS
+      - AUD
+      - AWG
+      - AZN
+      - BAM
+      - BBD
+      - BDT
+      - BHD
+      - BIF
+      - BMD
+      - BND
+      - BOB
+      - BRL
+      - BSD
+      - BTN
+      - BWP
+      - BYN
+      - BZD
+      - CAD
+      - CDF
+      - CHF
+      - CLP
+      - CNY
+      - COP
+      - CRC
+      - CUP
+      - CVE
+      - CZK
+      - DJF
+      - DKK
+      - DOP
+      - DZD
+      - EGP
+      - ERN
+      - ETB
+      - EUR
+      - FJD
+      - FKP
+      - GBP
+      - GEL
+      - GHS
+      - GIP
+      - GMD
+      - GNF
+      - GTQ
+      - GYD
+      - HKD
+      - HNL
+      - HTG
+      - HUF
+      - IDR
+      - ILS
+      - INR
+      - IQD
+      - IRR
+      - ISK
+      - JMD
+      - JOD
+      - JPY
+      - KES
+      - KGS
+      - KHR
+      - KMF
+      - KPW
+      - KRW
+      - KWD
+      - KYD
+      - KZT
+      - LAK
+      - LBP
+      - LKR
+      - LRD
+      - LSL
+      - LYD
+      - MAD
+      - MDL
+      - MGA
+      - MKD
+      - MMK
+      - MNT
+      - MOP
+      - MRU
+      - MUR
+      - MVR
+      - MWK
+      - MXN
+      - MYR
+      - MZN
+      - NAD
+      - NGN
+      - NIO
+      - NOK
+      - NPR
+      - NZD
+      - OMR
+      - PAB
+      - PEN
+      - PGK
+      - PHP
+      - PKR
+      - PLN
+      - PYG
+      - QAR
+      - RON
+      - RSD
+      - RUB
+      - RWF
+      - SAR
+      - SBD
+      - SCR
+      - SDG
+      - SEK
+      - SGD
+      - SHP
+      - SLE
+      - SOS
+      - SRD
+      - SSP
+      - STN
+      - SVC
+      - SYP
+      - SZL
+      - THB
+      - TJS
+      - TMT
+      - TND
+      - TOP
+      - TRY
+      - TTD
+      - TWD
+      - TZS
+      - UAH
+      - UGX
+      - USD
+      - UYU
+      - UZS
+      - VED
+      - VES
+      - VND
+      - VUV
+      - WST
+      - XAF
+      - XCD
+      - XCG
+      - XOF
+      - XPF
+      - YER
+      - ZAR
+      - ZMW
+      - ZWG
+    PayableAllocation:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          format: qid
+          example: qid::payable_allocation:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+        createdAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        payableInvoiceQid:
+          type: string
+          description: The invoice where the cost was allocated to a GL code.
+          example: qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        paymentQid:
+          type: string
+          description: The payment that triggered the cost allocation.
+          example: qid::payment:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        amount:
+          example:
+            amount: '3.50'
+            currencyCode: USD
+          description: The amount being allocated to this GL code.
+          allOf:
+          - $ref: '#/components/schemas/Money'
+      required:
+      - qid
+      - createdAt
+      - payableInvoiceQid
+      - paymentQid
+      - amount
+    Money:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal-string
+          example: '3.50'
+          description: The amount of money
+        currencyCode:
+          allOf:
+          - $ref: '#/components/schemas/CurrencyCode'
+      required:
+      - amount
+      - currencyCode
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: apiKey
+      name: bearerAuth
+      type: http
+      description: "Bearer HTTP authentication. Allowed headers: \n  Authorization: Bearer <apiKey>"

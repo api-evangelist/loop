@@ -1,0 +1,399 @@
+openapi: 3.0.0
+info:
+  title: Loop Onboarding artifacts onboarding.api.loop.com API
+  description: HTTP REST API for Loop Payments Onboarding.
+  version: '1.0'
+  contact: {}
+servers:
+- url: https://onboarding.api.loop.com
+security:
+- bearerAuth: []
+tags:
+- name: onboarding.api.loop.com
+paths:
+  /v1/organizations/create-organization-with-payment-detail:
+    post:
+      operationId: Organizations_create
+      summary: Create an organization
+      description: Create an organization
+      parameters:
+      - name: expand
+        required: false
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrganizationWithPaymentDetailInput'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+      tags:
+      - onboarding.api.loop.com
+components:
+  schemas:
+    TruckingCarrierInfo:
+      type: object
+      properties:
+        factorOrganizationQid:
+          type: object
+          nullable: true
+          example: qid::organization:31ab766e-f991-4374-8e58-391aaadf29f1
+          description: QID of the organization the carrier currently uses for factoring
+        mcNumber:
+          type: string
+          nullable: true
+          example: MC-179059
+          description: Motor Carrier Number
+        scac:
+          type: string
+          nullable: true
+          example: FDEG
+          description: Standard Carrier Alpha Code (SCAC)
+        usdotNumber:
+          type: string
+          nullable: true
+          example: '265752'
+          description: US Department of Transportation Number
+        offersFtl:
+          type: boolean
+          nullable: true
+          example: true
+          description: Whether the carrier offers LTL services
+        offersLtl:
+          type: boolean
+          nullable: true
+          example: true
+          description: Whether the carrier offers LTL services
+    OrganizationAsPayeeInvoicingInput:
+      type: object
+      properties:
+        daysToPay:
+          type: number
+          description: Number of days to pay.
+          example: 1
+        discountPercentage:
+          type: string
+          format: decimal-string
+          example: '0.02'
+          description: Discount percentage if the `daysToPay` quickpay requirement is met. Must be between "0" and "1".
+      required:
+      - daysToPay
+      - discountPercentage
+    CreateOrganizationWithPaymentDetailInput:
+      type: object
+      properties:
+        displayName:
+          type: string
+          example: ACME
+          description: Name of the organization.
+        legalName:
+          type: string
+          example: ACME Inc.
+          description: Legal name of the organization. Required to onboard for payments.
+        websiteUrl:
+          type: string
+          nullable: true
+          example: https://example.com
+          description: Website of the organization.
+        parentOrganizationQid:
+          type: string
+          description: Qualified unique identifier of the parent organization.
+          nullable: true
+          example: qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8
+          format: qid
+        tags:
+          type: object
+          example:
+            accountNumber: AC-123
+            uniqueIdentifier: '123456789'
+          description: Object containing entity tags assigned to the organization. A unique tag type must be provided for payment onboarding. Please work with your Loop representative to determine the correct tag type.
+        truckingCarrierInfo:
+          nullable: true
+          example:
+            mcNumber: '179059'
+            scac: FDEB
+            usdotNumber: '265752'
+          description: Trucking carrier information, if relevant to the organization.
+          allOf:
+          - $ref: '#/components/schemas/TruckingCarrierInfo'
+        factorInfo:
+          nullable: true
+          example: {}
+          description: Factor information, if relevant to the organization. The presence of an empty object here will create the organization as a factor.
+          allOf:
+          - $ref: '#/components/schemas/FactorInfo'
+        asPayee:
+          example:
+            invoicing:
+              daysToPay: 30
+              daysToPayFrom: ISSUE_DATE
+            paymentInfo:
+              achDisplayName: ACME
+              businessType: PRIVATE_CORPORATION
+              remittanceEmails:
+              - acme@acme.com
+              primaryAddress:
+                addressLine1: 123 Main St
+                addressLine2: Suite 100
+                city: San Francisco
+                state: CA
+                postalCode: '94105'
+                country: US
+              remittanceAddress:
+                addressLine1: 123 Main St
+                addressLine2: Suite 100
+                city: San Francisco
+                state: CA
+                postalCode: '94105'
+                country: US
+            paymentAccountDetail:
+              detailType: BANK_ACCOUNT
+              accountNumber: '123456789'
+              routingNumber: '021000021'
+            quickPay:
+              daysToPay: 1
+              discountPercentage: '0.02'
+          description: Additional information required to onboard the organization for payments as a payee.
+          allOf:
+          - $ref: '#/components/schemas/OrganizationAsPayeeInput'
+      required:
+      - displayName
+      - legalName
+      - tags
+      - asPayee
+    FactorInfo:
+      type: object
+      properties: {}
+    RawAddressValue:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+          example: 123 Main Street
+        addressLine2:
+          type: string
+          example: Suite 456
+        city:
+          type: string
+          example: Chicago
+        state:
+          type: string
+          description: Any variation of state. For example, "IL" or "Illinois" or something else.
+          example: IL
+        postalCode:
+          type: string
+          example: '60601'
+        country:
+          type: string
+          description: Any variation of a country name or country ISO 2 code. For example, it could be empty, "US", "USA", "United States", "United States of America", "America", etc.
+          example: USA
+    PaymentAccountDetailBankAccount:
+      type: object
+      properties:
+        detailType:
+          type: string
+          description: The type of payment account detail. Currently only BANK_ACCOUNT is supported.
+          enum:
+          - BANK_ACCOUNT
+        routingNumber:
+          type: string
+          example: '021000021'
+        accountNumber:
+          type: string
+          example: '1234567890'
+      required:
+      - detailType
+      - routingNumber
+      - accountNumber
+    OrganizationAsPayeePaymentInfoInput:
+      type: object
+      properties:
+        achDisplayName:
+          type: string
+          description: Display name that shows up in ACH records, on statements opposite to this org in a payment. Max 13 characters; otherwise may be truncated.
+          example: ACME
+          nullable: true
+        businessType:
+          type: string
+          enum:
+          - SOLE_PROPRIETORSHIP
+          - LLC
+          - TRUST
+          - PUBLIC_CORPORATION
+          - PRIVATE_CORPORATION
+          - PARTNERSHIP
+          - UNINCORPORATED_ASSOCIATION
+          - UNINCORPORATED_NONPROFIT
+          - INCORPORATED_NONPROFIT
+          example: LLC
+          nullable: true
+          description: Business type of the organization.
+        remittanceEmails:
+          example:
+          - acme@acme.com
+          items:
+            type: string
+          description: Array of emails that should receive remittance emails for payments to this organization.
+        primaryAddress:
+          description: Primary payment (billing) address of the organization.
+          allOf:
+          - $ref: '#/components/schemas/RawAddressValue'
+        remittanceAddress:
+          description: Payment remittance address of the organization, if different from the primary address.
+          allOf:
+          - $ref: '#/components/schemas/RawAddressValue'
+      required:
+      - discountPercentage
+      - remittanceEmails
+      - primaryAddress
+    OrganizationAsPayeeInput:
+      type: object
+      properties:
+        invoicing:
+          description: An object specifying information about the organization's invoicing terms.
+          example:
+            daysToPay: 15
+            daysToPayFrom: ISSUE_DATE
+          allOf:
+          - $ref: '#/components/schemas/OrganizationAsPayeeInvoicingInput'
+        paymentAccountDetail:
+          description: Primary payment account details for the organization.
+          allOf:
+          - $ref: '#/components/schemas/PaymentAccountDetailBankAccount'
+        paymentInfo:
+          description: An object specifying information about the organization's payments.
+          example:
+            achDisplayName: ACME
+            businessType: PRIVATE_CORPORATION
+            remittanceEmails:
+            - acme@acme.com
+            primaryAddress:
+              addressLine1: 123 Main St
+              addressLine2: Suite 100
+              city: San Francisco
+              state: CA
+              postalCode: '94105'
+              country: US
+            remittanceAddress:
+              addressLine1: 123 Main St
+              addressLine2: Suite 100
+              city: San Francisco
+              state: CA
+              postalCode: '94105'
+              country: US
+          allOf:
+          - $ref: '#/components/schemas/OrganizationAsPayeePaymentInfoInput'
+        quickPay:
+          description: An object specifying information about the organization's quickPay terms. Leave blank if this organization does not use quickpay.
+          example:
+            daysToPay: 1
+            discountPercentage: '0.02'
+          allOf:
+          - $ref: '#/components/schemas/OrganizationAsPayeeQuickpayInput'
+      required:
+      - paymentInfo
+      - paymentAccountDetail
+    Organization:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          format: qid
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+        createdAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        revisionNumber:
+          type: number
+          example: 1
+        revisionCreatedAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        displayName:
+          type: string
+          example: ACME
+          description: Name of the organization.
+        legalName:
+          type: string
+          example: ACME Inc.
+          description: Legal name of the organization, if defined.
+          nullable: true
+        websiteUrl:
+          type: string
+          nullable: true
+          example: https://example.com
+          description: Website of the organization.
+        parentOrganizationQid:
+          type: string
+          description: Qualified unique identifier of the parent organization.
+          nullable: true
+          example: qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8
+          format: qid
+        truckingCarrierInfo:
+          nullable: true
+          example:
+            mcNumber: '179059'
+            scac: FDEB
+            usdotNumber: '265752'
+          description: Trucking carrier information, if relevant to the organization.
+          allOf:
+          - $ref: '#/components/schemas/TruckingCarrierInfo'
+        factorInfo:
+          nullable: true
+          example: {}
+          description: Factor information, if relevant to the organization.
+          allOf:
+          - $ref: '#/components/schemas/FactorInfo'
+        tags:
+          type: object
+          nullable: false
+          example:
+            accountNumber: AC-123
+            externalId: '123456789'
+          description: Entity tags assigned to the organization.
+      required:
+      - qid
+      - createdAt
+      - revisionNumber
+      - revisionCreatedAt
+      - displayName
+      - legalName
+      - websiteUrl
+      - parentOrganizationQid
+      - truckingCarrierInfo
+      - factorInfo
+    OrganizationAsPayeeQuickpayInput:
+      type: object
+      properties:
+        daysToPay:
+          type: number
+          description: Number of days to pay.
+          example: 1
+        discountPercentage:
+          type: string
+          format: decimal-string
+          example: '0.02'
+          description: Discount percentage if the `daysToPay` quickpay requirement is met. Must be between "0" and "1".
+      required:
+      - daysToPay
+      - discountPercentage
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: apiKey
+      name: bearerAuth
+      type: http
+      description: "Bearer HTTP authentication. Allowed headers: \n  Authorization: Bearer <apiKey>"

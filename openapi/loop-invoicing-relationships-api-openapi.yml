@@ -1,0 +1,261 @@
+openapi: 3.0.0
+info:
+  title: Loop Onboarding artifacts invoicing-relationships API
+  description: HTTP REST API for Loop Payments Onboarding.
+  version: '1.0'
+  contact: {}
+servers:
+- url: https://onboarding.api.loop.com
+security:
+- bearerAuth: []
+tags:
+- name: invoicing-relationships
+paths:
+  /v1/invoicing-relationships:
+    post:
+      description: "Creates or updates a bilateral invoicing relationship between a payee and payor organization, or a default invoicing relationship for a payee or payor organization if the other is not specified. \n\nIf an invoicing relationship is currently active for the passed payee and payor organizations, the existing invoicing relationship will be merged with the passed invoicing relationship."
+      operationId: InvoicingRelationships_upsert
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertInvoicingRelationshipInput'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoicingRelationship'
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoicingRelationship'
+      summary: Upsert an invoicing relationship
+      tags:
+      - invoicing-relationships
+    get:
+      description: Returns a list of invoicing relationships.
+      operationId: InvoicingRelationships_list
+      parameters:
+      - name: revisedAfter
+        required: false
+        in: query
+        description: Filter to only results that have been revised after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date.
+        schema:
+          format: utc-timestamp
+          example: '2020-01-01T00:00:00.000Z'
+          type: string
+      - name: revisedBefore
+        required: false
+        in: query
+        description: Filter to only results that have been revised before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date.
+        schema:
+          format: utc-timestamp
+          example: '2020-01-01T00:00:00.000Z'
+          type: string
+      - name: first
+        required: false
+        in: query
+        description: The number of results to return. Default value is 10. Any custom value specified must lie between 0 and 100, inclusive.
+        schema:
+          type: number
+      - name: after
+        required: false
+        in: query
+        description: The cursor to start returning results from
+        schema:
+          type: string
+      - name: payorOrganizationQid
+        required: false
+        in: query
+        description: The payor organization QID to filter by
+        schema:
+          format: qid
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c5
+          type: string
+      - name: payeeOrganizationQid
+        required: false
+        in: query
+        description: The payee organization QID to filter by
+        schema:
+          format: qid
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c5
+          type: string
+      responses:
+        '200':
+          description: The paginated response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InvoicingRelationship'
+                  pageInfo:
+                    type: object
+                    properties:
+                      hasPreviousPage:
+                        type: boolean
+                      hasNextPage:
+                        type: boolean
+                      startCursor:
+                        type: string
+                      endCursor:
+                        type: string
+      summary: List invoicing relationships
+      tags:
+      - invoicing-relationships
+  /v1/invoicing-relationships/{qid}:
+    get:
+      description: Returns the invoicing relationship with the specified QID.
+      operationId: InvoicingRelationships_get
+      parameters:
+      - name: qid
+        required: true
+        in: path
+        description: QID of the entity to retrieve
+        schema:
+          format: qid
+          example: qid::invoicing_relationship:0ca6f700-4137-4d09-b44a-43bb8d7900c5
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoicingRelationship'
+        '404':
+          description: Invoicing relationship not found
+      summary: Retrieve an invoicing relationship
+      tags:
+      - invoicing-relationships
+components:
+  schemas:
+    DaysToPayFrom:
+      type: string
+      enum:
+      - ISSUE_DATE
+      - RECEIPT_DATE
+      description: The anchor date from which we determine the invoice due date.
+    InvoicingRelationship:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          format: qid
+          example: qid::invoicing_relationship:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+        createdAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        revisionNumber:
+          type: number
+          example: 1
+        revisionCreatedAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        payeeOrganizationQid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+          nullable: true
+        payorOrganizationQid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+          nullable: true
+        daysToPay:
+          type: number
+          description: Number of days until the invoice is due.
+          nullable: true
+          example: 30
+        daysToPayFrom:
+          description: The anchor date from which we determine the invoice due date.
+          allOf:
+          - $ref: '#/components/schemas/DaysToPayFrom'
+        effectiveFrom:
+          type: string
+          description: Timestamp indicating when the invoicing relationship is effective.
+          example: '2025-05-01T00:00:00.000Z'
+          format: utc-timestamp
+        effectiveTo:
+          type: string
+          description: Timestamp indicating when the invoicing relationship is no longer effective.
+          nullable: true
+          example: '2025-06-01T00:00:00.000Z'
+          format: utc-timestamp
+      required:
+      - qid
+      - createdAt
+      - revisionNumber
+      - revisionCreatedAt
+      - payeeOrganizationQid
+      - payorOrganizationQid
+      - daysToPay
+      - daysToPayFrom
+      - effectiveFrom
+      - effectiveTo
+    UpsertInvoicingRelationshipInput:
+      type: object
+      properties:
+        payeeOrganizationQid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+          nullable: true
+        payorOrganizationQid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+          nullable: true
+        daysToPay:
+          type: number
+          description: Number of days until the invoice is due.
+          nullable: true
+          example: 30
+        daysToPayFrom:
+          type: string
+          description: The anchor date from which we determine the invoice due date.
+          nullable: true
+          example: ISSUE_DATE
+          enum:
+          - ISSUE_DATE
+          - RECEIPT_DATE
+        effectiveFrom:
+          type: string
+          description: Timestamp indicating when the invoicing relationship becomes active. This timestamp must be in the future. If not specified, the current timestamp will be used (effective immediately).
+          nullable: true
+          example: '2025-05-01T00:00:00.000Z'
+          format: utc-timestamp
+        effectiveTo:
+          type: string
+          description: Timestamp indicating when the invoicing relationship is no longer active. This timestamp must be after the effectiveFrom timestamp. If not specified, null will be used (effective indefinitely).
+          nullable: true
+          example: '2025-06-01T00:00:00.000Z'
+          format: utc-timestamp
+      required:
+      - payeeOrganizationQid
+      - payorOrganizationQid
+      - daysToPay
+      - daysToPayFrom
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: apiKey
+      name: bearerAuth
+      type: http
+      description: "Bearer HTTP authentication. Allowed headers: \n  Authorization: Bearer <apiKey>"

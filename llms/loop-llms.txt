@@ -1,0 +1,83 @@
+# Loop
+
+> Loop is an AI-powered logistics data platform for freight audit, payment, carrier-invoice auditing, real-time shipment visibility, and autonomous exception management. The Loop API (https://api.loop.com/v1) ingests artifacts (invoices, shipment records, purchase orders), resolves business exceptions, manages organizations and factoring/invoicing relationships, and reads payable/receivable invoices and payments. Entities are addressed by QID (qualified identifier, e.g. `qid::organization:<uuid>`). Auth is a bearer API key.
+
+## Docs
+- [Developer docs](https://docs.loop.com/developers/): API overview and key concepts
+- [API authentication](https://docs.loop.com/developers/api-authentication): Bearer API key (Authorization: Bearer <apiKey>)
+- [API reference](https://docs.loop.com/developers/api-reference): OpenAPI reference
+- [Integration guide](https://docs.loop.com/integration/): Network, Artifacts, Shipments, Payables, Receivables, Payments modules
+- [Webhooks](https://docs.loop.com/developers/webhooks): Svix-delivered events
+- [QIDs](https://docs.loop.com/developers/key-concepts/qids): qualified identifier scheme
+- [Status](https://status.loop.com): platform status page
+
+## Specs
+- [Loop API OpenAPI](openapi/loop-openapi-original.json): 40 operations across 13 resource areas
+- [Loop Onboarding API OpenAPI](openapi/loop-onboarding-openapi-original.json): create an organization with payment detail
+
+## API operations
+### artifacts
+- `GET /v1/artifact-ingestion-state` (ArtifactIngestionState_list) — Retrieve a list of artifact ingestion states
+- `GET /v1/artifact-ingestion-state/{qid}` (ArtifactIngestionState_get) — Retrieve the artifact ingestion state for an artifact
+- `GET /v1/artifacts/tagged/{tagType}/{tagTypeValue}` (Artifacts_getByTag) — Retrieve an artifact
+- `GET /v1/artifacts/{qid}` (Artifacts_get) — Retrieve an artifact
+- `GET /v1/artifacts/{qid}/download` (Artifacts_download) — Download an artifact
+- `POST /v1/artifacts` (Artifacts_create) — Create an artifact
+
+### artifacts-schema-validated
+- `POST /v1/artifacts/cost-coding-table-entry-list` (CostCodingTableEntryListArtifact_create) — Create a cost coding table entries record artifact. Please reach out to Loop for initial table set up.
+- `POST /v1/artifacts/organization-factor-assignment-record` (OrganizationFactorAssignmentRecordArtifacts_create) — Create a OrganizationFactorAssignment record artifact
+- `POST /v1/artifacts/payable-invoice-record` (CreatePayableInvoiceRecordArtifact_create) — Create a payable invoice record artifact
+- `POST /v1/artifacts/purchase-order-record` (PurchaseOrderRecordArtifact_create) — Create a purchase order record artifact
+- `POST /v1/artifacts/receivable-invoice-record` (ReceivableInvoiceRecordArtifact_create) — Create a receivable invoice record artifact
+- `POST /v1/artifacts/shipment-record` (ShipmentRecordArtifacts_create) — Create a shipment record artifact
+
+### business-exceptions
+- `GET /v1/business-exceptions/target-entity-qid/{targetEntityQid}` (BusinessExceptions_listForTargetEntityQid) — Retrieve all business exceptions on an entity
+- `GET /v1/business-exceptions/{qid}` (BusinessExceptions_get) — Retrieve a business exception
+- `PUT /v1/business-exceptions/{qid}/resolve` (BusinessExceptions_resolve) — Resolve a business exception
+
+### factoring-relationships
+- `GET /v1/factoring-relationships` (FactoringRelationships_list) — List factoring relationships
+- `GET /v1/factoring-relationships/{qid}` (FactoringRelationships_get) — Retrieve a factoring relationship
+- `POST /v1/factoring-relationships` (FactoringRelationships_upsert) — Upsert a factoring relationship
+
+### invoicing-relationships
+- `GET /v1/invoicing-relationships` (InvoicingRelationships_list) — List invoicing relationships
+- `GET /v1/invoicing-relationships/{qid}` (InvoicingRelationships_get) — Retrieve an invoicing relationship
+- `POST /v1/invoicing-relationships` (InvoicingRelationships_upsert) — Upsert an invoicing relationship
+
+### organizations
+- `GET /v1/organizations/tagged/{tagType}/{tagTypeValue}` (Organizations_getByTag) — Retrieve an organization
+- `GET /v1/organizations/{qid}` (Organizations_get) — Retrieve an organization
+- `POST /v1/organizations` (Organizations_create) — Create an organization
+- `PUT /v1/organizations/{qid}` (Organizations_update) — Update an organization
+
+### payable-allocations
+- `GET /v1/payable-allocations` (PayableAllocations_list) — List payable allocations
+- `GET /v1/payable-allocations/{qid}` (PayableAllocations_get) — Retrieves a payable allocation
+
+### payable-invoice-reviews
+- `GET /v1/payable-invoice-reviews` (PayableInvoiceReview_list) — List payable invoice reviews
+- `GET /v1/payable-invoices/{qid}/review` (PayableInvoiceReview_get) — Retrieve a payable invoice review
+
+### payable-invoices
+- `GET /v1/payable-invoices` (PayableInvoices_list) — List payable invoices
+- `GET /v1/payable-invoices/{qid}` (PayableInvoices_get) — Retrieve a payable invoice
+
+### payments
+- `GET /v1/payments` (Payments_list) — List payments
+- `GET /v1/payments/{qid}` (Payments_get) — Retrieve a payment
+
+### ping
+- `GET /v1/ping` (Ping_ping) — Send a ping
+
+### receivable-invoices
+- `DELETE /v1/receivable-invoices/{qid}` (ReceivableInvoices_delete) — Delete a draft receivable invoice
+- `GET /v1/receivable-invoices` (ReceivableInvoices_list) — List receivable invoices
+- `GET /v1/receivable-invoices/{qid}` (ReceivableInvoices_get) — Retrieve a receivable invoice
+- `PUT /v1/receivable-invoices/{qid}/void` (ReceivableInvoices_void) — Void an open receivable invoice
+
+### shipment-jobs
+- `GET /v1/shipment-jobs` (ShipmentJobs_list) — List shipment jobs
+- `GET /v1/shipment-jobs/{qid}` (ShipmentJobs_get) — Retrieve a shipment job

@@ -1,0 +1,54 @@
+generated: '2026-07-20'
+method: derived
+source: Derived from 4xx/5xx responses in openapi/loop-openapi-original.json.
+format: none
+notes: Loop API error responses are returned with an HTTP status and a human-readable description; they
+  are not application/problem+json (RFC 9457). Rate limiting surfaces as HTTP 429 on bulk cost-coding-table
+  uploads.
+error_status_codes:
+- 400
+- 404
+- 409
+- 422
+- 429
+problems:
+- status: 404
+  title: Artifact not found
+  source_operation: openapi/loop-openapi-original.json#ArtifactIngestionState_get
+- status: 429
+  title: Too many small (single/low-entry) uploads to this cost coding table within the rate-limit window.
+    Batch more entries per request and retry.
+  source_operation: openapi/loop-openapi-original.json#CostCodingTableEntryListArtifact_create
+- status: 400
+  title: Request body validation failed.
+  source_operation: openapi/loop-openapi-original.json#ReceivableInvoiceRecordArtifact_create
+- status: 404
+  title: Artifact not found.
+  source_operation: openapi/loop-openapi-original.json#Artifacts_download
+- status: 400
+  title: Invalid QID
+  source_operation: openapi/loop-openapi-original.json#BusinessExceptions_listForTargetEntityQid
+- status: 404
+  title: Business exception not found
+  source_operation: openapi/loop-openapi-original.json#BusinessExceptions_get
+- status: 422
+  title: The business exception is already resolved
+  source_operation: openapi/loop-openapi-original.json#BusinessExceptions_resolve
+- status: 404
+  title: Factoring relationship not found
+  source_operation: openapi/loop-openapi-original.json#FactoringRelationships_get
+- status: 404
+  title: Invoicing relationship not found
+  source_operation: openapi/loop-openapi-original.json#InvoicingRelationships_get
+- status: 409
+  title: Request tags resolve to multiple existing organizations; cannot upsert.
+  source_operation: openapi/loop-openapi-original.json#Organizations_create
+- status: 422
+  title: uniqueness not enabled for tagType "{tagType}"
+  source_operation: openapi/loop-openapi-original.json#Organizations_getByTag
+- status: 404
+  title: Organization not found
+  source_operation: openapi/loop-openapi-original.json#Organizations_get
+- status: 404
+  title: Shipment job not found
+  source_operation: openapi/loop-openapi-original.json#ShipmentJobs_get

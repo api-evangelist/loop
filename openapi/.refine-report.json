@@ -1,0 +1,40 @@
+{
+  "provider": "loop",
+  "sources": [
+    "loop-artifacts-api-openapi.yml",
+    "loop-artifacts-schema-validated-api-openapi.yml",
+    "loop-business-exceptions-api-openapi.yml",
+    "loop-factoring-relationships-api-openapi.yml",
+    "loop-invoicing-relationships-api-openapi.yml",
+    "loop-onboarding-api-loop-com-api-openapi.yml",
+    "loop-organizations-api-openapi.yml",
+    "loop-payable-allocations-api-openapi.yml",
+    "loop-payable-invoice-reviews-api-openapi.yml",
+    "loop-payable-invoices-api-openapi.yml",
+    "loop-payments-api-openapi.yml",
+    "loop-ping-api-openapi.yml",
+    "loop-receivable-invoices-api-openapi.yml",
+    "loop-shipment-jobs-api-openapi.yml"
+  ],
+  "outputs": [
+    "loop-artifacts-api-openapi.yml",
+    "loop-artifacts-schema-validated-api-openapi.yml",
+    "loop-business-exceptions-api-openapi.yml",
+    "loop-factoring-relationships-api-openapi.yml",
+    "loop-invoicing-relationships-api-openapi.yml",
+    "loop-onboarding-api-loop-com-api-openapi.yml",
+    "loop-organizations-api-openapi.yml",
+    "loop-payable-allocations-api-openapi.yml",
+    "loop-payable-invoice-reviews-api-openapi.yml",
+    "loop-payable-invoices-api-openapi.yml",
+    "loop-payments-api-openapi.yml",
+    "loop-ping-api-openapi.yml",
+    "loop-receivable-invoices-api-openapi.yml",
+    "loop-shipment-jobs-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

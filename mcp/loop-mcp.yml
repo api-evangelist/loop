@@ -1,0 +1,133 @@
+generated: '2026-07-20'
+method: derived
+status: candidate
+source: openapi/loop-openapi-original.json
+description: 'Candidate MCP tool surface derived one-to-one from Loop API operationIds. Loop publishes
+  no official hosted MCP server as of this pass; this is a derivation to seed an agent-native surface.
+  Auth: bearer API key (Authorization: Bearer <apiKey>).'
+server:
+  name: loop
+  transport: http
+  url: null
+tools:
+- name: ArtifactIngestionState_list
+  description: Retrieve a list of artifact ingestion states
+  source_operation: openapi/loop-openapi-original.json#ArtifactIngestionState_list
+- name: ArtifactIngestionState_get
+  description: Retrieve the artifact ingestion state for an artifact
+  source_operation: openapi/loop-openapi-original.json#ArtifactIngestionState_get
+- name: Artifacts_create
+  description: Create an artifact
+  source_operation: openapi/loop-openapi-original.json#Artifacts_create
+- name: CostCodingTableEntryListArtifact_create
+  description: Create a cost coding table entries record artifact. Please reach out to Loop for initial
+    table set up.
+  source_operation: openapi/loop-openapi-original.json#CostCodingTableEntryListArtifact_create
+- name: OrganizationFactorAssignmentRecordArtifacts_create
+  description: Create a OrganizationFactorAssignment record artifact
+  source_operation: openapi/loop-openapi-original.json#OrganizationFactorAssignmentRecordArtifacts_create
+- name: CreatePayableInvoiceRecordArtifact_create
+  description: Create a payable invoice record artifact
+  source_operation: openapi/loop-openapi-original.json#CreatePayableInvoiceRecordArtifact_create
+- name: PurchaseOrderRecordArtifact_create
+  description: Create a purchase order record artifact
+  source_operation: openapi/loop-openapi-original.json#PurchaseOrderRecordArtifact_create
+- name: ReceivableInvoiceRecordArtifact_create
+  description: Create a receivable invoice record artifact
+  source_operation: openapi/loop-openapi-original.json#ReceivableInvoiceRecordArtifact_create
+- name: ShipmentRecordArtifacts_create
+  description: Create a shipment record artifact
+  source_operation: openapi/loop-openapi-original.json#ShipmentRecordArtifacts_create
+- name: Artifacts_getByTag
+  description: Retrieve an artifact
+  source_operation: openapi/loop-openapi-original.json#Artifacts_getByTag
+- name: Artifacts_get
+  description: Retrieve an artifact
+  source_operation: openapi/loop-openapi-original.json#Artifacts_get
+- name: Artifacts_download
+  description: Download an artifact
+  source_operation: openapi/loop-openapi-original.json#Artifacts_download
+- name: BusinessExceptions_listForTargetEntityQid
+  description: Retrieve all business exceptions on an entity
+  source_operation: openapi/loop-openapi-original.json#BusinessExceptions_listForTargetEntityQid
+- name: BusinessExceptions_get
+  description: Retrieve a business exception
+  source_operation: openapi/loop-openapi-original.json#BusinessExceptions_get
+- name: BusinessExceptions_resolve
+  description: Resolve a business exception
+  source_operation: openapi/loop-openapi-original.json#BusinessExceptions_resolve
+- name: FactoringRelationships_upsert
+  description: Upsert a factoring relationship
+  source_operation: openapi/loop-openapi-original.json#FactoringRelationships_upsert
+- name: FactoringRelationships_list
+  description: List factoring relationships
+  source_operation: openapi/loop-openapi-original.json#FactoringRelationships_list
+- name: FactoringRelationships_get
+  description: Retrieve a factoring relationship
+  source_operation: openapi/loop-openapi-original.json#FactoringRelationships_get
+- name: InvoicingRelationships_upsert
+  description: Upsert an invoicing relationship
+  source_operation: openapi/loop-openapi-original.json#InvoicingRelationships_upsert
+- name: InvoicingRelationships_list
+  description: List invoicing relationships
+  source_operation: openapi/loop-openapi-original.json#InvoicingRelationships_list
+- name: InvoicingRelationships_get
+  description: Retrieve an invoicing relationship
+  source_operation: openapi/loop-openapi-original.json#InvoicingRelationships_get
+- name: Organizations_create
+  description: Create an organization
+  source_operation: openapi/loop-openapi-original.json#Organizations_create
+- name: Organizations_getByTag
+  description: Retrieve an organization
+  source_operation: openapi/loop-openapi-original.json#Organizations_getByTag
+- name: Organizations_get
+  description: Retrieve an organization
+  source_operation: openapi/loop-openapi-original.json#Organizations_get
+- name: Organizations_update
+  description: Update an organization
+  source_operation: openapi/loop-openapi-original.json#Organizations_update
+- name: PayableAllocations_list
+  description: List payable allocations
+  source_operation: openapi/loop-openapi-original.json#PayableAllocations_list
+- name: PayableAllocations_get
+  description: Retrieves a payable allocation
+  source_operation: openapi/loop-openapi-original.json#PayableAllocations_get
+- name: PayableInvoiceReview_list
+  description: List payable invoice reviews
+  source_operation: openapi/loop-openapi-original.json#PayableInvoiceReview_list
+- name: PayableInvoices_list
+  description: List payable invoices
+  source_operation: openapi/loop-openapi-original.json#PayableInvoices_list
+- name: PayableInvoices_get
+  description: Retrieve a payable invoice
+  source_operation: openapi/loop-openapi-original.json#PayableInvoices_get
+- name: PayableInvoiceReview_get
+  description: Retrieve a payable invoice review
+  source_operation: openapi/loop-openapi-original.json#PayableInvoiceReview_get
+- name: Payments_list
+  description: List payments
+  source_operation: openapi/loop-openapi-original.json#Payments_list
+- name: Payments_get
+  description: Retrieve a payment
+  source_operation: openapi/loop-openapi-original.json#Payments_get
+- name: Ping_ping
+  description: Send a ping
+  source_operation: openapi/loop-openapi-original.json#Ping_ping
+- name: ReceivableInvoices_list
+  description: List receivable invoices
+  source_operation: openapi/loop-openapi-original.json#ReceivableInvoices_list
+- name: ReceivableInvoices_get
+  description: Retrieve a receivable invoice
+  source_operation: openapi/loop-openapi-original.json#ReceivableInvoices_get
+- name: ReceivableInvoices_delete
+  description: Delete a draft receivable invoice
+  source_operation: openapi/loop-openapi-original.json#ReceivableInvoices_delete
+- name: ReceivableInvoices_void
+  description: Void an open receivable invoice
+  source_operation: openapi/loop-openapi-original.json#ReceivableInvoices_void
+- name: ShipmentJobs_list
+  description: List shipment jobs
+  source_operation: openapi/loop-openapi-original.json#ShipmentJobs_list
+- name: ShipmentJobs_get
+  description: Retrieve a shipment job
+  source_operation: openapi/loop-openapi-original.json#ShipmentJobs_get

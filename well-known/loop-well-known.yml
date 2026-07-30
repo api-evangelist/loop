@@ -1,0 +1,28 @@
+generated: '2026-07-20'
+method: searched
+source: Live probes of /.well-known/* across Loop hosts (2026-07-20).
+description: >-
+  Loop publishes no /.well-known discovery documents on its website, API, or docs
+  hosts. Absence recorded as valid data.
+hosts:
+  - host: https://loop.com
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+  - host: https://api.loop.com
+    documents:
+      - {path: /.well-known/security.txt, status: 400}
+      - {path: /.well-known/openid-configuration, status: 400}
+      - {path: /.well-known/oauth-authorization-server, status: 400}
+      - {path: /.well-known/api-catalog, status: 400}
+      - {path: /.well-known/ai-plugin.json, status: 400}
+  - host: https://docs.loop.com
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}

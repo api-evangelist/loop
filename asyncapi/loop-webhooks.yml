@@ -1,0 +1,31 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.loop.com/developers/webhooks and https://docs.loop.com/developers/webhook-event-types
+spec_type: Webhooks
+description: >-
+  Loop delivers events via webhooks managed by Svix. Loop does not publish a
+  machine-readable AsyncAPI document; this captures the webhook surface. The full
+  event-type catalog is enumerated at the docs URL below (client-rendered and not
+  reproduced verbatim here — only the documented example event is listed).
+provider: Svix
+transport: HTTPS POST to a subscriber-configured endpoint
+docs: https://docs.loop.com/developers/webhook-event-types
+delivery:
+  ack: consumer must respond 2xx within 15 seconds
+  guarantee: at-least-once (deduplicate on eventId)
+  retries: exponential backoff spanning ~10+ hours
+  auto_disable: endpoint disabled after 5 days of continuous failures
+  replay: manual replay/recovery supported via Svix
+signing:
+  scheme: Svix signature verification
+  headers:
+    - svix-id
+    - svix-timestamp
+    - svix-signature
+  signed_content: raw string body of the message payload
+payload_envelope:
+  - {field: eventId, description: Stable identifier for the event; used for deduplication across resends.}
+  - {field: generatedAtTimestamp, description: When the event occurred.}
+  - {field: eventCreatedAt, description: Timestamp for ordering event consumption.}
+events:
+  - {type: test-event.created, description: Example/test event documented in the webhooks guide.}

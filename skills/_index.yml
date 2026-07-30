@@ -1,0 +1,19 @@
+generated: '2026-07-20'
+method: generated
+source: >-
+  Generated from openapi/loop-openapi-original.json operations and the Loop
+  developer docs (auth, QIDs, webhooks, conventions). Every step is grounded in a
+  real operationId verified against the spec.
+skills:
+  - file: loop-ingest-and-audit-payable-invoice.md
+    name: Ingest and audit a payable invoice with Loop
+    api: openapi/loop-openapi-original.json
+    operations: [CreatePayableInvoiceRecordArtifact_create, ArtifactIngestionState_get, PayableInvoices_list, PayableInvoices_get, PayableInvoiceReview_get]
+  - file: loop-resolve-business-exceptions.md
+    name: Resolve Loop business exceptions on an entity
+    api: openapi/loop-openapi-original.json
+    operations: [BusinessExceptions_listForTargetEntityQid, BusinessExceptions_get, BusinessExceptions_resolve]
+  - file: loop-onboard-org-and-factoring.md
+    name: Onboard an organization and set up a factoring relationship
+    api: openapi/loop-openapi-original.json
+    operations: [Organizations_create, Organizations_get, FactoringRelationships_upsert, FactoringRelationships_get]

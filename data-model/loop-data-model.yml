@@ -1,0 +1,54 @@
+generated: '2026-07-20'
+method: derived
+source: >-
+  Derived from the QID-referencing fields and schema $refs in
+  openapi/loop-openapi-original.json, plus the QID identifier scheme
+  (docs.loop.com/developers/key-concepts/qids). Captures the core
+  entity-relationship graph behind Loop's freight-audit / payments domain.
+docs: https://docs.loop.com/developers/key-concepts/qids
+notation: >-
+  Entities are addressed by QID (qid::<entity-type>:<uuid>). Relationships use
+  belongs_to / has_many with the referencing field name (via); direction is from
+  the entity that holds the QID reference.
+
+entities:
+  - {name: Organization, qid_type: organization, domain: network, description: A party in the logistics network (shipper, carrier, vendor, factor, broker); self-referential via parentOrganizationQid.}
+  - {name: Address, qid_type: address, domain: network, description: A physical address referenced by invoices and shipment legs.}
+  - {name: Artifact, qid_type: artifact, domain: ingestion, description: An ingested document/record (invoice, shipment record, purchase order, cost-coding table); de-duplicated by md5 hash.}
+  - {name: ArtifactIngestionState, qid_type: artifact, domain: ingestion, description: The processing/ingestion status for an artifact.}
+  - {name: BusinessException, qid_type: business_exception, domain: exceptions, description: An exception raised against a target entity that must be resolved.}
+  - {name: PayableInvoice, qid_type: payable_invoice, domain: payables, description: A carrier/vendor invoice payable by the customer, audited by Loop.}
+  - {name: PayableInvoiceReview, qid_type: payable_invoice, domain: payables, description: The audit/review result for a payable invoice.}
+  - {name: PayableAllocation, qid_type: payable_allocation, domain: payables, description: Allocation linking a payment to a payable invoice.}
+  - {name: ReceivableInvoice, qid_type: receivable_invoice, domain: receivables, description: An invoice receivable from a customer.}
+  - {name: Payment, qid_type: payment, domain: payments, description: A payment between a payor and payee organization.}
+  - {name: ShipmentJob, qid_type: shipment_job, domain: shipments, description: A shipment movement (FTL/LTL/ocean/air/drayage/intermodal) with route, dates, and containers.}
+  - {name: Shipment, qid_type: shipment, domain: shipments, description: A shipment that groups shipment jobs.}
+  - {name: FactoringRelationship, qid_type: factoring_relationship, domain: relationships, description: Relationship between a carrier organization and a factor organization (one active at a time).}
+  - {name: InvoicingRelationship, qid_type: invoicing_relationship, domain: relationships, description: Relationship between a payee and payor organization for invoicing.}
+  - {name: CostCodingTable, qid_type: cost_coding_table, domain: ingestion, description: A table of cost-coding entries referenced when ingesting entry-list artifacts.}
+
+relationships:
+  - {from: Organization, to: Organization, kind: belongs_to, via: parentOrganizationQid}
+  - {from: ArtifactIngestionState, to: Artifact, kind: belongs_to, via: artifactQid}
+  - {from: BusinessException, to: PayableInvoice, kind: belongs_to, via: targetQid}
+  - {from: PayableInvoice, to: Organization, kind: belongs_to, via: payorOrganizationQid}
+  - {from: PayableInvoice, to: Organization, kind: belongs_to, via: payeeOrganizationQid}
+  - {from: PayableInvoice, to: Organization, kind: belongs_to, via: vendorOrganizationQid}
+  - {from: PayableInvoice, to: Address, kind: belongs_to, via: payeeAddressQid}
+  - {from: PayableInvoice, to: Artifact, kind: has_many, via: artifactQids}
+  - {from: PayableInvoice, to: ShipmentJob, kind: has_many, via: shipmentJobQids}
+  - {from: PayableInvoiceReview, to: PayableInvoice, kind: belongs_to, via: payableInvoiceQid}
+  - {from: PayableAllocation, to: PayableInvoice, kind: belongs_to, via: payableInvoiceQid}
+  - {from: PayableAllocation, to: Payment, kind: belongs_to, via: paymentQid}
+  - {from: ReceivableInvoice, to: Organization, kind: belongs_to, via: payorOrganizationQid}
+  - {from: ReceivableInvoice, to: Organization, kind: belongs_to, via: payeeOrganizationQid}
+  - {from: Payment, to: Organization, kind: belongs_to, via: payorOrganizationQid}
+  - {from: Payment, to: Organization, kind: belongs_to, via: payeeOrganizationQid}
+  - {from: ShipmentJob, to: Organization, kind: belongs_to, via: customerOrganizationQid}
+  - {from: ShipmentJob, to: Organization, kind: belongs_to, via: primaryVendorOrganizationQid}
+  - {from: ShipmentJob, to: Artifact, kind: has_many, via: artifactQids}
+  - {from: FactoringRelationship, to: Organization, kind: belongs_to, via: carrierOrganizationQid}
+  - {from: FactoringRelationship, to: Organization, kind: belongs_to, via: factorOrganizationQid}
+  - {from: InvoicingRelationship, to: Organization, kind: belongs_to, via: payeeOrganizationQid}
+  - {from: InvoicingRelationship, to: Organization, kind: belongs_to, via: payorOrganizationQid}

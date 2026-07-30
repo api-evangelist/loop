@@ -1,0 +1,35 @@
+generated: '2026-07-20'
+method: derived
+source: >-
+  Derived from openapi/loop-openapi-original.json (securitySchemes, error
+  responses, pagination and idempotency semantics) and Loop developer docs
+  (docs.loop.com/developers). Trust center exists at https://trust.loop.com but
+  its certification list is JS-rendered and could not be read verbatim in this
+  pass — no Compliance pointer is asserted.
+standards:
+  - id: oauth2
+    conforms: false
+    evidence: No oauth2 securitySchemes; auth is a bearer API key (http bearer).
+  - id: http-bearer-auth
+    conforms: true
+    evidence: securitySchemes.bearer is type=http scheme=bearer (API key as bearer token).
+  - id: oidc
+    conforms: false
+    evidence: No /.well-known/openid-configuration on any Loop host (probed 404/400).
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: 4xx/5xx responses return a plain description, not application/problem+json.
+  - id: cursor-pagination
+    conforms: true
+    evidence: List endpoints use first/after with a pageInfo cursor envelope (hasNextPage/endCursor).
+  - id: idempotency
+    conforms: true
+    evidence: >-
+      Upsert/uniqueness-tag idempotency on organizations and factoring/invoicing
+      relationships; md5-hash de-duplication on artifact create.
+  - id: webhooks-svix
+    conforms: true
+    evidence: Webhooks delivered and signed via Svix (svix-id/timestamp/signature headers).
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: No /.well-known/security.txt on loop.com, api.loop.com, or docs.loop.com.

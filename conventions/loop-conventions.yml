@@ -1,0 +1,95 @@
+generated: '2026-07-20'
+method: searched
+source: >-
+  https://docs.loop.com/developers/ (API authentication, key concepts, webhooks)
+  and derived from openapi/loop-openapi-original.json. Cross-cutting
+  request/response semantics that apply across every Loop endpoint.
+description: >-
+  How the Loop API behaves across operations: authentication, the QID identifier
+  scheme, idempotency, cursor pagination, field expansion, webhook delivery,
+  versioning, error envelope, and rate-limit signaling.
+
+base_url: https://api.loop.com
+api_style: REST over HTTPS, JSON request/response (artifacts also accept multipart/form-data uploads)
+
+authentication:
+  scheme: Bearer HTTP authentication (API key as a bearer token)
+  header: 'Authorization: Bearer <apiKey>'
+  key_format: 'lk_live_… (live key prefix documented in the auth guide)'
+  provisioning: API keys are issued by your Loop contact; there is no self-service token endpoint.
+  validation_endpoint: GET /v1/ping (returns HTTP 200 on a valid key)
+  docs: https://docs.loop.com/developers/api-authentication
+  detail: authentication/loop-authentication.yml
+
+identifiers:
+  scheme: QID (qualified identifier)
+  format: 'qid::<entity-type>:<identifier>  (identifier is typically a UUID)'
+  regex: '^qid::[a-z_]+:[a-zA-Z0-9-_]+$'
+  revision_suffix: '@<n> pins a specific entity revision, e.g. qid::organization:<uuid>@3'
+  examples:
+  - 'qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c5'
+  - 'qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c5'
+  docs: https://docs.loop.com/developers/key-concepts/qids
+
+idempotency:
+  supported: true
+  mechanism: >-
+    Semantic (upsert) idempotency on uniqueness-enforced tags rather than an
+    Idempotency-Key header. POST /v1/organizations is idempotent on
+    uniqueness-enforced tags: if a request includes a tag whose type has
+    enforceUniqueness=true that already resolves to an existing organization,
+    that organization is returned with a 200 instead of creating a duplicate
+    (409 if the tags resolve to multiple organizations). Factoring- and
+    invoicing-relationship endpoints are explicit upserts
+    (FactoringRelationships_upsert, InvoicingRelationships_upsert). Duplicate
+    artifact uploads are de-duplicated by md5 hash — the existing artifact is
+    returned instead of creating a new one.
+  applies_to: [POST /v1/organizations, POST /v1/factoring-relationships, POST /v1/invoicing-relationships, POST /v1/artifacts]
+  docs: https://docs.loop.com/developers/
+
+pagination:
+  style: cursor
+  request_params:
+    first: number of results to return (default 10, max 100)
+    after: cursor to start returning results from
+  response_fields:
+    data: array of results
+    pageInfo.hasNextPage: boolean
+    pageInfo.hasPreviousPage: boolean
+    pageInfo.startCursor: opaque cursor
+    pageInfo.endCursor: opaque cursor — pass as `after` for the next page
+
+field_expansion:
+  supported: true
+  mechanism: '`expand` query parameter (e.g. expand=tags) requests related sub-resources be inlined'
+
+dates_and_times:
+  format: UTC timestamps (ISO 8601, e.g. 2020-01-01T00:00:00.000Z); many filters also accept a floating date (midnight UTC of that day)
+  docs: https://docs.loop.com/developers/key-concepts/dates-and-times
+
+webhooks:
+  provider: Svix
+  delivery: POST to a configured endpoint; consumer must return 2xx within 15s
+  signing_headers: [svix-id, svix-timestamp, svix-signature]
+  guarantees: at-least-once delivery; exponential-backoff retries up to ~10+ hours; endpoint auto-disabled after 5 days of failures
+  payload_envelope: [eventId, generatedAtTimestamp, eventCreatedAt]
+  detail: asyncapi/loop-webhooks.yml
+  docs: https://docs.loop.com/developers/webhooks
+
+versioning:
+  scheme: uri-path
+  current: v1
+  base: https://api.loop.com/v1
+  detail: lifecycle/loop-lifecycle.yml
+
+error_envelope:
+  format: HTTP status code + human-readable description (not RFC 9457 problem+json)
+  statuses_used: [400, 404, 409, 422, 429]
+  detail: errors/loop-problem-types.yml
+
+rate_limiting:
+  signaled_via: HTTP 429
+  known_limits: >-
+    Bulk cost-coding-table entry uploads are rate limited — too many small
+    (single/low-entry) uploads within the rate window return 429. No published
+    numeric global rate limit.

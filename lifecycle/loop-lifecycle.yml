@@ -1,0 +1,32 @@
+generated: '2026-07-20'
+method: searched
+source: >-
+  https://docs.loop.com/developers/ , https://status.loop.com , and deprecated
+  parameters derived from openapi/loop-openapi-original.json.
+versioning:
+  scheme: uri-path
+  current: v1
+  base: https://api.loop.com/v1
+  docs: https://docs.loop.com/developers/
+  notes: >-
+    The Loop Onboarding API is versioned the same way at
+    https://onboarding.api.loop.com/v1.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: >-
+    No published deprecation policy or RFC 8594 Sunset/Deprecation header support
+    was found. Deprecations are signaled per-field in the OpenAPI via
+    `deprecated: true` — the artifact-ingestion-state list endpoint marks the
+    `completedBefore`/`completedAfter` query parameters deprecated in favor of
+    `firstCompletedBefore`/`firstCompletedAfter`.
+sla:
+  url: null
+  public_uptime_target: null
+  notes: No public numeric uptime SLA; availability is covered under enterprise agreements.
+status_page: https://status.loop.com
+deprecated_operations: []
+deprecated_parameters:
+  - operation: openapi/loop-openapi-original.json#ArtifactIngestionState_list
+    parameters: [completedBefore, completedAfter]
+    superseded_by: [firstCompletedBefore, firstCompletedAfter]

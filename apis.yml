@@ -1,8 +1,19 @@
 aid: loop
 name: Loop
-description: Loop is a company surfaced as a portfolio company of 8vc, fifth-wall, index-ventures and
-  added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment
-  pipeline.
+description: >-
+  Loop is a full-stack, AI-powered logistics data platform that unifies the
+  fragmented operational and financial data of the physical economy. Founded by
+  former Uber Freight leaders Matt McKinney and Shaosu Liu, Loop began in freight
+  audit and payment and has expanded into an intelligence layer spanning freight
+  audit, parcel and carrier-invoice auditing, real-time shipment visibility,
+  parcel contract optimization, carrier payments, and autonomous exception
+  management (DUX and the Exception Agent). The Loop developer platform exposes a
+  REST API (api.loop.com/v1) for ingesting artifacts (invoices, shipment records,
+  purchase orders), resolving business exceptions, managing organizations and
+  factoring/invoicing relationships, and reading payable/receivable invoices and
+  payments, plus a separate Onboarding API and Svix-based webhooks. Loop has raised
+  $210M total, including a $95M Series C, from Valor Equity Partners, 8VC, Founders
+  Fund, Index Ventures, J.P. Morgan Growth Equity, and others.
 url: https://raw.githubusercontent.com/api-evangelist/loop/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -12,17 +23,262 @@ x-backed-by:
 - index-ventures
 x-tier: stub
 x-tier-reason: portfolio-lead
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-20'
+image: https://cdn.prod.website-files.com/668bb14a7a97da320e5022ed/66c70f294893e981b7a38704_OG%20Image.webp
 tags:
 - Company
-apis: []
+- Logistics
+- Supply Chain
+- Freight
+- Freight Audit
+- Payments
+- Transportation
+- Artificial Intelligence
+- Data Platform
+apis:
+- aid: loop:loop-artifacts-api
+  name: Loop artifacts API
+  description: The artifacts API from Loop — 6 operation(s) for artifacts.
+  humanURL: https://docs.loop.com/developers/
+  baseURL: https://api.loop.com
+  tags:
+  - artifacts
+  properties:
+  - type: OpenAPI
+    url: openapi/loop-artifacts-api-openapi.yml
+  - type: APIReference
+    url: https://docs.loop.com/developers/api-reference
+- aid: loop:loop-artifacts-schema-validated-api
+  name: Loop artifacts-schema-validated API
+  description: >-
+    The artifacts-schema-validated API from Loop — 6 operation(s) for artifacts-schema-validated.
+  humanURL: https://docs.loop.com/developers/
+  baseURL: https://api.loop.com
+  tags:
+  - artifacts-schema-validated
+  properties:
+  - type: OpenAPI
+    url: openapi/loop-artifacts-schema-validated-api-openapi.yml
+  - type: APIReference
+    url: https://docs.loop.com/developers/api-reference
+- aid: loop:loop-business-exceptions-api
+  name: Loop business-exceptions API
+  description: The business-exceptions API from Loop — 3 operation(s) for business-exceptions.
+  humanURL: https://docs.loop.com/developers/
+  baseURL: https://api.loop.com
+  tags:
+  - business-exceptions
+  properties:
+  - type: OpenAPI
+    url: openapi/loop-business-exceptions-api-openapi.yml
+  - type: APIReference
+    url: https://docs.loop.com/developers/api-reference
+- aid: loop:loop-factoring-relationships-api
+  name: Loop factoring-relationships API
+  description: The factoring-relationships API from Loop — 2 operation(s) for factoring-relationships.
+  humanURL: https://docs.loop.com/developers/
+  baseURL: https://api.loop.com
+  tags:
+  - factoring-relationships
+  properties:
+  - type: OpenAPI
+    url: openapi/loop-factoring-relationships-api-openapi.yml
+  - type: APIReference
+    url: https://docs.loop.com/developers/api-reference
+- aid: loop:loop-invoicing-relationships-api
+  name: Loop invoicing-relationships API
+  description: The invoicing-relationships API from Loop — 2 operation(s) for invoicing-relationships.
+  humanURL: https://docs.loop.com/developers/
+  baseURL: https://api.loop.com
+  tags:
+  - invoicing-relationships
+  properties:
+  - type: OpenAPI
+    url: openapi/loop-invoicing-relationships-api-openapi.yml
+  - type: APIReference
+    url: https://docs.loop.com/developers/api-reference
+- aid: loop:loop-onboarding-api-loop-com-api
+  name: Loop onboarding.api.loop.com API
+  description: The onboarding.api.loop.com API from Loop — 1 operation(s) for onboarding.api.loop.com.
+  humanURL: https://docs.loop.com/developers/
+  baseURL: https://api.loop.com
+  tags:
+  - onboarding.api.loop.com
+  properties:
+  - type: OpenAPI
+    url: openapi/loop-onboarding-api-loop-com-api-openapi.yml
+  - type: APIReference
+    url: https://docs.loop.com/developers/api-reference
+- aid: loop:loop-organizations-api
+  name: Loop organizations API
+  description: The organizations API from Loop — 3 operation(s) for organizations.
+  humanURL: https://docs.loop.com/developers/
+  baseURL: https://api.loop.com
+  tags:
+  - organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/loop-organizations-api-openapi.yml
+  - type: APIReference
+    url: https://docs.loop.com/developers/api-reference
+- aid: loop:loop-payable-allocations-api
+  name: Loop payable-allocations API
+  description: The payable-allocations API from Loop — 2 operation(s) for payable-allocations.
+  humanURL: https://docs.loop.com/developers/
+  baseURL: https://api.loop.com
+  tags:
+  - payable-allocations
+  properties:
+  - type: OpenAPI
+    url: openapi/loop-payable-allocations-api-openapi.yml
+  - type: APIReference
+    url: https://docs.loop.com/developers/api-reference
+- aid: loop:loop-payable-invoice-reviews-api
+  name: Loop payable-invoice-reviews API
+  description: The payable-invoice-reviews API from Loop — 2 operation(s) for payable-invoice-reviews.
+  humanURL: https://docs.loop.com/developers/
+  baseURL: https://api.loop.com
+  tags:
+  - payable-invoice-reviews
+  properties:
+  - type: OpenAPI
+    url: openapi/loop-payable-invoice-reviews-api-openapi.yml
+  - type: APIReference
+    url: https://docs.loop.com/developers/api-reference
+- aid: loop:loop-payable-invoices-api
+  name: Loop payable-invoices API
+  description: The payable-invoices API from Loop — 2 operation(s) for payable-invoices.
+  humanURL: https://docs.loop.com/developers/
+  baseURL: https://api.loop.com
+  tags:
+  - payable-invoices
+  properties:
+  - type: OpenAPI
+    url: openapi/loop-payable-invoices-api-openapi.yml
+  - type: APIReference
+    url: https://docs.loop.com/developers/api-reference
+- aid: loop:loop-payments-api
+  name: Loop payments API
+  description: The payments API from Loop — 2 operation(s) for payments.
+  humanURL: https://docs.loop.com/developers/
+  baseURL: https://api.loop.com
+  tags:
+  - payments
+  properties:
+  - type: OpenAPI
+    url: openapi/loop-payments-api-openapi.yml
+  - type: APIReference
+    url: https://docs.loop.com/developers/api-reference
+- aid: loop:loop-ping-api
+  name: Loop ping API
+  description: The ping API from Loop — 1 operation(s) for ping.
+  humanURL: https://docs.loop.com/developers/
+  baseURL: https://api.loop.com
+  tags:
+  - ping
+  properties:
+  - type: OpenAPI
+    url: openapi/loop-ping-api-openapi.yml
+  - type: APIReference
+    url: https://docs.loop.com/developers/api-reference
+- aid: loop:loop-receivable-invoices-api
+  name: Loop receivable-invoices API
+  description: The receivable-invoices API from Loop — 3 operation(s) for receivable-invoices.
+  humanURL: https://docs.loop.com/developers/
+  baseURL: https://api.loop.com
+  tags:
+  - receivable-invoices
+  properties:
+  - type: OpenAPI
+    url: openapi/loop-receivable-invoices-api-openapi.yml
+  - type: APIReference
+    url: https://docs.loop.com/developers/api-reference
+- aid: loop:loop-shipment-jobs-api
+  name: Loop shipment-jobs API
+  description: The shipment-jobs API from Loop — 2 operation(s) for shipment-jobs.
+  humanURL: https://docs.loop.com/developers/
+  baseURL: https://api.loop.com
+  tags:
+  - shipment-jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/loop-shipment-jobs-api-openapi.yml
+  - type: APIReference
+    url: https://docs.loop.com/developers/api-reference
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/loop-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/loop-agentic-access.yml
+- type: Authentication
+  url: authentication/loop-authentication.yml
 - type: Website
-  url: https://loop.us
+  url: https://loop.com
+- type: DeveloperPortal
+  url: https://docs.loop.com
+- type: Documentation
+  url: https://docs.loop.com
+- type: APIReference
+  url: https://docs.loop.com/developers/api-reference
+- type: GettingStarted
+  url: https://docs.loop.com/integration/
+- type: Blog
+  url: https://loop.com/engineering-blog
+- type: SignUp
+  url: https://app.loop.com
+- type: Login
+  url: https://app.loop.com
+- type: StatusPage
+  url: https://status.loop.com
+- type: TermsOfService
+  url: https://loop.com/legal/terms-and-conditions
+- type: PrivacyPolicy
+  url: https://loop.com/legal/privacy-policy
+- type: TrustCenter
+  url: https://trust.loop.com
+- type: MCPServer
+  url: mcp/loop-mcp.yml
+- type: LLMsTxt
+  url: llms/loop-llms.txt
+- type: Overlay
+  url: overlays/loop-openapi-overlay.yaml
+- type: Conformance
+  url: conformance/loop-conformance.yml
+- type: ErrorCatalog
+  url: errors/loop-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/loop-lifecycle.yml
+- type: Conventions
+  url: conventions/loop-conventions.yml
+- type: Idempotency
+  url: conventions/loop-conventions.yml
+- type: DataModel
+  url: data-model/loop-data-model.yml
+- type: Webhooks
+  url: asyncapi/loop-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment:
+  date: '2026-07-20'
+  status: enriched
+  artifacts_added: 20
+  pass: local-v1

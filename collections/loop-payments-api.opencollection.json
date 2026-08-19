@@ -1,0 +1,96 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Loop Onboarding artifacts payments API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List payments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/payments",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "initiatedBefore",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been initiated before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "initiatedAfter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been initiated after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "completedBefore",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been complete before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "completedAfter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been complete after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "first",
+                "value": "",
+                "type": "query",
+                "description": "The number of results to return. Default value is 10. Any custom value specified must lie between 0 and 100, inclusive."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "The cursor to start returning results from"
+              }
+            ]
+          },
+          "docs": "Returns a list of payments completed in the given time range"
+        },
+        {
+          "info": {
+            "name": "Retrieve a payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/payments/:qid",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "qid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the entity to retrieve"
+              }
+            ]
+          },
+          "docs": "Returns the payment with the specified QID"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,429 @@
+{
+  "item": [
+    {
+      "id": "68e76f13-b536-4e19-b377-72558f7b6afd",
+      "name": "factoring-relationships",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9b0c2789-d00d-4fc6-8e9e-c155af9f0f37",
+          "name": "Upsert a factoring relationship",
+          "request": {
+            "name": "Upsert a factoring relationship",
+            "description": {
+              "content": "Creates or updates a factoring relationship between a carrier organization and a factor organization. A carrier can only have one effective factoring relationship at any given time.\n\nIf a factoring relationship is currently active between the carrier and the passed factor organization, the existing factoring relationship will be merged with the passed factoring relationship.\n\nIf a factoring relationship is currently active between the carrier and a different factor organization, the existing factoring relationship will be terminated and a new factoring relationship will be created with the passed factor organization.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "factoring-relationships"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"carrierOrganizationQid\": \"<qid>\",\n  \"factorOrganizationQid\": \"<qid>\",\n  \"effectiveFrom\": \"<utc-timestamp>\",\n  \"effectiveTo\": \"<utc-timestamp>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5d54a5a0-32c7-4544-9df0-43c1a77061a3",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "factoring-relationships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"carrierOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"factorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n  \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::factoring_relationship:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"carrierOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"factorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n  \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "57e8c30a-7367-4d06-96ad-0a9ca9f491a0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "factoring-relationships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"carrierOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"factorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n  \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::factoring_relationship:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"carrierOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"factorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n  \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a1792f7d-f246-4383-b3e1-5a18f8280b9c",
+          "name": "List factoring relationships",
+          "request": {
+            "name": "List factoring relationships",
+            "description": {
+              "content": "Returns a list of factoring relationships.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "factoring-relationships"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "revisedAfter",
+                  "value": "<utc-timestamp>",
+                  "description": "Filter to only results that have been revised after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+                },
+                {
+                  "disabled": false,
+                  "key": "revisedBefore",
+                  "value": "<utc-timestamp>",
+                  "description": "Filter to only results that have been revised before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+                },
+                {
+                  "disabled": false,
+                  "key": "first",
+                  "value": "<number>",
+                  "description": "The number of results to return. Default value is 10. Any custom value specified must lie between 0 and 100, inclusive."
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "The cursor to start returning results from"
+                },
+                {
+                  "disabled": false,
+                  "key": "factorOrganizationQid",
+                  "value": "<qid>",
+                  "description": "The factor organization QID to filter by"
+                },
+                {
+                  "disabled": false,
+                  "key": "carrierOrganizationQid",
+                  "value": "<qid>",
+                  "description": "The carrier organization QID to filter by"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "18c86f8c-b5a3-4304-9e06-b3968b05bc03",
+              "name": "The paginated response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "factoring-relationships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "revisedAfter",
+                      "value": "2020-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "revisedBefore",
+                      "value": "2020-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "first",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "factorOrganizationQid",
+                      "value": "qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c5"
+                    },
+                    {
+                      "key": "carrierOrganizationQid",
+                      "value": "qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c5"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"qid\": \"qid::factoring_relationship:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"carrierOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"factorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n      \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n    },\n    {\n      \"qid\": \"qid::factoring_relationship:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"carrierOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"factorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n      \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n    }\n  ],\n  \"pageInfo\": {\n    \"hasPreviousPage\": true,\n    \"hasNextPage\": true,\n    \"startCursor\": \"string\",\n    \"endCursor\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "54adead9-5388-4803-b06b-9c6eb06ca382",
+          "name": "Retrieve a factoring relationship",
+          "request": {
+            "name": "Retrieve a factoring relationship",
+            "description": {
+              "content": "Returns the factoring relationship with the specified QID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "factoring-relationships",
+                ":qid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<qid>",
+                  "key": "qid",
+                  "description": "(Required) QID of the entity to retrieve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9a961110-3b34-4cb8-95f9-1a43a826667c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "factoring-relationships",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::factoring_relationship:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"carrierOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"factorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n  \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e5123e05-7949-46ba-9090-bce3f255cf87",
+              "name": "Factoring relationship not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "factoring-relationships",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://onboarding.api.loop.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "7ff68179-ad3d-4966-b53d-2aac4fbfce01",
+    "name": "Loop Onboarding artifacts factoring-relationships API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "HTTP REST API for Loop Payments Onboarding.",
+      "type": "text/plain"
+    }
+  }
+}

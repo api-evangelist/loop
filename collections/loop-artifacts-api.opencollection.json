@@ -1,0 +1,207 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Loop Onboarding artifacts API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "artifacts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a list of artifact ingestion states",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/artifact-ingestion-state",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lastCompletedBefore",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been last marked as completed before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "lastCompletedAfter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been last marked as completed after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "firstCompletedBefore",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been first marked as completed before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "firstCompletedAfter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been first marked as completed after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "completedBefore",
+                "value": "",
+                "type": "query",
+                "description": "Use firstCompletedBefore instead"
+              },
+              {
+                "name": "completedAfter",
+                "value": "",
+                "type": "query",
+                "description": "Use firstCompletedAfter instead"
+              },
+              {
+                "name": "first",
+                "value": "",
+                "type": "query",
+                "description": "The number of results to return. Default value is 10. Any custom value specified must lie between 0 and 100, inclusive."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "The cursor to start returning results from"
+              }
+            ]
+          },
+          "docs": "Returns a list of artifact ingestion states."
+        },
+        {
+          "info": {
+            "name": "Retrieve the artifact ingestion state for an artifact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/artifact-ingestion-state/:qid",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "qid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the entity to retrieve"
+              }
+            ]
+          },
+          "docs": "Retrieve the artifact ingestion state for an artifact"
+        },
+        {
+          "info": {
+            "name": "Create an artifact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://onboarding.api.loop.com/v1/artifacts",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new artifact. This endpoint can be used to create artifacts in either simple formats such as CSV and JSON where the artifact is included in the HTTP request body, or as files where the data is sent in the multipart/form-data format as an uploaded file. If the artifact is detected as a duplicate, via md5 hash, the existing artifact will be returned instead of creating a new one."
+        },
+        {
+          "info": {
+            "name": "Retrieve an artifact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/artifacts/tagged/:tagType/:tagTypeValue",
+            "params": [
+              {
+                "name": "tagType",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "tagTypeValue",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns the artifact with the specified tag"
+        },
+        {
+          "info": {
+            "name": "Retrieve an artifact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/artifacts/:qid",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "qid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the entity to retrieve"
+              }
+            ]
+          },
+          "docs": "Returns the artifact with the specified QID. Supports optional expansion for the \"summary\" field, the \"derivatives\" field, and the \"tags\" field. For example: `/artifacts/<qid>?expand=summary&expand=derivatives&expand=tags`"
+        },
+        {
+          "info": {
+            "name": "Download an artifact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/artifacts/:qid/download",
+            "params": [
+              {
+                "name": "optimized",
+                "value": "",
+                "type": "query",
+                "description": "Controls whether to return an optimized version of the artifact. If set to true, optimization is enabled, and an optimized version of the artifact is available, returns the optimized version; otherwise, returns the original."
+              },
+              {
+                "name": "qid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the entity to retrieve"
+              }
+            ]
+          },
+          "docs": "Downloads the artifact with the specified QID as binary."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

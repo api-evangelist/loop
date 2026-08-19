@@ -1,0 +1,101 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Loop Onboarding artifacts invoicing-relationships API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "invoicing-relationships",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List invoicing relationships",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/invoicing-relationships",
+            "params": [
+              {
+                "name": "revisedAfter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been revised after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "revisedBefore",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been revised before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "first",
+                "value": "",
+                "type": "query",
+                "description": "The number of results to return. Default value is 10. Any custom value specified must lie between 0 and 100, inclusive."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "The cursor to start returning results from"
+              },
+              {
+                "name": "payorOrganizationQid",
+                "value": "",
+                "type": "query",
+                "description": "The payor organization QID to filter by"
+              },
+              {
+                "name": "payeeOrganizationQid",
+                "value": "",
+                "type": "query",
+                "description": "The payee organization QID to filter by"
+              }
+            ]
+          },
+          "docs": "Returns a list of invoicing relationships."
+        },
+        {
+          "info": {
+            "name": "Upsert an invoicing relationship",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://onboarding.api.loop.com/v1/invoicing-relationships",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates a bilateral invoicing relationship between a payee and payor organization, or a default invoicing relationship for a payee or payor organization if the other is not specified. \n\nIf an invoicing relationship is currently active for the passed payee and payor organizations, the existing invoicing relationship will be merged with the passed invoicing relationship."
+        },
+        {
+          "info": {
+            "name": "Retrieve an invoicing relationship",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/invoicing-relationships/:qid",
+            "params": [
+              {
+                "name": "qid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the entity to retrieve"
+              }
+            ]
+          },
+          "docs": "Returns the invoicing relationship with the specified QID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

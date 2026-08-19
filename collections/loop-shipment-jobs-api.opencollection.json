@@ -1,0 +1,107 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Loop Onboarding artifacts shipment-jobs API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "shipment-jobs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List shipment jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/shipment-jobs",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "jobType",
+                "value": "",
+                "type": "query",
+                "description": "A set of job types to filter to."
+              },
+              {
+                "name": "externalIdentifier",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "revisedAfter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been revised after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "revisedBefore",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been revised before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "first",
+                "value": "",
+                "type": "query",
+                "description": "The number of results to return. Default value is 10. Any custom value specified must lie between 0 and 100, inclusive."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "The cursor to start returning results from"
+              },
+              {
+                "name": "shipmentQid",
+                "value": "",
+                "type": "query",
+                "description": "QID of the shipment"
+              },
+              {
+                "name": "artifactQid",
+                "value": "",
+                "type": "query",
+                "description": "QID of the artifact"
+              }
+            ]
+          },
+          "docs": "Returns a list of shipment jobs."
+        },
+        {
+          "info": {
+            "name": "Retrieve a shipment job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/shipment-jobs/:qid",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "qid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the entity to retrieve"
+              }
+            ]
+          },
+          "docs": "Returns the shipment job with the specified QID"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,101 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Loop Onboarding artifacts factoring-relationships API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "factoring-relationships",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List factoring relationships",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/factoring-relationships",
+            "params": [
+              {
+                "name": "revisedAfter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been revised after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "revisedBefore",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been revised before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "first",
+                "value": "",
+                "type": "query",
+                "description": "The number of results to return. Default value is 10. Any custom value specified must lie between 0 and 100, inclusive."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "The cursor to start returning results from"
+              },
+              {
+                "name": "factorOrganizationQid",
+                "value": "",
+                "type": "query",
+                "description": "The factor organization QID to filter by"
+              },
+              {
+                "name": "carrierOrganizationQid",
+                "value": "",
+                "type": "query",
+                "description": "The carrier organization QID to filter by"
+              }
+            ]
+          },
+          "docs": "Returns a list of factoring relationships."
+        },
+        {
+          "info": {
+            "name": "Upsert a factoring relationship",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://onboarding.api.loop.com/v1/factoring-relationships",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates a factoring relationship between a carrier organization and a factor organization. A carrier can only have one effective factoring relationship at any given time.\n\nIf a factoring relationship is currently active between the carrier and the passed factor organization, the existing factoring relationship will be merged with the passed factoring relationship.\n\nIf a factoring relationship is currently active between the carrier and a different factor organization, the existing fac"
+        },
+        {
+          "info": {
+            "name": "Retrieve a factoring relationship",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/factoring-relationships/:qid",
+            "params": [
+              {
+                "name": "qid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the entity to retrieve"
+              }
+            ]
+          },
+          "docs": "Returns the factoring relationship with the specified QID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

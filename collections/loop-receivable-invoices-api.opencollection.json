@@ -1,0 +1,156 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Loop Onboarding artifacts receivable-invoices API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "receivable-invoices",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List receivable invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/receivable-invoices",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "revisedAfter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been revised after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "revisedBefore",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been revised before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "first",
+                "value": "",
+                "type": "query",
+                "description": "The number of results to return. Default value is 10. Any custom value specified must lie between 0 and 100, inclusive."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "The cursor to start returning results from"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "The field used for sorting the results. If not provided, 'createdAt' will be used as the default sort field."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "The sort order used for the given sort field. If not provided, the default sort order is 'asc'."
+              },
+              {
+                "name": "issuedBefore",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been issued (finalized and set to status OPEN) before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              },
+              {
+                "name": "issuedAfter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only results that have been issued (finalized and set to status OPEN) after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+              }
+            ]
+          },
+          "docs": "Returns a list of receivable invoices."
+        },
+        {
+          "info": {
+            "name": "Retrieve a receivable invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/receivable-invoices/:qid",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "qid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the entity to retrieve"
+              }
+            ]
+          },
+          "docs": "Returns the receivable invoice with the specified QID."
+        },
+        {
+          "info": {
+            "name": "Delete a draft receivable invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://onboarding.api.loop.com/v1/receivable-invoices/:qid",
+            "params": [
+              {
+                "name": "qid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the entity to delete"
+              }
+            ]
+          },
+          "docs": "Delete a draft receivable invoice. The operation will succeed if the invoice was already deleted or there is no AR invoice identified by the QID."
+        },
+        {
+          "info": {
+            "name": "Void an open receivable invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://onboarding.api.loop.com/v1/receivable-invoices/:qid/void",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "qid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the entity to void"
+              }
+            ]
+          },
+          "docs": "Void an open receivable invoice. The operation will succeed if the invoice is already void."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

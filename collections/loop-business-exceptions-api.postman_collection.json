@@ -1,0 +1,587 @@
+{
+  "item": [
+    {
+      "id": "58d8be11-7fe4-43ec-b86d-0918d9901eb6",
+      "name": "business-exceptions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "da8fad7c-65a1-47ea-accf-108b349a675a",
+          "name": "Retrieve all business exceptions on an entity",
+          "request": {
+            "name": "Retrieve all business exceptions on an entity",
+            "description": {
+              "content": "Returns all business exceptions for the specified target entity",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "business-exceptions",
+                "target-entity-qid",
+                ":targetEntityQid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<qid>",
+                  "key": "targetEntityQid",
+                  "description": "(Required) QID of the target entity for which to retrieve exceptions"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "aa5487e6-7240-41f0-bce7-3cfc22441bfc",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "business-exceptions",
+                    "target-entity-qid",
+                    ":targetEntityQid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "targetEntityQid",
+                      "description": "(Required) QID of the target entity for which to retrieve exceptions"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n    \"label\": \"Variance over threshold\",\n    \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n    \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n    \"note\": \"string\"\n  },\n  {\n    \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n    \"label\": \"Variance over threshold\",\n    \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n    \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n    \"note\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "faa256af-8848-4f8a-a7c7-eecad2ba7699",
+              "name": "Invalid QID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "business-exceptions",
+                    "target-entity-qid",
+                    ":targetEntityQid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "targetEntityQid",
+                      "description": "(Required) QID of the target entity for which to retrieve exceptions"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6a613177-3479-410d-83e9-ec01a0665374",
+          "name": "Retrieve a business exception",
+          "request": {
+            "name": "Retrieve a business exception",
+            "description": {
+              "content": "Returns the business exception with the specified QID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "business-exceptions",
+                ":qid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<qid>",
+                  "key": "qid",
+                  "description": "(Required) QID of the entity to retrieve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "40bb71be-2212-46c6-a109-dc3725202a2c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "business-exceptions",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"label\": \"Variance over threshold\",\n  \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"note\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c5fcd6ea-0e70-449d-a2dd-6c705552ab90",
+              "name": "Invalid QID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "business-exceptions",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "04b3281e-4bd9-4e20-99c8-4529a4b1a68d",
+              "name": "Business exception not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "business-exceptions",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f08ef276-b70e-4a22-b72d-a1d52e693dca",
+          "name": "Resolve a business exception",
+          "request": {
+            "name": "Resolve a business exception",
+            "description": {
+              "content": "Resolves the business exception with the provided QID. If the exception is already resolved, a 422 (Unprocessable Entity) will be returned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "business-exceptions",
+                ":qid",
+                "resolve"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<qid>",
+                  "key": "qid",
+                  "description": "(Required) QID of the exception to resolve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"note\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dc6afc74-e81a-43e9-ab88-22baae590d13",
+              "name": "The business exception was successfully resolved",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "business-exceptions",
+                    ":qid",
+                    "resolve"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the exception to resolve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"note\": \"This is a note\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"label\": \"Variance over threshold\",\n  \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"note\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3df13f4b-2711-4bf8-9470-9a1af5bd8ee2",
+              "name": "Invalid QID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "business-exceptions",
+                    ":qid",
+                    "resolve"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the exception to resolve"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"note\": \"This is a note\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6708d147-ab79-45a2-8097-a7bedc21e4ed",
+              "name": "Business exception not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "business-exceptions",
+                    ":qid",
+                    "resolve"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the exception to resolve"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"note\": \"This is a note\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5d1d5137-026e-466d-b543-6a19842a4c58",
+              "name": "The business exception is already resolved",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "business-exceptions",
+                    ":qid",
+                    "resolve"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the exception to resolve"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"note\": \"This is a note\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://onboarding.api.loop.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "74510657-dffe-4c8f-a08a-daf6370d55ac",
+    "name": "Loop Onboarding artifacts business-exceptions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "HTTP REST API for Loop Payments Onboarding.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -131,3 +131,9 @@ tools:
 - name: ShipmentJobs_get
   description: Retrieve a shipment job
   source_operation: openapi/loop-openapi-original.json#ShipmentJobs_get
+deployment:
+  mode: none
+  verified: derived
+  tools: 40
+  checked: '2026-08-12'
+  source: catalog MCP census

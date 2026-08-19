@@ -1,0 +1,120 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Loop Onboarding artifacts organizations API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "organizations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create an organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://onboarding.api.loop.com/v1/organizations",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an organization. Idempotent on uniqueness-enforced tags: if the request includes a tag whose type has enforceUniqueness=true that already resolves to an existing organization, that organization is returned with a 200 instead of creating a duplicate."
+        },
+        {
+          "info": {
+            "name": "Retrieve an organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/organizations/tagged/:tagType/:tagTypeValue",
+            "params": [
+              {
+                "name": "tagType",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "tagTypeValue",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns the organization with the specified tag"
+        },
+        {
+          "info": {
+            "name": "Retrieve an organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/organizations/:qid",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "qid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the entity to retrieve"
+              }
+            ]
+          },
+          "docs": "Returns the organization with the specified QID"
+        },
+        {
+          "info": {
+            "name": "Update an organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://onboarding.api.loop.com/v1/organizations/:qid",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "qid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the entity to retrieve"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an organization"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

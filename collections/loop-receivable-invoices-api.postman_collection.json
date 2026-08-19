@@ -1,0 +1,567 @@
+{
+  "item": [
+    {
+      "id": "b21fc1b4-8a46-43af-a208-4600483d73c2",
+      "name": "receivable-invoices",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5ace4d70-8da5-4941-ae8f-de098159cde1",
+          "name": "List receivable invoices",
+          "request": {
+            "name": "List receivable invoices",
+            "description": {
+              "content": "Returns a list of receivable invoices.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "receivable-invoices"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "revisedAfter",
+                  "value": "<utc-timestamp>",
+                  "description": "Filter to only results that have been revised after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+                },
+                {
+                  "disabled": false,
+                  "key": "revisedBefore",
+                  "value": "<utc-timestamp>",
+                  "description": "Filter to only results that have been revised before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+                },
+                {
+                  "disabled": false,
+                  "key": "first",
+                  "value": "<number>",
+                  "description": "The number of results to return. Default value is 10. Any custom value specified must lie between 0 and 100, inclusive."
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "The cursor to start returning results from"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "The field used for sorting the results. If not provided, 'createdAt' will be used as the default sort field."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "<string>",
+                  "description": "The sort order used for the given sort field. If not provided, the default sort order is 'asc'."
+                },
+                {
+                  "disabled": false,
+                  "key": "issuedBefore",
+                  "value": "<utc-timestamp>",
+                  "description": "Filter to only results that have been issued (finalized and set to status OPEN) before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+                },
+                {
+                  "disabled": false,
+                  "key": "issuedAfter",
+                  "value": "<utc-timestamp>",
+                  "description": "Filter to only results that have been issued (finalized and set to status OPEN) after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d4a7dcbf-641c-4b96-9eec-ed4cdc606bb3",
+              "name": "The paginated response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "receivable-invoices"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "revisedAfter",
+                      "value": "2020-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "revisedBefore",
+                      "value": "2020-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "first",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "issuedBefore",
+                      "value": "2020-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "issuedAfter",
+                      "value": "2020-01-01T00:00:00.000Z"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"qid\": \"qid::receivable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"invoiceNumber\": \"555-555555\",\n      \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"status\": \"OPEN\",\n      \"noteToPayor\": \"This is a payor note.\",\n      \"note\": \"This is an internal note.\",\n      \"issuedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"dueDate\": \"2023-01-01\",\n      \"total\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      },\n      \"adjustmentSubtotal\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      },\n      \"lineItems\": [\n        {\n          \"description\": \"Linehaul\",\n          \"amount\": {\n            \"amount\": \"3.50\",\n            \"currencyCode\": \"USD\"\n          },\n          \"kind\": \"ORIGINAL\",\n          \"externalChargeCode\": \"LH\",\n          \"invoiceDeliveryMethod\": \"EMAIL\"\n        },\n        {\n          \"description\": \"Linehaul\",\n          \"amount\": {\n            \"amount\": \"3.50\",\n            \"currencyCode\": \"USD\"\n          },\n          \"kind\": \"ORIGINAL\",\n          \"externalChargeCode\": \"LH\",\n          \"invoiceDeliveryMethod\": \"EMAIL\"\n        }\n      ],\n      \"supportingArtifacts\": {\n        \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n        \"artifactType\": \"INVOICE\"\n      },\n      \"shipments\": {\n        \"qid\": \"qid::shipment:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n        \"exceptions\": [\n          {\n            \"qid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"label\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"resolvedAt\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"targetQid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"note\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"qid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"label\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"resolvedAt\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"targetQid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"note\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"shipmentJobs\": {\n          \"qid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"createdAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"jobType\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"primaryVendorOrganizationQid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"jobTypeInfo\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"addresses\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"referenceNumbers\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"referenceNumbersList\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"tareWeights\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"primaryVendorOrganization\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"artifacts\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"tags\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"shipment\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"exceptions\": [\n        {\n          \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n          \"label\": \"Variance over threshold\",\n          \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n          \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n          \"note\": \"string\"\n        },\n        {\n          \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n          \"label\": \"Variance over threshold\",\n          \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n          \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n          \"note\": \"string\"\n        }\n      ],\n      \"finalizedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"finalizedBy\": {\n        \"firstName\": \"string\",\n        \"lastName\": \"string\",\n        \"email\": \"string\"\n      },\n      \"voidReason\": \"INTERNAL_PRICING_ERROR\",\n      \"voidReasonNote\": \"Invoice voided due to error\"\n    },\n    {\n      \"qid\": \"qid::receivable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"invoiceNumber\": \"555-555555\",\n      \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"status\": \"DRAFT\",\n      \"noteToPayor\": \"This is a payor note.\",\n      \"note\": \"This is an internal note.\",\n      \"issuedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"dueDate\": \"2023-01-01\",\n      \"total\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      },\n      \"adjustmentSubtotal\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      },\n      \"lineItems\": [\n        {\n          \"description\": \"Linehaul\",\n          \"amount\": {\n            \"amount\": \"3.50\",\n            \"currencyCode\": \"USD\"\n          },\n          \"kind\": \"ORIGINAL\",\n          \"externalChargeCode\": \"LH\",\n          \"invoiceDeliveryMethod\": \"EMAIL\"\n        },\n        {\n          \"description\": \"Linehaul\",\n          \"amount\": {\n            \"amount\": \"3.50\",\n            \"currencyCode\": \"USD\"\n          },\n          \"kind\": \"ORIGINAL\",\n          \"externalChargeCode\": \"LH\",\n          \"invoiceDeliveryMethod\": \"EMAIL\"\n        }\n      ],\n      \"supportingArtifacts\": {\n        \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n        \"artifactType\": \"INVOICE\"\n      },\n      \"shipments\": {\n        \"qid\": \"qid::shipment:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n        \"exceptions\": [\n          {\n            \"qid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"label\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"resolvedAt\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"targetQid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"note\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"qid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"label\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"resolvedAt\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"targetQid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"note\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"shipmentJobs\": {\n          \"qid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"createdAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"jobType\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"primaryVendorOrganizationQid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"jobTypeInfo\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"addresses\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"referenceNumbers\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"referenceNumbersList\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"tareWeights\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"primaryVendorOrganization\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"artifacts\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"tags\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"shipment\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"exceptions\": [\n        {\n          \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n          \"label\": \"Variance over threshold\",\n          \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n          \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n          \"note\": \"string\"\n        },\n        {\n          \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n          \"label\": \"Variance over threshold\",\n          \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n          \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n          \"note\": \"string\"\n        }\n      ],\n      \"finalizedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"finalizedBy\": {\n        \"firstName\": \"string\",\n        \"lastName\": \"string\",\n        \"email\": \"string\"\n      },\n      \"voidReason\": \"INTERNAL_PRICING_ERROR\",\n      \"voidReasonNote\": \"Invoice voided due to error\"\n    }\n  ],\n  \"pageInfo\": {\n    \"hasPreviousPage\": false,\n    \"hasNextPage\": true,\n    \"startCursor\": \"string\",\n    \"endCursor\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1042f65c-22a7-4f94-9f07-a2dfbc8179f1",
+          "name": "Retrieve a receivable invoice",
+          "request": {
+            "name": "Retrieve a receivable invoice",
+            "description": {
+              "content": "Returns the receivable invoice with the specified QID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "receivable-invoices",
+                ":qid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<qid>",
+                  "key": "qid",
+                  "description": "(Required) QID of the entity to retrieve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "022c9cc3-40a5-406b-8279-82892c2ae725",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "receivable-invoices",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::receivable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"invoiceNumber\": \"555-555555\",\n  \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"status\": \"VOID\",\n  \"noteToPayor\": \"This is a payor note.\",\n  \"note\": \"This is an internal note.\",\n  \"issuedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"dueDate\": \"2023-01-01\",\n  \"total\": {\n    \"amount\": \"3.50\",\n    \"currencyCode\": \"USD\"\n  },\n  \"adjustmentSubtotal\": {\n    \"amount\": \"3.50\",\n    \"currencyCode\": \"USD\"\n  },\n  \"lineItems\": [\n    {\n      \"description\": \"Linehaul\",\n      \"amount\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      },\n      \"kind\": \"ORIGINAL\",\n      \"externalChargeCode\": \"LH\",\n      \"invoiceDeliveryMethod\": \"EMAIL\"\n    },\n    {\n      \"description\": \"Linehaul\",\n      \"amount\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      },\n      \"kind\": \"ORIGINAL\",\n      \"externalChargeCode\": \"LH\",\n      \"invoiceDeliveryMethod\": \"EMAIL\"\n    }\n  ],\n  \"supportingArtifacts\": {\n    \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n    \"artifactType\": \"INVOICE\"\n  },\n  \"shipments\": {\n    \"qid\": \"qid::shipment:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n    \"exceptions\": [\n      {\n        \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n        \"label\": \"Variance over threshold\",\n        \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n        \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n        \"note\": \"string\"\n      },\n      {\n        \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n        \"label\": \"Variance over threshold\",\n        \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n        \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n        \"note\": \"string\"\n      }\n    ],\n    \"shipmentJobs\": {\n      \"qid\": \"qid::shipment_job:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"jobType\": \"DRAYAGE\",\n      \"primaryVendorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"jobTypeInfo\": {\n        \"carrierOrganizationName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"carrierOrganizationQid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"carrierOrganization\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"forwarderOrganizationName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"forwarderOrganizationQid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"forwarderOrganization\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"addresses\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"routeLocations\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"chargeableWeight\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"grossWeight\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"totalVolume\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"freightChargeTerms\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dates\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"addresses\": [\n        {\n          \"addressName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"addressQid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"addressType\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"address\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"addressName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"addressQid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"addressType\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"address\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"referenceNumbers\": {\n        \"bolNumber\": \"BOL123456789X\",\n        \"externalIdentifier\": \"EXID987654321Z\"\n      },\n      \"referenceNumbersList\": [\n        {\n          \"key\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"value\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"key\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"value\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"tareWeights\": [\n        {\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"unit\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"unit\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"primaryVendorOrganization\": {\n        \"qid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"displayName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"tags\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"artifacts\": {\n        \"qid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"artifactType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"assessedTypes\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"receivedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"tags\": {},\n      \"shipment\": {\n        \"qid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"exceptions\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    }\n  },\n  \"exceptions\": [\n    {\n      \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"label\": \"Variance over threshold\",\n      \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"note\": \"string\"\n    },\n    {\n      \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"label\": \"Variance over threshold\",\n      \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"note\": \"string\"\n    }\n  ],\n  \"finalizedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"finalizedBy\": {\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"email\": \"string\"\n  },\n  \"voidReason\": \"INTERNAL_PRICING_ERROR\",\n  \"voidReasonNote\": \"Invoice voided due to error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3eb5a517-6243-445d-a769-5f2764d3bb67",
+              "name": "Invalid QID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "receivable-invoices",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7f7e2643-c146-47ba-a126-88f92978c474",
+          "name": "Delete a draft receivable invoice",
+          "request": {
+            "name": "Delete a draft receivable invoice",
+            "description": {
+              "content": "Delete a draft receivable invoice. The operation will succeed if the invoice was already deleted or there is no AR invoice identified by the QID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "receivable-invoices",
+                ":qid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<qid>",
+                  "key": "qid",
+                  "description": "(Required) QID of the entity to delete"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a44fdfd1-d91a-412b-aed8-ad406936208d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "receivable-invoices",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to delete"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d345c298-e8c7-4011-9aa6-87ab17cf41fd",
+          "name": "Void an open receivable invoice",
+          "request": {
+            "name": "Void an open receivable invoice",
+            "description": {
+              "content": "Void an open receivable invoice. The operation will succeed if the invoice is already void.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "receivable-invoices",
+                ":qid",
+                "void"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<qid>",
+                  "key": "qid",
+                  "description": "(Required) QID of the entity to void"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6f97b3e8-b7dd-470d-949e-d4414bfea74d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "receivable-invoices",
+                    ":qid",
+                    "void"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to void"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::receivable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"invoiceNumber\": \"555-555555\",\n  \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"status\": \"OPEN\",\n  \"noteToPayor\": \"This is a payor note.\",\n  \"note\": \"This is an internal note.\",\n  \"issuedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"dueDate\": \"2023-01-01\",\n  \"total\": {\n    \"amount\": \"3.50\",\n    \"currencyCode\": \"USD\"\n  },\n  \"adjustmentSubtotal\": {\n    \"amount\": \"3.50\",\n    \"currencyCode\": \"USD\"\n  },\n  \"lineItems\": [\n    {\n      \"description\": \"Linehaul\",\n      \"amount\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      },\n      \"kind\": \"ORIGINAL\",\n      \"externalChargeCode\": \"LH\",\n      \"invoiceDeliveryMethod\": \"EMAIL\"\n    },\n    {\n      \"description\": \"Linehaul\",\n      \"amount\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      },\n      \"kind\": \"ORIGINAL\",\n      \"externalChargeCode\": \"LH\",\n      \"invoiceDeliveryMethod\": \"EMAIL\"\n    }\n  ],\n  \"supportingArtifacts\": {\n    \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n    \"artifactType\": \"INVOICE\"\n  },\n  \"shipments\": {\n    \"qid\": \"qid::shipment:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n    \"exceptions\": [\n      {\n        \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n        \"label\": \"Variance over threshold\",\n        \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n        \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n        \"note\": \"string\"\n      },\n      {\n        \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n        \"label\": \"Variance over threshold\",\n        \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n        \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n        \"note\": \"string\"\n      }\n    ],\n    \"shipmentJobs\": {\n      \"qid\": \"qid::shipment_job:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"jobType\": \"OCEAN\",\n      \"primaryVendorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"jobTypeInfo\": {\n        \"carrierOrganizationName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"carrierOrganizationQid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"carrierOrganization\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"forwarderOrganizationName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"forwarderOrganizationQid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"forwarderOrganization\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"addresses\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"routeLocations\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"chargeableWeight\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"grossWeight\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"totalVolume\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"freightChargeTerms\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dates\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"addresses\": [\n        {\n          \"addressName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"addressQid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"addressType\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"address\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"addressName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"addressQid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"addressType\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"address\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"referenceNumbers\": {\n        \"bolNumber\": \"BOL123456789X\",\n        \"externalIdentifier\": \"EXID987654321Z\"\n      },\n      \"referenceNumbersList\": [\n        {\n          \"key\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"value\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"key\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"value\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"tareWeights\": [\n        {\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"unit\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"amount\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"unit\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"primaryVendorOrganization\": {\n        \"qid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"displayName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"tags\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"artifacts\": {\n        \"qid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"artifactType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"assessedTypes\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"receivedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"tags\": {},\n      \"shipment\": {\n        \"qid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"exceptions\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    }\n  },\n  \"exceptions\": [\n    {\n      \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"label\": \"Variance over threshold\",\n      \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"note\": \"string\"\n    },\n    {\n      \"qid\": \"qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"label\": \"Variance over threshold\",\n      \"resolvedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"targetQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"note\": \"string\"\n    }\n  ],\n  \"finalizedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"finalizedBy\": {\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"email\": \"string\"\n  },\n  \"voidReason\": \"INTERNAL_PRICING_ERROR\",\n  \"voidReasonNote\": \"Invoice voided due to error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://onboarding.api.loop.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "d66ceb8b-0191-48ec-91ba-bd4d4a3c6a48",
+    "name": "Loop Onboarding artifacts receivable-invoices API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "HTTP REST API for Loop Payments Onboarding.",
+      "type": "text/plain"
+    }
+  }
+}

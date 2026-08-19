@@ -1,0 +1,100 @@
+{
+  "item": [
+    {
+      "id": "70723584-47bc-49c5-9556-a07514885cca",
+      "name": "ping",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "97d9d8f3-3697-4a4c-bab6-85c5fcfc6bdb",
+          "name": "Send a ping",
+          "request": {
+            "name": "Send a ping",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "ping"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e0438b7b-a574-4827-879d-0541aff8cdb3",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ping"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pong\": 1\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://onboarding.api.loop.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "431b2cfa-463c-4cdc-adb0-25bc899ec252",
+    "name": "Loop Onboarding artifacts ping API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "HTTP REST API for Loop Payments Onboarding.",
+      "type": "text/plain"
+    }
+  }
+}

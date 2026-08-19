@@ -1,0 +1,143 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Loop Onboarding artifacts artifacts-schema-validated API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "artifacts-schema-validated",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a cost coding table entries record artifact. Please reach out to Loop for initial table set up.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://onboarding.api.loop.com/v1/artifacts/cost-coding-table-entry-list",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "\nCreates a new cost coding table entries record artifact containing multiple entries for a specific cost coding table.\n\nThis API validates that:\n- The specified cost coding table exists\n- All required fields (as defined by the table's field definitions) are present in each entry\n- No extra fields are included that aren't defined for the table\n- The user has permission to modify the specified table\n\nThe entries will be processed according to the table's merge strategy configuration:\n- APPEND: New"
+        },
+        {
+          "info": {
+            "name": "Create a OrganizationFactorAssignment record artifact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://onboarding.api.loop.com/v1/artifacts/organization-factor-assignment-record",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new OrganizationFactorAssignment record artifact.\n\nThe OrganizationFactorAssignment record artifact is a structured, schema-enforced object that \ncarries the information needed to validate a factoring relationship between two orgs."
+        },
+        {
+          "info": {
+            "name": "Create a payable invoice record artifact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://onboarding.api.loop.com/v1/artifacts/payable-invoice-record",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a payable invoice record artifact from provided invoice data. The payable invoice record artifact is a structured, schema-enforced object that represents a payable invoice at a point in time. This artifact is used to generate a normalized representation of a payable invoice in Loop. Non-unique invoices will not be assigned to the payable invoice and simply return the created artifact. The generated artifact will be assigned to the payable invoice entity. The payor, payee, and vendor orga"
+        },
+        {
+          "info": {
+            "name": "Create a purchase order record artifact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://onboarding.api.loop.com/v1/artifacts/purchase-order-record",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "\nCreates a new purchase order record artifact.\n\nThe purchase order record artifact is a structured, schema-enforced object that represents a purchase order or an individual component of a purchase order.\n\nThe purchase order number is used as the primary identifier for the document, and is used to assign the record.\n\nFor more information, please see our [public docs](https://docs.loop.com/how-loop-works/artifact-ingestion).\n\n**Note:** This endpoint is in development and subject to change.\n"
+        },
+        {
+          "info": {
+            "name": "Create a receivable invoice record artifact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://onboarding.api.loop.com/v1/artifacts/receivable-invoice-record",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new receivable invoice record artifact.\n\nThe receivable invoice record artifact is a structured, schema-enforced object\nthat represents a receivable invoice at a point in time. This artifact is\nused to generate a normalized representation of a receivable invoice in Loop.\n\nAsynchronously, Loop will normalize the receivable invoice entity and link\nthe invoice to a shipment.\n\nFor more information on artifacts, please see our\n[public docs](https://docs.loop.com/how-loop-works/artifact-inge"
+        },
+        {
+          "info": {
+            "name": "Create a shipment record artifact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://onboarding.api.loop.com/v1/artifacts/shipment-record",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new shipment record artifact.\n\nThe shipment record artifact is a structured, schema-enforced object that represents a set of logistics activity at a point in time. This artifact is extracted and merged downstream with other artifacts from various sources (TMS, Email, etc) in different formats (PDF, PNG, JSON, etc) to form normalized shipment and job entities.\n\nA shipment record is expected to have a single unique external identifier that matches the identifier used for the shipment in "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

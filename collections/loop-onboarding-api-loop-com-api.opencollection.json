@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Loop Onboarding artifacts onboarding.api.loop.com API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "onboarding.api.loop.com",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create an organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://onboarding.api.loop.com/v1/organizations/create-organization-with-payment-detail",
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an organization"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

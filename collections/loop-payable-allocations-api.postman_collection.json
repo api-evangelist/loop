@@ -1,0 +1,264 @@
+{
+  "item": [
+    {
+      "id": "d39c67cb-d828-429c-9413-1b422e1a9402",
+      "name": "payable-allocations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "70747473-2782-46ca-a92e-bddd3fca9e65",
+          "name": "List payable allocations",
+          "request": {
+            "name": "List payable allocations",
+            "description": {
+              "content": "Returns a list of payable allocations",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "payable-allocations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "invoiceQids",
+                  "value": "<qid>",
+                  "description": "When provided, the result set will only include allocations related to the invoices matching the QIDs specified in this list."
+                },
+                {
+                  "disabled": false,
+                  "key": "first",
+                  "value": "<number>",
+                  "description": "The number of results to return. Default value is 10. Any custom value specified must lie between 0 and 100, inclusive."
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "The cursor to start returning results from"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7ae963f3-71fb-41fc-a962-59b01da6c168",
+              "name": "The paginated response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payable-allocations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "invoiceQids",
+                      "value": "qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c5"
+                    },
+                    {
+                      "key": "first",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"qid\": \"qid::payable_allocation:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"payableInvoiceQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"paymentQid\": \"qid::payment:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"amount\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      }\n    },\n    {\n      \"qid\": \"qid::payable_allocation:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"payableInvoiceQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"paymentQid\": \"qid::payment:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"amount\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      }\n    }\n  ],\n  \"pageInfo\": {\n    \"hasPreviousPage\": false,\n    \"hasNextPage\": false,\n    \"startCursor\": \"string\",\n    \"endCursor\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "809ee5bf-f711-4d75-bc27-ded9d827eaaf",
+          "name": "Retrieves a payable allocation",
+          "request": {
+            "name": "Retrieves a payable allocation",
+            "description": {
+              "content": "Returns the payable allocation with the specified QID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "payable-allocations",
+                ":qid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<qid>",
+                  "key": "qid",
+                  "description": "(Required) QID of the entity to retrieve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2922934a-9040-4334-81af-76ad41cdeeb8",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payable-allocations",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::payable_allocation:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"payableInvoiceQid\": \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"paymentQid\": \"qid::payment:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"amount\": {\n    \"amount\": \"3.50\",\n    \"currencyCode\": \"USD\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dd05e9fe-b1ce-4a4c-91a1-c1988b69b8a7",
+              "name": "Invalid QID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payable-allocations",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://onboarding.api.loop.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "3d428603-1cb0-4f71-9c86-025c075dd6dd",
+    "name": "Loop Onboarding artifacts payable-allocations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "HTTP REST API for Loop Payments Onboarding.",
+      "type": "text/plain"
+    }
+  }
+}

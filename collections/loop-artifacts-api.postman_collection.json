@@ -1,0 +1,1036 @@
+{
+  "item": [
+    {
+      "id": "c526f7e5-30a4-41b9-b53b-9e5620133d6f",
+      "name": "artifacts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "84fd882d-6d41-42f6-b566-f1468ef59f9e",
+          "name": "Retrieve a list of artifact ingestion states",
+          "request": {
+            "name": "Retrieve a list of artifact ingestion states",
+            "description": {
+              "content": "Returns a list of artifact ingestion states.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "artifact-ingestion-state"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "lastCompletedBefore",
+                  "value": "<utc-timestamp>",
+                  "description": "Filter to only results that have been last marked as completed before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+                },
+                {
+                  "disabled": false,
+                  "key": "lastCompletedAfter",
+                  "value": "<utc-timestamp>",
+                  "description": "Filter to only results that have been last marked as completed after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+                },
+                {
+                  "disabled": false,
+                  "key": "firstCompletedBefore",
+                  "value": "<utc-timestamp>",
+                  "description": "Filter to only results that have been first marked as completed before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+                },
+                {
+                  "disabled": false,
+                  "key": "firstCompletedAfter",
+                  "value": "<utc-timestamp>",
+                  "description": "Filter to only results that have been first marked as completed after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+                },
+                {
+                  "disabled": false,
+                  "key": "completedBefore",
+                  "value": "<utc-timestamp>",
+                  "description": "Use firstCompletedBefore instead"
+                },
+                {
+                  "disabled": false,
+                  "key": "completedAfter",
+                  "value": "<utc-timestamp>",
+                  "description": "Use firstCompletedAfter instead"
+                },
+                {
+                  "disabled": false,
+                  "key": "first",
+                  "value": "<number>",
+                  "description": "The number of results to return. Default value is 10. Any custom value specified must lie between 0 and 100, inclusive."
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "The cursor to start returning results from"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "94473054-f248-486c-bc96-641e5234021a",
+              "name": "The paginated response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifact-ingestion-state"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lastCompletedBefore",
+                      "value": "2020-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "lastCompletedAfter",
+                      "value": "2020-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "firstCompletedBefore",
+                      "value": "2020-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "firstCompletedAfter",
+                      "value": "2020-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "completedBefore",
+                      "value": "2020-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "completedAfter",
+                      "value": "2020-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "first",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"artifactQid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\",\n      \"artifactFormat\": \"PDF\",\n      \"preprocessingStatus\": {\n        \"status\": \"IN_PROGRESS\"\n      },\n      \"screeningStatus\": {\n        \"status\": \"IN_PROGRESS\"\n      },\n      \"categorizationStatus\": {\n        \"status\": \"IN_PROGRESS\"\n      },\n      \"derivedArtifactIngestionStates\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/ArtifactIngestionState detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/ArtifactIngestionState detected>\"\n        }\n      ],\n      \"assignedShipmentJobStatuses\": [\n        {\n          \"status\": \"IN_PROGRESS\",\n          \"qid\": {},\n          \"linkedPayableInvoiceQids\": [\n            \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\"\n          ]\n        },\n        {\n          \"status\": \"IN_PROGRESS\",\n          \"qid\": {},\n          \"linkedPayableInvoiceQids\": [\n            \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\"\n          ]\n        }\n      ],\n      \"assignedPayableInvoiceStatuses\": [\n        {\n          \"status\": \"IN_PROGRESS\"\n        },\n        {\n          \"status\": \"IN_PROGRESS\"\n        }\n      ],\n      \"aggregateIngestionStatus\": {\n        \"status\": \"COMPLETED\",\n        \"completedAt\": \"2023-01-01T00:00:00.000Z\",\n        \"completionTimes\": {\n          \"firstCompletedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"lastCompletedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"tags\": {}\n    },\n    {\n      \"artifactQid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\",\n      \"artifactFormat\": \"PDF\",\n      \"preprocessingStatus\": {\n        \"status\": \"IN_PROGRESS\"\n      },\n      \"screeningStatus\": {\n        \"status\": \"IN_PROGRESS\"\n      },\n      \"categorizationStatus\": {\n        \"status\": \"IN_PROGRESS\"\n      },\n      \"derivedArtifactIngestionStates\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/ArtifactIngestionState detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/ArtifactIngestionState detected>\"\n        }\n      ],\n      \"assignedShipmentJobStatuses\": [\n        {\n          \"status\": \"IN_PROGRESS\",\n          \"qid\": {},\n          \"linkedPayableInvoiceQids\": [\n            \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\"\n          ]\n        },\n        {\n          \"status\": \"IN_PROGRESS\",\n          \"qid\": {},\n          \"linkedPayableInvoiceQids\": [\n            \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\"\n          ]\n        }\n      ],\n      \"assignedPayableInvoiceStatuses\": [\n        {\n          \"status\": \"IN_PROGRESS\"\n        },\n        {\n          \"status\": \"IN_PROGRESS\"\n        }\n      ],\n      \"aggregateIngestionStatus\": {\n        \"status\": \"COMPLETED\",\n        \"completedAt\": \"2023-01-01T00:00:00.000Z\",\n        \"completionTimes\": {\n          \"firstCompletedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"lastCompletedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"tags\": {}\n    }\n  ],\n  \"pageInfo\": {\n    \"hasPreviousPage\": true,\n    \"hasNextPage\": false,\n    \"startCursor\": \"string\",\n    \"endCursor\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ff3199f6-3173-4daf-ad34-83627b562423",
+          "name": "Retrieve the artifact ingestion state for an artifact",
+          "request": {
+            "name": "Retrieve the artifact ingestion state for an artifact",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "artifact-ingestion-state",
+                ":qid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<qid>",
+                  "key": "qid",
+                  "description": "(Required) QID of the entity to retrieve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "06a91f3c-25d0-4004-b07c-7df848852824",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifact-ingestion-state",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"artifactQid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"artifactType\": \"INVOICE\",\n  \"artifactFormat\": \"PDF\",\n  \"preprocessingStatus\": {\n    \"status\": \"IN_PROGRESS\"\n  },\n  \"screeningStatus\": {\n    \"status\": \"IN_PROGRESS\"\n  },\n  \"categorizationStatus\": {\n    \"status\": \"IN_PROGRESS\"\n  },\n  \"derivedArtifactIngestionStates\": [\n    {\n      \"artifactQid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\",\n      \"artifactFormat\": \"PDF\",\n      \"preprocessingStatus\": {\n        \"status\": \"IN_PROGRESS\"\n      },\n      \"screeningStatus\": {\n        \"status\": \"IN_PROGRESS\"\n      },\n      \"categorizationStatus\": {\n        \"status\": \"IN_PROGRESS\"\n      },\n      \"derivedArtifactIngestionStates\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/ArtifactIngestionState detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/ArtifactIngestionState detected>\"\n        }\n      ],\n      \"assignedShipmentJobStatuses\": [\n        {\n          \"status\": \"IN_PROGRESS\",\n          \"qid\": {},\n          \"linkedPayableInvoiceQids\": [\n            \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\"\n          ]\n        },\n        {\n          \"status\": \"IN_PROGRESS\",\n          \"qid\": {},\n          \"linkedPayableInvoiceQids\": [\n            \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\"\n          ]\n        }\n      ],\n      \"assignedPayableInvoiceStatuses\": [\n        {\n          \"status\": \"IN_PROGRESS\"\n        },\n        {\n          \"status\": \"IN_PROGRESS\"\n        }\n      ],\n      \"aggregateIngestionStatus\": {\n        \"status\": \"COMPLETED\",\n        \"completedAt\": \"2023-01-01T00:00:00.000Z\",\n        \"completionTimes\": {\n          \"firstCompletedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"lastCompletedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"tags\": {}\n    },\n    {\n      \"artifactQid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\",\n      \"artifactFormat\": \"PDF\",\n      \"preprocessingStatus\": {\n        \"status\": \"IN_PROGRESS\"\n      },\n      \"screeningStatus\": {\n        \"status\": \"IN_PROGRESS\"\n      },\n      \"categorizationStatus\": {\n        \"status\": \"IN_PROGRESS\"\n      },\n      \"derivedArtifactIngestionStates\": [\n        {\n          \"value\": \"<Circular reference to #/components/schemas/ArtifactIngestionState detected>\"\n        },\n        {\n          \"value\": \"<Circular reference to #/components/schemas/ArtifactIngestionState detected>\"\n        }\n      ],\n      \"assignedShipmentJobStatuses\": [\n        {\n          \"status\": \"IN_PROGRESS\",\n          \"qid\": {},\n          \"linkedPayableInvoiceQids\": [\n            \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\"\n          ]\n        },\n        {\n          \"status\": \"IN_PROGRESS\",\n          \"qid\": {},\n          \"linkedPayableInvoiceQids\": [\n            \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\"\n          ]\n        }\n      ],\n      \"assignedPayableInvoiceStatuses\": [\n        {\n          \"status\": \"IN_PROGRESS\"\n        },\n        {\n          \"status\": \"IN_PROGRESS\"\n        }\n      ],\n      \"aggregateIngestionStatus\": {\n        \"status\": \"COMPLETED\",\n        \"completedAt\": \"2023-01-01T00:00:00.000Z\",\n        \"completionTimes\": {\n          \"firstCompletedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"lastCompletedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"tags\": {}\n    }\n  ],\n  \"assignedShipmentJobStatuses\": [\n    {\n      \"status\": \"IN_PROGRESS\",\n      \"qid\": {},\n      \"linkedPayableInvoiceQids\": [\n        \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\"\n      ]\n    },\n    {\n      \"status\": \"IN_PROGRESS\",\n      \"qid\": {},\n      \"linkedPayableInvoiceQids\": [\n        \"qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4\"\n      ]\n    }\n  ],\n  \"assignedPayableInvoiceStatuses\": [\n    {\n      \"status\": \"IN_PROGRESS\"\n    },\n    {\n      \"status\": \"IN_PROGRESS\"\n    }\n  ],\n  \"aggregateIngestionStatus\": {\n    \"status\": \"COMPLETED\",\n    \"completedAt\": \"2023-01-01T00:00:00.000Z\",\n    \"completionTimes\": {\n      \"firstCompletedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"lastCompletedAt\": \"2023-01-01T00:00:00.000Z\"\n    }\n  },\n  \"tags\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44402c94-25a7-4a40-910c-ebe81406524b",
+              "name": "Artifact not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifact-ingestion-state",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cd3d2dd2-f91f-4ce2-a191-df9a44165629",
+          "name": "Create an artifact",
+          "request": {
+            "name": "Create an artifact",
+            "description": {
+              "content": "Creates a new artifact. This endpoint can be used to create artifacts in either simple formats such as CSV and JSON where the artifact is included in the HTTP request body, or as files where the data is sent in the multipart/form-data format as an uploaded file. If the artifact is detected as a duplicate, via md5 hash, the existing artifact will be returned instead of creating a new one.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "artifacts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "artifactType",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "(Required) Type of the artifact. Artifacts typically start with type UNKNOWN with the ultimate type determined through Loop's categorization process. (This can only be one of UNKNOWN)"
+                },
+                {
+                  "key": "artifactFormat",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "Format of the artifact. The direct create endpoint supports a limited set of formats.\n\nThis can only be omitted when sending a file through a multipart/form-data request. (This can only be one of CSV,JPEG,JPG,JSON,MD,PDF,PNG,TXT,XML)"
+                },
+                {
+                  "key": "displayName",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "Name to display for the artifact. If the name is not provided and the request is a multipart/form-data request, the name of the file will be used."
+                },
+                {
+                  "key": "tags",
+                  "value": "<object>",
+                  "type": "text",
+                  "description": "Entity tags assigned to the artifact."
+                },
+                {
+                  "key": "value",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "Value of the artifact.\n\nThis can only be omitted when sending a file through a multipart/form-data request."
+                },
+                {
+                  "key": "options",
+                  "value": "<object>",
+                  "type": "text",
+                  "description": "Additional options for creating the artifact."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e92be37f-0903-4cd2-b72a-1627e1e33e04",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) Type of the artifact. Artifacts typically start with type UNKNOWN with the ultimate type determined through Loop's categorization process. (This can only be one of UNKNOWN)",
+                        "type": "text/plain"
+                      },
+                      "key": "artifactType",
+                      "value": "UNKNOWN",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Format of the artifact. The direct create endpoint supports a limited set of formats.\n\nThis can only be omitted when sending a file through a multipart/form-data request. (This can only be one of CSV,JPEG,JPG,JSON,MD,PDF,PNG,TXT,XML)",
+                        "type": "text/plain"
+                      },
+                      "key": "artifactFormat",
+                      "value": "JSON",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Name to display for the artifact. If the name is not provided and the request is a multipart/form-data request, the name of the file will be used.",
+                        "type": "text/plain"
+                      },
+                      "key": "displayName",
+                      "value": "Shipment 8392743",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Entity tags assigned to the artifact.",
+                        "type": "text/plain"
+                      },
+                      "key": "tags",
+                      "value": "{\"externalId\":\"123456789\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Value of the artifact.\n\nThis can only be omitted when sending a file through a multipart/form-data request.",
+                        "type": "text/plain"
+                      },
+                      "key": "value",
+                      "value": "{\"id\":\"8392743\",\"pickupDate\":\"2023-12-01\",\"deliveryDate\":\"2023-12-01\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Additional options for creating the artifact.",
+                        "type": "text/plain"
+                      },
+                      "key": "options",
+                      "value": "{\"forceAssignToShipmentExternalIdentifier\":\"123456789\"}",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"artifactType\": \"INVOICE\",\n  \"artifactFormat\": \"PDF\",\n  \"displayName\": \"XPO Invoice 54219 - 2023-12-01\",\n  \"tags\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1b6adcd2-d17f-47e5-aa7c-71fee8907e3c",
+          "name": "Retrieve an artifact",
+          "request": {
+            "name": "Retrieve an artifact",
+            "description": {
+              "content": "Returns the artifact with the specified tag",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "artifacts",
+                "tagged",
+                ":tagType",
+                ":tagTypeValue"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tagType",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tagTypeValue",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "07e9f34e-4335-4314-a77c-30bd00750503",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifacts",
+                    "tagged",
+                    ":tagType",
+                    ":tagTypeValue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tagType",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tagTypeValue",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"artifactType\": \"INVOICE\",\n  \"artifactFormat\": \"PDF\",\n  \"displayName\": \"XPO Invoice 54219 - 2023-12-01\",\n  \"summary\": {\n    \"externalIdentifiers\": [\n      \"89213\",\n      \"OF7890\"\n    ],\n    \"bolNumber\": \"201946\",\n    \"carrierName\": \"Tom's Trucking LLC\",\n    \"consigneeAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"dropoffAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"dropoffAppointmentType\": \"FCFS, Appointment\",\n    \"equipmentRequirements\": \"straps, tarps, food grade, etc.\",\n    \"equipmentSize\": \"53', 48'\",\n    \"equipmentType\": \"Dry Van, Reefer, Flatbed, etc.\",\n    \"consigneeName\": \"Catherine's Culinary Corner\",\n    \"invoicedTotal\": {\n      \"amount\": \"3.50\",\n      \"currencyCode\": \"XPF\"\n    },\n    \"invoiceNumber\": \"419204\",\n    \"invoiceDate\": \"2023-12-01\",\n    \"pickupAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"pickupDateAppointmentType\": \"FCFS, Appointment\",\n    \"pickupDate\": \"2023-11-01\",\n    \"poNumber\": \"19012\",\n    \"proNumber\": \"76910234\",\n    \"reeferEquipmentTemperature\": \"35-36F\",\n    \"shipperAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"shipperName\": \"Sally's Supply Store\",\n    \"transportationProvider\": \"TQL, CHR\"\n  },\n  \"derivativeArtifacts\": [\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    },\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    }\n  ],\n  \"tags\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "92d7f489-61ba-4b8d-82a1-e651743f48b6",
+              "name": "Artifact not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifacts",
+                    "tagged",
+                    ":tagType",
+                    ":tagTypeValue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tagType",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tagTypeValue",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0b8cce83-9af6-46b8-a9d9-cd5fcba82fe2",
+          "name": "Retrieve an artifact",
+          "request": {
+            "name": "Retrieve an artifact",
+            "description": {
+              "content": "Returns the artifact with the specified QID. Supports optional expansion for the \"summary\" field, the \"derivatives\" field, and the \"tags\" field. For example: `/artifacts/<qid>?expand=summary&expand=derivatives&expand=tags`",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "artifacts",
+                ":qid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<qid>",
+                  "key": "qid",
+                  "description": "(Required) QID of the entity to retrieve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "72958331-2568-4359-afef-1b01d6eeae9c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifacts",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"artifactType\": \"INVOICE\",\n  \"artifactFormat\": \"PDF\",\n  \"displayName\": \"XPO Invoice 54219 - 2023-12-01\",\n  \"summary\": {\n    \"externalIdentifiers\": [\n      \"89213\",\n      \"OF7890\"\n    ],\n    \"bolNumber\": \"201946\",\n    \"carrierName\": \"Tom's Trucking LLC\",\n    \"consigneeAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"dropoffAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"dropoffAppointmentType\": \"FCFS, Appointment\",\n    \"equipmentRequirements\": \"straps, tarps, food grade, etc.\",\n    \"equipmentSize\": \"53', 48'\",\n    \"equipmentType\": \"Dry Van, Reefer, Flatbed, etc.\",\n    \"consigneeName\": \"Catherine's Culinary Corner\",\n    \"invoicedTotal\": {\n      \"amount\": \"3.50\",\n      \"currencyCode\": \"SOS\"\n    },\n    \"invoiceNumber\": \"419204\",\n    \"invoiceDate\": \"2023-12-01\",\n    \"pickupAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"pickupDateAppointmentType\": \"FCFS, Appointment\",\n    \"pickupDate\": \"2023-11-01\",\n    \"poNumber\": \"19012\",\n    \"proNumber\": \"76910234\",\n    \"reeferEquipmentTemperature\": \"35-36F\",\n    \"shipperAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"shipperName\": \"Sally's Supply Store\",\n    \"transportationProvider\": \"TQL, CHR\"\n  },\n  \"derivativeArtifacts\": [\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    },\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    }\n  ],\n  \"tags\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "efd07aaf-068b-43bf-9d71-c4d0f2e5d49c",
+              "name": "Artifact not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifacts",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6f0d78dd-8709-4ee1-8df2-f08c3506c905",
+          "name": "Download an artifact",
+          "request": {
+            "name": "Download an artifact",
+            "description": {
+              "content": "Downloads the artifact with the specified QID as binary.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "artifacts",
+                ":qid",
+                "download"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "optimized",
+                  "value": "<boolean>",
+                  "description": "Controls whether to return an optimized version of the artifact. If set to true, optimization is enabled, and an optimized version of the artifact is available, returns the optimized version; otherwise, returns the original."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<qid>",
+                  "key": "qid",
+                  "description": "(Required) QID of the entity to retrieve"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "de67729e-ffa1-4891-8198-e125ba7cba69",
+              "name": "Successful artifact download.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifacts",
+                    ":qid",
+                    "download"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "optimized",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The filename of the artifact.",
+                  "key": "Content-Disposition",
+                  "value": "attachment; filename=\"loop-artifact-e543dbd9-e964-4250-ba28-9cfa0b88beba.json\""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "928ea46d-82f9-4bbd-8867-46ed52e8313e",
+              "name": "Artifact not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifacts",
+                    ":qid",
+                    "download"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "optimized",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://onboarding.api.loop.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "249c21ca-9f98-42ee-840a-f742e38e634c",
+    "name": "Loop Onboarding artifacts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "HTTP REST API for Loop Payments Onboarding.",
+      "type": "text/plain"
+    }
+  }
+}

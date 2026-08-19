@@ -1,0 +1,763 @@
+{
+  "item": [
+    {
+      "id": "160c32c4-7463-4a15-acc8-ebe28a5e0539",
+      "name": "organizations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f17644f6-ce79-428e-a700-2652e154b31a",
+          "name": "Create an organization",
+          "request": {
+            "name": "Create an organization",
+            "description": {
+              "content": "Create an organization. Idempotent on uniqueness-enforced tags: if the request includes a tag whose type has enforceUniqueness=true that already resolves to an existing organization, that organization is returned with a 200 instead of creating a duplicate.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "organizations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayName\": \"<string>\",\n  \"legalName\": \"<string>\",\n  \"tradeNames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"websiteUrl\": \"<string>\",\n  \"parentOrganizationQid\": \"<qid>\",\n  \"tags\": \"<object>\",\n  \"clientDivisionInfo\": \"<object>\",\n  \"customerInfo\": \"<object>\",\n  \"airCarrierInfo\": \"<object>\",\n  \"oceanCarrierInfo\": \"<object>\",\n  \"truckingCarrierInfo\": \"<object>\",\n  \"forwarderInfo\": \"<object>\",\n  \"factorInfo\": \"<object>\",\n  \"brokerageInfo\": \"<object>\",\n  \"asPayee\": {\n    \"invoicing\": {\n      \"daysToPay\": \"<number>\",\n      \"daysToPayFrom\": \"<string>\"\n    },\n    \"quickPay\": {\n      \"daysToPay\": \"<number>\",\n      \"discountPercentage\": \"<percent-string>\"\n    },\n    \"paymentInfo\": {\n      \"primaryAddress\": {\n        \"addressLine1\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"city\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"postalCode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"country\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"addressLine2\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"state\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"achDisplayName\": \"<string>\",\n      \"businessType\": \"<string>\",\n      \"remittanceEmails\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"remittanceAddress\": \"<object>\",\n      \"stopPayment\": \"<boolean>\"\n    }\n  },\n  \"asPayor\": {\n    \"invoicing\": {\n      \"daysToPay\": \"<number>\"\n    },\n    \"primaryBillingAddress\": \"<object>\"\n  },\n  \"occupiedAddresses\": [\n    {\n      \"addressLine1\": \"<string>\",\n      \"city\": \"<string>\",\n      \"postalCode\": \"<string>\",\n      \"country\": \"<string>\",\n      \"addressLine2\": \"<string>\",\n      \"state\": \"<string>\"\n    },\n    {\n      \"addressLine1\": \"<string>\",\n      \"city\": \"<string>\",\n      \"postalCode\": \"<string>\",\n      \"country\": \"<string>\",\n      \"addressLine2\": \"<string>\",\n      \"state\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b4d88fa7-7721-4918-8d99-67160b97bf12",
+              "name": "An organization with a matching uniqueness-enforced tag already existed; the existing organization is returned unchanged.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"displayName\": \"ACME\",\n  \"legalName\": \"ACME Inc.\",\n  \"tradeNames\": [\n    \"ACME Trucking\",\n    \"ACME Group\"\n  ],\n  \"websiteUrl\": \"https://example.com\",\n  \"parentOrganizationQid\": \"qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8\",\n  \"tags\": {\n    \"accountNumber\": \"AC-123\",\n    \"externalId\": \"123456789\"\n  },\n  \"clientDivisionInfo\": {\n    \"isEligiblePayor\": true,\n    \"vatRegistrationNumber\": \"DE123456789\",\n    \"payorClientId\": \"102019\"\n  },\n  \"customerInfo\": {\n    \"billingEmails\": [\n      \"billing@customer.com\"\n    ],\n    \"invoiceDeliveryMethod\": \"EMAIL\",\n    \"note\": \"<string>\",\n    \"receivableInvoiceRequiredSupportingArtifacts\": [\n      \"BILL_OF_LADING\"\n    ],\n    \"receivableInvoiceProofOfDeliveryRequired\": true\n  },\n  \"airCarrierInfo\": {\n    \"scac\": \"AAL\",\n    \"iataCode\": \"AA\",\n    \"icaoCode\": \"AAL\"\n  },\n  \"oceanCarrierInfo\": {\n    \"scac\": \"MAEU\",\n    \"bicCode\": \"MSCU\"\n  },\n  \"truckingCarrierInfo\": {\n    \"mcNumber\": \"179059\",\n    \"scac\": \"FDEB\",\n    \"usdotNumber\": \"265752\"\n  },\n  \"forwarderInfo\": {\n    \"scac\": \"FDEG\",\n    \"fmcOrganizationNumber\": \"FMC123456\"\n  },\n  \"factorInfo\": {},\n  \"brokerageInfo\": {},\n  \"asPayee\": {\n    \"invoicing\": {\n      \"daysToPay\": 30,\n      \"daysToPayFrom\": \"ISSUE_DATE\"\n    },\n    \"quickPay\": {\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\"\n    }\n  },\n  \"asPayor\": {\n    \"invoicing\": {\n      \"daysToPay\": 30\n    },\n    \"primaryBillingAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"city\": \"Chicago\",\n      \"postalCode\": \"60601\",\n      \"country\": \"US\",\n      \"addressLine2\": \"Suite 456\",\n      \"state\": \"IL\"\n    }\n  },\n  \"occupiedAddresses\": [\n    {\n      \"addressLine1\": \"123 Main Street\",\n      \"city\": \"Chicago\",\n      \"postalCode\": \"60601\",\n      \"country\": \"US\",\n      \"addressLine2\": \"Suite 456\",\n      \"state\": \"IL\"\n    },\n    {\n      \"addressLine1\": \"123 Main Street\",\n      \"city\": \"Chicago\",\n      \"postalCode\": \"60601\",\n      \"country\": \"US\",\n      \"addressLine2\": \"Suite 456\",\n      \"state\": \"IL\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"displayName\": \"ACME\",\n  \"legalName\": \"ACME Inc.\",\n  \"websiteUrl\": \"https://example.com\",\n  \"parentOrganizationQid\": \"qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8\",\n  \"clientDivisionInfo\": {\n    \"isEligiblePayor\": true,\n    \"vatRegistrationNumber\": \"DE123456789\",\n    \"payorClientId\": \"102019\"\n  },\n  \"customerInfo\": {\n    \"billingEmails\": [\n      \"billing@customer.com\"\n    ],\n    \"invoiceDeliveryMethod\": \"EMAIL\",\n    \"note\": \"<string>\",\n    \"receivableInvoiceRequiredSupportingArtifacts\": [\n      \"BILL_OF_LADING\"\n    ],\n    \"receivableInvoiceProofOfDeliveryRequired\": true\n  },\n  \"airCarrierInfo\": {\n    \"scac\": \"AAL\",\n    \"iataCode\": \"AA\",\n    \"icaoCode\": \"AAL\"\n  },\n  \"oceanCarrierInfo\": {\n    \"scac\": \"MAEU\",\n    \"bicCode\": \"MSCU\"\n  },\n  \"truckingCarrierInfo\": {\n    \"mcNumber\": \"179059\",\n    \"scac\": \"FDEB\",\n    \"usdotNumber\": \"265752\"\n  },\n  \"forwarderInfo\": {\n    \"scac\": \"FDEG\",\n    \"fmcOrganizationNumber\": \"FMC123456\"\n  },\n  \"factorInfo\": {},\n  \"brokerageInfo\": {},\n  \"tags\": {\n    \"accountNumber\": \"AC-123\",\n    \"externalId\": \"123456789\"\n  },\n  \"activeQuickPayRelationships\": [\n    {\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\",\n      \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n      \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n    },\n    {\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\",\n      \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n      \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "99860389-27fe-4dcd-956c-45f6119618bc",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"displayName\": \"ACME\",\n  \"legalName\": \"ACME Inc.\",\n  \"tradeNames\": [\n    \"ACME Trucking\",\n    \"ACME Group\"\n  ],\n  \"websiteUrl\": \"https://example.com\",\n  \"parentOrganizationQid\": \"qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8\",\n  \"tags\": {\n    \"accountNumber\": \"AC-123\",\n    \"externalId\": \"123456789\"\n  },\n  \"clientDivisionInfo\": {\n    \"isEligiblePayor\": true,\n    \"vatRegistrationNumber\": \"DE123456789\",\n    \"payorClientId\": \"102019\"\n  },\n  \"customerInfo\": {\n    \"billingEmails\": [\n      \"billing@customer.com\"\n    ],\n    \"invoiceDeliveryMethod\": \"EMAIL\",\n    \"note\": \"<string>\",\n    \"receivableInvoiceRequiredSupportingArtifacts\": [\n      \"BILL_OF_LADING\"\n    ],\n    \"receivableInvoiceProofOfDeliveryRequired\": true\n  },\n  \"airCarrierInfo\": {\n    \"scac\": \"AAL\",\n    \"iataCode\": \"AA\",\n    \"icaoCode\": \"AAL\"\n  },\n  \"oceanCarrierInfo\": {\n    \"scac\": \"MAEU\",\n    \"bicCode\": \"MSCU\"\n  },\n  \"truckingCarrierInfo\": {\n    \"mcNumber\": \"179059\",\n    \"scac\": \"FDEB\",\n    \"usdotNumber\": \"265752\"\n  },\n  \"forwarderInfo\": {\n    \"scac\": \"FDEG\",\n    \"fmcOrganizationNumber\": \"FMC123456\"\n  },\n  \"factorInfo\": {},\n  \"brokerageInfo\": {},\n  \"asPayee\": {\n    \"invoicing\": {\n      \"daysToPay\": 30,\n      \"daysToPayFrom\": \"ISSUE_DATE\"\n    },\n    \"quickPay\": {\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\"\n    }\n  },\n  \"asPayor\": {\n    \"invoicing\": {\n      \"daysToPay\": 30\n    },\n    \"primaryBillingAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"city\": \"Chicago\",\n      \"postalCode\": \"60601\",\n      \"country\": \"US\",\n      \"addressLine2\": \"Suite 456\",\n      \"state\": \"IL\"\n    }\n  },\n  \"occupiedAddresses\": [\n    {\n      \"addressLine1\": \"123 Main Street\",\n      \"city\": \"Chicago\",\n      \"postalCode\": \"60601\",\n      \"country\": \"US\",\n      \"addressLine2\": \"Suite 456\",\n      \"state\": \"IL\"\n    },\n    {\n      \"addressLine1\": \"123 Main Street\",\n      \"city\": \"Chicago\",\n      \"postalCode\": \"60601\",\n      \"country\": \"US\",\n      \"addressLine2\": \"Suite 456\",\n      \"state\": \"IL\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"displayName\": \"ACME\",\n  \"legalName\": \"ACME Inc.\",\n  \"websiteUrl\": \"https://example.com\",\n  \"parentOrganizationQid\": \"qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8\",\n  \"clientDivisionInfo\": {\n    \"isEligiblePayor\": true,\n    \"vatRegistrationNumber\": \"DE123456789\",\n    \"payorClientId\": \"102019\"\n  },\n  \"customerInfo\": {\n    \"billingEmails\": [\n      \"billing@customer.com\"\n    ],\n    \"invoiceDeliveryMethod\": \"EMAIL\",\n    \"note\": \"<string>\",\n    \"receivableInvoiceRequiredSupportingArtifacts\": [\n      \"BILL_OF_LADING\"\n    ],\n    \"receivableInvoiceProofOfDeliveryRequired\": true\n  },\n  \"airCarrierInfo\": {\n    \"scac\": \"AAL\",\n    \"iataCode\": \"AA\",\n    \"icaoCode\": \"AAL\"\n  },\n  \"oceanCarrierInfo\": {\n    \"scac\": \"MAEU\",\n    \"bicCode\": \"MSCU\"\n  },\n  \"truckingCarrierInfo\": {\n    \"mcNumber\": \"179059\",\n    \"scac\": \"FDEB\",\n    \"usdotNumber\": \"265752\"\n  },\n  \"forwarderInfo\": {\n    \"scac\": \"FDEG\",\n    \"fmcOrganizationNumber\": \"FMC123456\"\n  },\n  \"factorInfo\": {},\n  \"brokerageInfo\": {},\n  \"tags\": {\n    \"accountNumber\": \"AC-123\",\n    \"externalId\": \"123456789\"\n  },\n  \"activeQuickPayRelationships\": [\n    {\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\",\n      \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n      \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n    },\n    {\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\",\n      \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n      \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "af33a728-9227-47e2-8761-a84ec9a49988",
+              "name": "Request tags resolve to multiple existing organizations; cannot upsert.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"displayName\": \"ACME\",\n  \"legalName\": \"ACME Inc.\",\n  \"tradeNames\": [\n    \"ACME Trucking\",\n    \"ACME Group\"\n  ],\n  \"websiteUrl\": \"https://example.com\",\n  \"parentOrganizationQid\": \"qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8\",\n  \"tags\": {\n    \"accountNumber\": \"AC-123\",\n    \"externalId\": \"123456789\"\n  },\n  \"clientDivisionInfo\": {\n    \"isEligiblePayor\": true,\n    \"vatRegistrationNumber\": \"DE123456789\",\n    \"payorClientId\": \"102019\"\n  },\n  \"customerInfo\": {\n    \"billingEmails\": [\n      \"billing@customer.com\"\n    ],\n    \"invoiceDeliveryMethod\": \"EMAIL\",\n    \"note\": \"<string>\",\n    \"receivableInvoiceRequiredSupportingArtifacts\": [\n      \"BILL_OF_LADING\"\n    ],\n    \"receivableInvoiceProofOfDeliveryRequired\": true\n  },\n  \"airCarrierInfo\": {\n    \"scac\": \"AAL\",\n    \"iataCode\": \"AA\",\n    \"icaoCode\": \"AAL\"\n  },\n  \"oceanCarrierInfo\": {\n    \"scac\": \"MAEU\",\n    \"bicCode\": \"MSCU\"\n  },\n  \"truckingCarrierInfo\": {\n    \"mcNumber\": \"179059\",\n    \"scac\": \"FDEB\",\n    \"usdotNumber\": \"265752\"\n  },\n  \"forwarderInfo\": {\n    \"scac\": \"FDEG\",\n    \"fmcOrganizationNumber\": \"FMC123456\"\n  },\n  \"factorInfo\": {},\n  \"brokerageInfo\": {},\n  \"asPayee\": {\n    \"invoicing\": {\n      \"daysToPay\": 30,\n      \"daysToPayFrom\": \"ISSUE_DATE\"\n    },\n    \"quickPay\": {\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\"\n    }\n  },\n  \"asPayor\": {\n    \"invoicing\": {\n      \"daysToPay\": 30\n    },\n    \"primaryBillingAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"city\": \"Chicago\",\n      \"postalCode\": \"60601\",\n      \"country\": \"US\",\n      \"addressLine2\": \"Suite 456\",\n      \"state\": \"IL\"\n    }\n  },\n  \"occupiedAddresses\": [\n    {\n      \"addressLine1\": \"123 Main Street\",\n      \"city\": \"Chicago\",\n      \"postalCode\": \"60601\",\n      \"country\": \"US\",\n      \"addressLine2\": \"Suite 456\",\n      \"state\": \"IL\"\n    },\n    {\n      \"addressLine1\": \"123 Main Street\",\n      \"city\": \"Chicago\",\n      \"postalCode\": \"60601\",\n      \"country\": \"US\",\n      \"addressLine2\": \"Suite 456\",\n      \"state\": \"IL\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "20bf8259-f9e7-457f-8d91-c64b270ee772",
+          "name": "Retrieve an organization",
+          "request": {
+            "name": "Retrieve an organization",
+            "description": {
+              "content": "Returns the organization with the specified tag",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "organizations",
+                "tagged",
+                ":tagType",
+                ":tagTypeValue"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tagType",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tagTypeValue",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "da3244da-4e7a-481d-b4f3-ceb491287e71",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations",
+                    "tagged",
+                    ":tagType",
+                    ":tagTypeValue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tagType",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tagTypeValue",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"displayName\": \"ACME\",\n  \"legalName\": \"ACME Inc.\",\n  \"websiteUrl\": \"https://example.com\",\n  \"parentOrganizationQid\": \"qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8\",\n  \"clientDivisionInfo\": {\n    \"isEligiblePayor\": true,\n    \"vatRegistrationNumber\": \"DE123456789\",\n    \"payorClientId\": \"102019\"\n  },\n  \"customerInfo\": {\n    \"billingEmails\": [\n      \"billing@customer.com\"\n    ],\n    \"invoiceDeliveryMethod\": \"EMAIL\",\n    \"note\": \"<string>\",\n    \"receivableInvoiceRequiredSupportingArtifacts\": [\n      \"BILL_OF_LADING\"\n    ],\n    \"receivableInvoiceProofOfDeliveryRequired\": true\n  },\n  \"airCarrierInfo\": {\n    \"scac\": \"AAL\",\n    \"iataCode\": \"AA\",\n    \"icaoCode\": \"AAL\"\n  },\n  \"oceanCarrierInfo\": {\n    \"scac\": \"MAEU\",\n    \"bicCode\": \"MSCU\"\n  },\n  \"truckingCarrierInfo\": {\n    \"mcNumber\": \"179059\",\n    \"scac\": \"FDEB\",\n    \"usdotNumber\": \"265752\"\n  },\n  \"forwarderInfo\": {\n    \"scac\": \"FDEG\",\n    \"fmcOrganizationNumber\": \"FMC123456\"\n  },\n  \"factorInfo\": {},\n  \"brokerageInfo\": {},\n  \"tags\": {\n    \"accountNumber\": \"AC-123\",\n    \"externalId\": \"123456789\"\n  },\n  \"activeQuickPayRelationships\": [\n    {\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\",\n      \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n      \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n    },\n    {\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\",\n      \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n      \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bfbac5ef-3c6d-4132-b20b-1ae1d6159b9d",
+              "name": "uniqueness not enabled for tagType \"{tagType}\"",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations",
+                    "tagged",
+                    ":tagType",
+                    ":tagTypeValue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tagType",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tagTypeValue",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b6be90f0-e0c2-49ed-9a74-e3abbe183fd4",
+          "name": "Retrieve an organization",
+          "request": {
+            "name": "Retrieve an organization",
+            "description": {
+              "content": "Returns the organization with the specified QID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "organizations",
+                ":qid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<qid>",
+                  "key": "qid",
+                  "description": "(Required) QID of the entity to retrieve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9f180a3c-d271-4f47-8481-622e63a5fb84",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"displayName\": \"ACME\",\n  \"legalName\": \"ACME Inc.\",\n  \"websiteUrl\": \"https://example.com\",\n  \"parentOrganizationQid\": \"qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8\",\n  \"clientDivisionInfo\": {\n    \"isEligiblePayor\": true,\n    \"vatRegistrationNumber\": \"DE123456789\",\n    \"payorClientId\": \"102019\"\n  },\n  \"customerInfo\": {\n    \"billingEmails\": [\n      \"billing@customer.com\"\n    ],\n    \"invoiceDeliveryMethod\": \"EMAIL\",\n    \"note\": \"<string>\",\n    \"receivableInvoiceRequiredSupportingArtifacts\": [\n      \"BILL_OF_LADING\"\n    ],\n    \"receivableInvoiceProofOfDeliveryRequired\": true\n  },\n  \"airCarrierInfo\": {\n    \"scac\": \"AAL\",\n    \"iataCode\": \"AA\",\n    \"icaoCode\": \"AAL\"\n  },\n  \"oceanCarrierInfo\": {\n    \"scac\": \"MAEU\",\n    \"bicCode\": \"MSCU\"\n  },\n  \"truckingCarrierInfo\": {\n    \"mcNumber\": \"179059\",\n    \"scac\": \"FDEB\",\n    \"usdotNumber\": \"265752\"\n  },\n  \"forwarderInfo\": {\n    \"scac\": \"FDEG\",\n    \"fmcOrganizationNumber\": \"FMC123456\"\n  },\n  \"factorInfo\": {},\n  \"brokerageInfo\": {},\n  \"tags\": {\n    \"accountNumber\": \"AC-123\",\n    \"externalId\": \"123456789\"\n  },\n  \"activeQuickPayRelationships\": [\n    {\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\",\n      \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n      \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n    },\n    {\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\",\n      \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n      \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e9fa7c75-56e9-4d61-9342-10dee95685c3",
+              "name": "Invalid QID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b55e62b6-5f5a-4e73-8f37-8240adec6be2",
+              "name": "Organization not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a68dfac7-95de-4c6d-8afb-085986500c37",
+          "name": "Update an organization",
+          "request": {
+            "name": "Update an organization",
+            "description": {
+              "content": "Update an organization",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "organizations",
+                ":qid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<qid>",
+                  "key": "qid",
+                  "description": "(Required) QID of the entity to retrieve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayName\": \"<string>\",\n  \"legalName\": \"<string>\",\n  \"tradeNames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"websiteUrl\": \"<string>\",\n  \"parentOrganizationQid\": \"<qid>\",\n  \"tags\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"clientDivisionInfo\": \"<object>\",\n  \"customerInfo\": \"<object>\",\n  \"airCarrierInfo\": \"<object>\",\n  \"oceanCarrierInfo\": \"<object>\",\n  \"truckingCarrierInfo\": \"<object>\",\n  \"forwarderInfo\": \"<object>\",\n  \"factorInfo\": \"<object>\",\n  \"asPayee\": {\n    \"invoicing\": {\n      \"daysToPay\": \"<number>\",\n      \"daysToPayFrom\": \"<string>\"\n    },\n    \"quickPay\": {\n      \"daysToPay\": \"<number>\",\n      \"discountPercentage\": \"<percent-string>\"\n    },\n    \"paymentInfo\": {\n      \"primaryAddress\": {\n        \"addressLine1\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"city\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"postalCode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"country\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"addressLine2\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"state\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"achDisplayName\": \"<string>\",\n      \"businessType\": \"<string>\",\n      \"remittanceEmails\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"remittanceAddress\": \"<object>\",\n      \"stopPayment\": \"<boolean>\"\n    }\n  },\n  \"asPayor\": {\n    \"invoicing\": {\n      \"daysToPay\": \"<number>\"\n    },\n    \"primaryBillingAddress\": \"<object>\"\n  },\n  \"occupiedAddresses\": [\n    {\n      \"addressLine1\": \"<string>\",\n      \"city\": \"<string>\",\n      \"postalCode\": \"<string>\",\n      \"country\": \"<string>\",\n      \"addressLine2\": \"<string>\",\n      \"state\": \"<string>\"\n    },\n    {\n      \"addressLine1\": \"<string>\",\n      \"city\": \"<string>\",\n      \"postalCode\": \"<string>\",\n      \"country\": \"<string>\",\n      \"addressLine2\": \"<string>\",\n      \"state\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1c90bbb7-6e6d-43fc-a0f9-55769b01c4dd",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"displayName\": \"ACME\",\n  \"legalName\": \"ACME Inc.\",\n  \"tradeNames\": [\n    \"ACME Trucking\",\n    \"ACME Group\"\n  ],\n  \"websiteUrl\": \"https://example.com\",\n  \"parentOrganizationQid\": \"qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8\",\n  \"tags\": {\n    \"tag1\": \"value1\",\n    \"tag2\": \"value2\"\n  },\n  \"clientDivisionInfo\": {\n    \"isEligiblePayor\": true,\n    \"vatRegistrationNumber\": \"DE123456789\",\n    \"payorClientId\": \"102019\"\n  },\n  \"customerInfo\": {\n    \"billingEmails\": [\n      \"billing@customer.com\"\n    ],\n    \"invoiceDeliveryMethod\": \"EMAIL\",\n    \"note\": \"<string>\",\n    \"receivableInvoiceRequiredSupportingArtifacts\": [\n      \"BILL_OF_LADING\"\n    ],\n    \"receivableInvoiceProofOfDeliveryRequired\": true\n  },\n  \"airCarrierInfo\": {\n    \"scac\": \"AAL\",\n    \"iataCode\": \"AA\",\n    \"icaoCode\": \"AAL\"\n  },\n  \"oceanCarrierInfo\": {\n    \"scac\": \"MAEU\",\n    \"bicCode\": \"MSCU\"\n  },\n  \"truckingCarrierInfo\": {\n    \"mcNumber\": \"179059\",\n    \"scac\": \"FDEB\",\n    \"usdotNumber\": \"265752\"\n  },\n  \"forwarderInfo\": {\n    \"scac\": \"FDEG\",\n    \"fmcOrganizationNumber\": \"FMC123456\"\n  },\n  \"factorInfo\": {},\n  \"asPayee\": {\n    \"invoicing\": {\n      \"daysToPay\": 30,\n      \"daysToPayFrom\": \"ISSUE_DATE\"\n    },\n    \"quickPay\": {\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\"\n    }\n  },\n  \"asPayor\": {\n    \"invoicing\": {\n      \"daysToPay\": 30\n    },\n    \"primaryBillingAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"city\": \"Chicago\",\n      \"postalCode\": \"60601\",\n      \"country\": \"US\",\n      \"addressLine2\": \"Suite 456\",\n      \"state\": \"IL\"\n    }\n  },\n  \"occupiedAddresses\": [\n    {\n      \"addressLine1\": \"123 Main Street\",\n      \"city\": \"Chicago\",\n      \"postalCode\": \"60601\",\n      \"country\": \"US\",\n      \"addressLine2\": \"Suite 456\",\n      \"state\": \"IL\"\n    },\n    {\n      \"addressLine1\": \"123 Main Street\",\n      \"city\": \"Chicago\",\n      \"postalCode\": \"60601\",\n      \"country\": \"US\",\n      \"addressLine2\": \"Suite 456\",\n      \"state\": \"IL\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"displayName\": \"ACME\",\n  \"legalName\": \"ACME Inc.\",\n  \"websiteUrl\": \"https://example.com\",\n  \"parentOrganizationQid\": \"qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8\",\n  \"clientDivisionInfo\": {\n    \"isEligiblePayor\": true,\n    \"vatRegistrationNumber\": \"DE123456789\",\n    \"payorClientId\": \"102019\"\n  },\n  \"customerInfo\": {\n    \"billingEmails\": [\n      \"billing@customer.com\"\n    ],\n    \"invoiceDeliveryMethod\": \"EMAIL\",\n    \"note\": \"<string>\",\n    \"receivableInvoiceRequiredSupportingArtifacts\": [\n      \"BILL_OF_LADING\"\n    ],\n    \"receivableInvoiceProofOfDeliveryRequired\": true\n  },\n  \"airCarrierInfo\": {\n    \"scac\": \"AAL\",\n    \"iataCode\": \"AA\",\n    \"icaoCode\": \"AAL\"\n  },\n  \"oceanCarrierInfo\": {\n    \"scac\": \"MAEU\",\n    \"bicCode\": \"MSCU\"\n  },\n  \"truckingCarrierInfo\": {\n    \"mcNumber\": \"179059\",\n    \"scac\": \"FDEB\",\n    \"usdotNumber\": \"265752\"\n  },\n  \"forwarderInfo\": {\n    \"scac\": \"FDEG\",\n    \"fmcOrganizationNumber\": \"FMC123456\"\n  },\n  \"factorInfo\": {},\n  \"brokerageInfo\": {},\n  \"tags\": {\n    \"accountNumber\": \"AC-123\",\n    \"externalId\": \"123456789\"\n  },\n  \"activeQuickPayRelationships\": [\n    {\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\",\n      \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n      \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n    },\n    {\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\",\n      \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n      \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://onboarding.api.loop.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "58b4e8f3-3f3c-44ab-a8a2-a56ac95b9e74",
+    "name": "Loop Onboarding artifacts organizations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "HTTP REST API for Loop Payments Onboarding.",
+      "type": "text/plain"
+    }
+  }
+}

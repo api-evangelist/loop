@@ -1,0 +1,29 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Loop Onboarding artifacts ping API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ping",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send a ping",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/ping"
+          },
+          "docs": "Send a ping"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

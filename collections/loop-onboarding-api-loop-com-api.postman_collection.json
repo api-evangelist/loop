@@ -1,0 +1,146 @@
+{
+  "item": [
+    {
+      "id": "f31d0b1e-8240-43c6-afc4-5662b1cbc2aa",
+      "name": "onboarding.api.loop.com",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a100d52a-945c-47fd-ac38-ac674e0cfecb",
+          "name": "Create an organization",
+          "request": {
+            "name": "Create an organization",
+            "description": {
+              "content": "Create an organization",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "organizations",
+                "create-organization-with-payment-detail"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayName\": \"<string>\",\n  \"legalName\": \"<string>\",\n  \"tags\": \"<object>\",\n  \"asPayee\": {\n    \"paymentInfo\": {\n      \"remittanceEmails\": {},\n      \"primaryAddress\": {\n        \"addressLine1\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"addressLine2\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"city\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"state\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"postalCode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"country\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"achDisplayName\": \"<string>\",\n      \"businessType\": \"<string>\",\n      \"remittanceAddress\": {\n        \"addressLine1\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"addressLine2\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"city\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"state\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"postalCode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"country\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"paymentAccountDetail\": {\n      \"detailType\": \"<string>\",\n      \"routingNumber\": \"<string>\",\n      \"accountNumber\": \"<string>\"\n    },\n    \"invoicing\": {\n      \"daysToPay\": \"<number>\",\n      \"discountPercentage\": \"<decimal-string>\"\n    },\n    \"quickPay\": {\n      \"daysToPay\": \"<number>\",\n      \"discountPercentage\": \"<decimal-string>\"\n    }\n  },\n  \"websiteUrl\": \"<string>\",\n  \"parentOrganizationQid\": \"<qid>\",\n  \"truckingCarrierInfo\": {\n    \"factorOrganizationQid\": \"<object>\",\n    \"mcNumber\": \"<string>\",\n    \"scac\": \"<string>\",\n    \"usdotNumber\": \"<string>\",\n    \"offersFtl\": \"<boolean>\",\n    \"offersLtl\": \"<boolean>\"\n  },\n  \"factorInfo\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d5d40b62-29f6-4339-b11e-c23a985dd214",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations",
+                    "create-organization-with-payment-detail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"displayName\": \"ACME\",\n  \"legalName\": \"ACME Inc.\",\n  \"tags\": {\n    \"accountNumber\": \"AC-123\",\n    \"uniqueIdentifier\": \"123456789\"\n  },\n  \"asPayee\": {\n    \"paymentInfo\": {\n      \"remittanceEmails\": {},\n      \"primaryAddress\": {\n        \"addressLine1\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"addressLine2\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"city\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"state\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"postalCode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"country\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"achDisplayName\": \"ACME\",\n      \"businessType\": \"LLC\",\n      \"remittanceAddress\": {\n        \"addressLine1\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"addressLine2\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"city\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"state\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"postalCode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"country\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"paymentAccountDetail\": {\n      \"detailType\": \"<string>\",\n      \"routingNumber\": \"021000021\",\n      \"accountNumber\": \"1234567890\"\n    },\n    \"invoicing\": {\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\"\n    },\n    \"quickPay\": {\n      \"daysToPay\": 1,\n      \"discountPercentage\": \"0.02\"\n    }\n  },\n  \"websiteUrl\": \"https://example.com\",\n  \"parentOrganizationQid\": \"qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8\",\n  \"truckingCarrierInfo\": {\n    \"mcNumber\": \"179059\",\n    \"scac\": \"FDEB\",\n    \"usdotNumber\": \"265752\"\n  },\n  \"factorInfo\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"displayName\": \"ACME\",\n  \"legalName\": \"ACME Inc.\",\n  \"websiteUrl\": \"https://example.com\",\n  \"parentOrganizationQid\": \"qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8\",\n  \"truckingCarrierInfo\": {\n    \"mcNumber\": \"179059\",\n    \"scac\": \"FDEB\",\n    \"usdotNumber\": \"265752\"\n  },\n  \"factorInfo\": {},\n  \"tags\": {\n    \"accountNumber\": \"AC-123\",\n    \"externalId\": \"123456789\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://onboarding.api.loop.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "068856b0-c0c7-4429-a6e8-3eb05c071014",
+    "name": "Loop Onboarding artifacts onboarding.api.loop.com API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "HTTP REST API for Loop Payments Onboarding.",
+      "type": "text/plain"
+    }
+  }
+}

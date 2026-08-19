@@ -1,0 +1,68 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Loop Onboarding artifacts payable-allocations API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "payable-allocations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List payable allocations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/payable-allocations",
+            "params": [
+              {
+                "name": "invoiceQids",
+                "value": "",
+                "type": "query",
+                "description": "When provided, the result set will only include allocations related to the invoices matching the QIDs specified in this list."
+              },
+              {
+                "name": "first",
+                "value": "",
+                "type": "query",
+                "description": "The number of results to return. Default value is 10. Any custom value specified must lie between 0 and 100, inclusive."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "The cursor to start returning results from"
+              }
+            ]
+          },
+          "docs": "Returns a list of payable allocations"
+        },
+        {
+          "info": {
+            "name": "Retrieves a payable allocation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/payable-allocations/:qid",
+            "params": [
+              {
+                "name": "qid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the entity to retrieve"
+              }
+            ]
+          },
+          "docs": "Returns the payable allocation with the specified QID"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

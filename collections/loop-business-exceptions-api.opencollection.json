@@ -1,0 +1,79 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Loop Onboarding artifacts business-exceptions API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "business-exceptions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve all business exceptions on an entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/business-exceptions/target-entity-qid/:targetEntityQid",
+            "params": [
+              {
+                "name": "targetEntityQid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the target entity for which to retrieve exceptions"
+              }
+            ]
+          },
+          "docs": "Returns all business exceptions for the specified target entity"
+        },
+        {
+          "info": {
+            "name": "Retrieve a business exception",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://onboarding.api.loop.com/v1/business-exceptions/:qid",
+            "params": [
+              {
+                "name": "qid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the entity to retrieve"
+              }
+            ]
+          },
+          "docs": "Returns the business exception with the specified QID"
+        },
+        {
+          "info": {
+            "name": "Resolve a business exception",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://onboarding.api.loop.com/v1/business-exceptions/:qid/resolve",
+            "params": [
+              {
+                "name": "qid",
+                "value": "",
+                "type": "path",
+                "description": "QID of the exception to resolve"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resolves the business exception with the provided QID. If the exception is already resolved, a 422 (Unprocessable Entity) will be returned."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

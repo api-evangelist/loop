@@ -1,0 +1,793 @@
+{
+  "item": [
+    {
+      "id": "9c062241-0b32-4d0e-b9e6-730f21dfc4c5",
+      "name": "artifacts-schema-validated",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9caad57c-07d9-41cb-9f1a-9fc1dd79f743",
+          "name": "Create a cost coding table entries record artifact. Please reach out to Loop for initial table set up.",
+          "request": {
+            "name": "Create a cost coding table entries record artifact. Please reach out to Loop for initial table set up.",
+            "description": {
+              "content": "\nCreates a new cost coding table entries record artifact containing multiple entries for a specific cost coding table.\n\nThis API validates that:\n- The specified cost coding table exists\n- All required fields (as defined by the table's field definitions) are present in each entry\n- No extra fields are included that aren't defined for the table\n- The user has permission to modify the specified table\n\nThe entries will be processed according to the table's merge strategy configuration:\n- APPEND: New entries are added to the table\n- INSERT_ONLY: New entries are added only if they don't already exist (based on upsert keys)\n- UPSERT: New entries are added or existing entries are updated (based on upsert keys)\n\nFor more information, please see our [public docs](https://docs.loop.com/how-loop-works/artifact-ingestion).\n\n**Batching:** Send many entries per request rather than one entry per request. High volumes of small single-entry uploads to the same table may be rate-limited with a `429 Too Many Requests` response; batching your entries into fewer, larger requests avoids this.\n\n**Note:** This endpoint is in development and subject to change.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "artifacts",
+                "cost-coding-table-entry-list"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tableQid\": \"<qid>\",\n  \"entries\": [],\n  \"artifactTags\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8b0fae0e-0c8b-404a-95e8-ed02cefdedc4",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifacts",
+                    "cost-coding-table-entry-list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tableQid\": \"qid:cost_coding_table:abc123\",\n  \"entries\": [\n    {\n      \"shipperAccountNumber\": \"FEDEX-12345\",\n      \"glCodeDefault\": \"5000-1000-2000\",\n      \"shipperAccountName\": \"FedEx Primary Account\"\n    },\n    {\n      \"shipperAccountNumber\": \"UPS-67890\",\n      \"glCodeDefault\": \"5000-1000-3000\",\n      \"shipperAccountName\": \"UPS Secondary Account\"\n    }\n  ],\n  \"artifactTags\": {\n    \"source\": \"erp-system\",\n    \"uploadBatch\": \"2025-01-batch-001\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"artifactType\": \"INVOICE\",\n  \"artifactFormat\": \"PDF\",\n  \"displayName\": \"XPO Invoice 54219 - 2023-12-01\",\n  \"summary\": {\n    \"externalIdentifiers\": [\n      \"89213\",\n      \"OF7890\"\n    ],\n    \"bolNumber\": \"201946\",\n    \"carrierName\": \"Tom's Trucking LLC\",\n    \"consigneeAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"dropoffAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"dropoffAppointmentType\": \"FCFS, Appointment\",\n    \"equipmentRequirements\": \"straps, tarps, food grade, etc.\",\n    \"equipmentSize\": \"53', 48'\",\n    \"equipmentType\": \"Dry Van, Reefer, Flatbed, etc.\",\n    \"consigneeName\": \"Catherine's Culinary Corner\",\n    \"invoicedTotal\": {\n      \"amount\": \"3.50\",\n      \"currencyCode\": \"GNF\"\n    },\n    \"invoiceNumber\": \"419204\",\n    \"invoiceDate\": \"2023-12-01\",\n    \"pickupAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"pickupDateAppointmentType\": \"FCFS, Appointment\",\n    \"pickupDate\": \"2023-11-01\",\n    \"poNumber\": \"19012\",\n    \"proNumber\": \"76910234\",\n    \"reeferEquipmentTemperature\": \"35-36F\",\n    \"shipperAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"shipperName\": \"Sally's Supply Store\",\n    \"transportationProvider\": \"TQL, CHR\"\n  },\n  \"derivativeArtifacts\": [\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    },\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    }\n  ],\n  \"tags\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "acdb4b73-39fe-409b-913b-59701eb83937",
+              "name": "Too many small (single/low-entry) uploads to this cost coding table within the rate-limit window. Batch more entries per request and retry.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifacts",
+                    "cost-coding-table-entry-list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tableQid\": \"qid:cost_coding_table:abc123\",\n  \"entries\": [\n    {\n      \"shipperAccountNumber\": \"FEDEX-12345\",\n      \"glCodeDefault\": \"5000-1000-2000\",\n      \"shipperAccountName\": \"FedEx Primary Account\"\n    },\n    {\n      \"shipperAccountNumber\": \"UPS-67890\",\n      \"glCodeDefault\": \"5000-1000-3000\",\n      \"shipperAccountName\": \"UPS Secondary Account\"\n    }\n  ],\n  \"artifactTags\": {\n    \"source\": \"erp-system\",\n    \"uploadBatch\": \"2025-01-batch-001\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6b1e65ef-d862-498b-af4b-db505e31fd10",
+          "name": "Create a OrganizationFactorAssignment record artifact",
+          "request": {
+            "name": "Create a OrganizationFactorAssignment record artifact",
+            "description": {
+              "content": "Creates a new OrganizationFactorAssignment record artifact.\n\nThe OrganizationFactorAssignment record artifact is a structured, schema-enforced object that \ncarries the information needed to validate a factoring relationship between two orgs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "artifacts",
+                "organization-factor-assignment-record"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"carrierOrganizationQid\": \"<qid>\",\n  \"factorInfo\": {\n    \"name\": \"<string>\",\n    \"primaryAddress\": {\n      \"addressLine1\": \"<string>\",\n      \"addressLine2\": \"<string>\",\n      \"city\": \"<string>\",\n      \"state\": \"<string>\",\n      \"postalCode\": \"<string>\",\n      \"country\": \"<string>\"\n    },\n    \"remittanceAddress\": {\n      \"addressLine1\": \"<string>\",\n      \"addressLine2\": \"<string>\",\n      \"city\": \"<string>\",\n      \"state\": \"<string>\",\n      \"postalCode\": \"<string>\",\n      \"country\": \"<string>\"\n    },\n    \"additionalInfo\": \"<object>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8d2f7905-60d2-49dc-a821-616695d92947",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifacts",
+                    "organization-factor-assignment-record"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"carrierOrganizationQid\": \"qid::organization:ad894a60-34a6-49e0-b3f4-a6cbab0f47b6\",\n  \"factorInfo\": {\n    \"name\": \"ACME Factoring, Inc.\",\n    \"primaryAddress\": {\n      \"addressLine1\": \"123 Main St\",\n      \"addressLine2\": \"Suite 100\",\n      \"city\": \"San Diego\",\n      \"state\": \"CA\",\n      \"postalCode\": \"92101\",\n      \"country\": \"USA\"\n    },\n    \"remittanceAddress\": {\n      \"addressLine1\": \"123 Main St\",\n      \"addressLine2\": \"Suite 100\",\n      \"city\": \"San Diego\",\n      \"state\": \"CA\",\n      \"postalCode\": \"92101\",\n      \"country\": \"USA\"\n    },\n    \"additionalInfo\": {\n      \"phone\": \"858-555-1212\",\n      \"last4AccountNumber\": \"1234\",\n      \"arContact\": {\n        \"name\": \"John Doe\",\n        \"role\": \"Accountant\",\n        \"email\": \"jd@acme.com\",\n        \"phone\": \"7708820124\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"artifactType\": \"INVOICE\",\n  \"artifactFormat\": \"PDF\",\n  \"displayName\": \"XPO Invoice 54219 - 2023-12-01\",\n  \"summary\": {\n    \"externalIdentifiers\": [\n      \"89213\",\n      \"OF7890\"\n    ],\n    \"bolNumber\": \"201946\",\n    \"carrierName\": \"Tom's Trucking LLC\",\n    \"consigneeAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"dropoffAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"dropoffAppointmentType\": \"FCFS, Appointment\",\n    \"equipmentRequirements\": \"straps, tarps, food grade, etc.\",\n    \"equipmentSize\": \"53', 48'\",\n    \"equipmentType\": \"Dry Van, Reefer, Flatbed, etc.\",\n    \"consigneeName\": \"Catherine's Culinary Corner\",\n    \"invoicedTotal\": {\n      \"amount\": \"3.50\",\n      \"currencyCode\": \"ILS\"\n    },\n    \"invoiceNumber\": \"419204\",\n    \"invoiceDate\": \"2023-12-01\",\n    \"pickupAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"pickupDateAppointmentType\": \"FCFS, Appointment\",\n    \"pickupDate\": \"2023-11-01\",\n    \"poNumber\": \"19012\",\n    \"proNumber\": \"76910234\",\n    \"reeferEquipmentTemperature\": \"35-36F\",\n    \"shipperAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"shipperName\": \"Sally's Supply Store\",\n    \"transportationProvider\": \"TQL, CHR\"\n  },\n  \"derivativeArtifacts\": [\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    },\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    }\n  ],\n  \"tags\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ca82b70f-e557-4171-bd7b-188f219ab3fd",
+          "name": "Create a payable invoice record artifact",
+          "request": {
+            "name": "Create a payable invoice record artifact",
+            "description": {
+              "content": "Creates a payable invoice record artifact from provided invoice data. The payable invoice record artifact is a structured, schema-enforced object that represents a payable invoice at a point in time. This artifact is used to generate a normalized representation of a payable invoice in Loop. Non-unique invoices will not be assigned to the payable invoice and simply return the created artifact. The generated artifact will be assigned to the payable invoice entity. The payor, payee, and vendor organizations are all required; each may be identified by either its QID or a tag. For more information, please see our [public docs](https://docs.loop.com/how-loop-works/artifact-ingestion). **Note:** This endpoint is in development and subject to change.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "artifacts",
+                "payable-invoice-record"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"invoiceNumber\": \"<string>\",\n  \"issueDate\": \"<string>\",\n  \"paymentDueDate\": \"<string>\",\n  \"invoicedTotal\": {\n    \"amount\": \"<decimal-string>\",\n    \"currencyCode\": \"<string>\"\n  },\n  \"lineItems\": [\n    {\n      \"description\": \"<string>\",\n      \"amount\": {\n        \"amount\": \"<decimal-string>\",\n        \"currencyCode\": \"<string>\"\n      },\n      \"category\": \"<string>\"\n    },\n    {\n      \"description\": \"<string>\",\n      \"amount\": {\n        \"amount\": \"<decimal-string>\",\n        \"currencyCode\": \"<string>\"\n      },\n      \"category\": \"<string>\"\n    }\n  ],\n  \"payorOrganizationQid\": \"<qid>\",\n  \"payorOrganizationTag\": {\n    \"tagType\": \"<string>\",\n    \"tagValue\": \"<string>\"\n  },\n  \"payeeOrganizationQid\": \"<qid>\",\n  \"payeeOrganizationTag\": {\n    \"tagType\": \"<string>\",\n    \"tagValue\": \"<string>\"\n  },\n  \"vendorOrganizationQid\": \"<qid>\",\n  \"vendorOrganizationTag\": {\n    \"tagType\": \"<string>\",\n    \"tagValue\": \"<string>\"\n  },\n  \"referenceNumbersList\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"entityTags\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a9751d81-bd06-48ae-b389-02bc2dc6bb9c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifacts",
+                    "payable-invoice-record"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceNumber\": \"I123412\",\n  \"issueDate\": \"2025-06-09\",\n  \"paymentDueDate\": \"2025-06-09\",\n  \"invoicedTotal\": {\n    \"amount\": \"3.50\",\n    \"currencyCode\": \"USD\"\n  },\n  \"lineItems\": [\n    {\n      \"description\": \"<string>\",\n      \"amount\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      },\n      \"category\": \"<string>\"\n    },\n    {\n      \"description\": \"<string>\",\n      \"amount\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      },\n      \"category\": \"<string>\"\n    }\n  ],\n  \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"payorOrganizationTag\": {\n    \"tagType\": \"externalPayorUuid\",\n    \"tagValue\": \"e00b356d-8db3-476d-86dc-2c1a6808ea2c\"\n  },\n  \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"payeeOrganizationTag\": {\n    \"tagType\": \"externalPayeeUuid\",\n    \"tagValue\": \"e00b356d-8db3-476d-86dc-2c1a6808ea2c\"\n  },\n  \"vendorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"vendorOrganizationTag\": {\n    \"tagType\": \"externalVendorUuid\",\n    \"tagValue\": \"e00b356d-8db3-476d-86dc-2c1a6808ea2c\"\n  },\n  \"referenceNumbersList\": [\n    {\n      \"key\": \"BOL_NUMBER\",\n      \"value\": \"234287\"\n    },\n    {\n      \"key\": \"PO_NUMBER\",\n      \"value\": \"123456789\"\n    }\n  ],\n  \"entityTags\": {\n    \"tag1\": \"value1\",\n    \"tag2\": \"value2\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"artifactType\": \"INVOICE\",\n  \"artifactFormat\": \"PDF\",\n  \"displayName\": \"XPO Invoice 54219 - 2023-12-01\",\n  \"summary\": {\n    \"externalIdentifiers\": [\n      \"89213\",\n      \"OF7890\"\n    ],\n    \"bolNumber\": \"201946\",\n    \"carrierName\": \"Tom's Trucking LLC\",\n    \"consigneeAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"dropoffAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"dropoffAppointmentType\": \"FCFS, Appointment\",\n    \"equipmentRequirements\": \"straps, tarps, food grade, etc.\",\n    \"equipmentSize\": \"53', 48'\",\n    \"equipmentType\": \"Dry Van, Reefer, Flatbed, etc.\",\n    \"consigneeName\": \"Catherine's Culinary Corner\",\n    \"invoicedTotal\": {\n      \"amount\": \"3.50\",\n      \"currencyCode\": \"<string>\"\n    },\n    \"invoiceNumber\": \"419204\",\n    \"invoiceDate\": \"2023-12-01\",\n    \"pickupAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"pickupDateAppointmentType\": \"FCFS, Appointment\",\n    \"pickupDate\": \"2023-11-01\",\n    \"poNumber\": \"19012\",\n    \"proNumber\": \"76910234\",\n    \"reeferEquipmentTemperature\": \"35-36F\",\n    \"shipperAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"shipperName\": \"Sally's Supply Store\",\n    \"transportationProvider\": \"TQL, CHR\"\n  },\n  \"derivativeArtifacts\": [\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    },\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    }\n  ],\n  \"tags\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9ad658fa-7232-4957-b19f-4d41ee987f94",
+          "name": "Create a purchase order record artifact",
+          "request": {
+            "name": "Create a purchase order record artifact",
+            "description": {
+              "content": "\nCreates a new purchase order record artifact.\n\nThe purchase order record artifact is a structured, schema-enforced object that represents a purchase order or an individual component of a purchase order.\n\nThe purchase order number is used as the primary identifier for the document, and is used to assign the record.\n\nFor more information, please see our [public docs](https://docs.loop.com/how-loop-works/artifact-ingestion).\n\n**Note:** This endpoint is in development and subject to change.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "artifacts",
+                "purchase-order-record"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"purchaseOrderNumber\": \"<string>\",\n  \"supplierOrganizationTag\": {\n    \"tagType\": \"<string>\",\n    \"tagValue\": \"<string>\"\n  },\n  \"createdDate\": \"<string>\",\n  \"supplierName\": \"<string>\",\n  \"source\": \"<string>\",\n  \"artifactTags\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "043b37ff-52fd-46e4-8455-f7bd71d68b60",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifacts",
+                    "purchase-order-record"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"purchaseOrderNumber\": \"PO-2025-001234\",\n  \"createdDate\": \"2025-01-15\",\n  \"supplierName\": \"ACME Manufacturing Corp\",\n  \"supplierOrganizationTag\": {\n    \"tagType\": \"supplierNumber\",\n    \"tagValue\": \"12345\"\n  },\n  \"artifactTags\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"artifactType\": \"INVOICE\",\n  \"artifactFormat\": \"PDF\",\n  \"displayName\": \"XPO Invoice 54219 - 2023-12-01\",\n  \"summary\": {\n    \"externalIdentifiers\": [\n      \"89213\",\n      \"OF7890\"\n    ],\n    \"bolNumber\": \"201946\",\n    \"carrierName\": \"Tom's Trucking LLC\",\n    \"consigneeAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"dropoffAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"dropoffAppointmentType\": \"FCFS, Appointment\",\n    \"equipmentRequirements\": \"straps, tarps, food grade, etc.\",\n    \"equipmentSize\": \"53', 48'\",\n    \"equipmentType\": \"Dry Van, Reefer, Flatbed, etc.\",\n    \"consigneeName\": \"Catherine's Culinary Corner\",\n    \"invoicedTotal\": {\n      \"amount\": \"3.50\",\n      \"currencyCode\": \"<string>\"\n    },\n    \"invoiceNumber\": \"419204\",\n    \"invoiceDate\": \"2023-12-01\",\n    \"pickupAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"pickupDateAppointmentType\": \"FCFS, Appointment\",\n    \"pickupDate\": \"2023-11-01\",\n    \"poNumber\": \"19012\",\n    \"proNumber\": \"76910234\",\n    \"reeferEquipmentTemperature\": \"35-36F\",\n    \"shipperAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"shipperName\": \"Sally's Supply Store\",\n    \"transportationProvider\": \"TQL, CHR\"\n  },\n  \"derivativeArtifacts\": [\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    },\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    }\n  ],\n  \"tags\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "272058ad-7516-4381-81a5-3302570a14a1",
+          "name": "Create a receivable invoice record artifact",
+          "request": {
+            "name": "Create a receivable invoice record artifact",
+            "description": {
+              "content": "Creates a new receivable invoice record artifact.\n\nThe receivable invoice record artifact is a structured, schema-enforced object\nthat represents a receivable invoice at a point in time. This artifact is\nused to generate a normalized representation of a receivable invoice in Loop.\n\nAsynchronously, Loop will normalize the receivable invoice entity and link\nthe invoice to a shipment.\n\nFor more information on artifacts, please see our\n[public docs](https://docs.loop.com/how-loop-works/artifact-ingestion).\n\n**Note:** This endpoint is in development and subject to change.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "artifacts",
+                "receivable-invoice-record"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"invoiceNumber\": \"<string>\",\n  \"currencyCode\": \"<string>\",\n  \"receivableLineItems\": [\n    {\n      \"description\": \"<string>\",\n      \"amount\": {\n        \"amount\": \"<decimal-string>\",\n        \"currencyCode\": \"<string>\"\n      },\n      \"chargeCode\": \"<string>\",\n      \"externalIdentifier\": \"<string>\"\n    },\n    {\n      \"description\": \"<string>\",\n      \"amount\": {\n        \"amount\": \"<decimal-string>\",\n        \"currencyCode\": \"<string>\"\n      },\n      \"chargeCode\": \"<string>\",\n      \"externalIdentifier\": \"<string>\"\n    }\n  ],\n  \"customerOrganizationQid\": \"<qid>\",\n  \"customerOrganizationTag\": {\n    \"tagType\": \"<string>\",\n    \"tagValue\": \"<string>\"\n  },\n  \"payeeOrganizationQid\": \"<qid>\",\n  \"shipmentQid\": \"<qid>\",\n  \"shipmentExternalIdentifier\": \"<string>\",\n  \"shipmentJobReceivablesReadinessStatus\": \"<string>\",\n  \"artifactTags\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4488b6e5-1f45-444e-bb75-17e861c3e3c0",
+              "name": "The record has been successfully created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifacts",
+                    "receivable-invoice-record"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceNumber\": \"I123412\",\n  \"currencyCode\": \"<string>\",\n  \"receivableLineItems\": [\n    {\n      \"description\": \"Linehaul\",\n      \"amount\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      },\n      \"chargeCode\": \"201\",\n      \"externalIdentifier\": \"13423\"\n    },\n    {\n      \"description\": \"Linehaul\",\n      \"amount\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      },\n      \"chargeCode\": \"201\",\n      \"externalIdentifier\": \"13423\"\n    }\n  ],\n  \"customerOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"customerOrganizationTag\": {\n    \"tagType\": \"externalCustomerUuid\",\n    \"tagValue\": \"e00b356d-8db3-476d-86dc-2c1a6808ea2c\"\n  },\n  \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"shipmentQid\": \"qid::shipment:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"shipmentExternalIdentifier\": \"S112154220\",\n  \"shipmentJobReceivablesReadinessStatus\": \"PENDING\",\n  \"artifactTags\": {\n    \"tag1\": \"value1\",\n    \"tag2\": \"value2\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"artifactType\": \"INVOICE\",\n  \"artifactFormat\": \"PDF\",\n  \"displayName\": \"XPO Invoice 54219 - 2023-12-01\",\n  \"summary\": {\n    \"externalIdentifiers\": [\n      \"89213\",\n      \"OF7890\"\n    ],\n    \"bolNumber\": \"201946\",\n    \"carrierName\": \"Tom's Trucking LLC\",\n    \"consigneeAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"dropoffAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"dropoffAppointmentType\": \"FCFS, Appointment\",\n    \"equipmentRequirements\": \"straps, tarps, food grade, etc.\",\n    \"equipmentSize\": \"53', 48'\",\n    \"equipmentType\": \"Dry Van, Reefer, Flatbed, etc.\",\n    \"consigneeName\": \"Catherine's Culinary Corner\",\n    \"invoicedTotal\": {\n      \"amount\": \"3.50\",\n      \"currencyCode\": \"<string>\"\n    },\n    \"invoiceNumber\": \"419204\",\n    \"invoiceDate\": \"2023-12-01\",\n    \"pickupAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"pickupDateAppointmentType\": \"FCFS, Appointment\",\n    \"pickupDate\": \"2023-11-01\",\n    \"poNumber\": \"19012\",\n    \"proNumber\": \"76910234\",\n    \"reeferEquipmentTemperature\": \"35-36F\",\n    \"shipperAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"shipperName\": \"Sally's Supply Store\",\n    \"transportationProvider\": \"TQL, CHR\"\n  },\n  \"derivativeArtifacts\": [\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    },\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    }\n  ],\n  \"tags\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "408b94e8-51f5-41b7-b92a-fcf49b8386a1",
+              "name": "Request body validation failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifacts",
+                    "receivable-invoice-record"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceNumber\": \"I123412\",\n  \"currencyCode\": \"<string>\",\n  \"receivableLineItems\": [\n    {\n      \"description\": \"Linehaul\",\n      \"amount\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      },\n      \"chargeCode\": \"201\",\n      \"externalIdentifier\": \"13423\"\n    },\n    {\n      \"description\": \"Linehaul\",\n      \"amount\": {\n        \"amount\": \"3.50\",\n        \"currencyCode\": \"USD\"\n      },\n      \"chargeCode\": \"201\",\n      \"externalIdentifier\": \"13423\"\n    }\n  ],\n  \"customerOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"customerOrganizationTag\": {\n    \"tagType\": \"externalCustomerUuid\",\n    \"tagValue\": \"e00b356d-8db3-476d-86dc-2c1a6808ea2c\"\n  },\n  \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"shipmentQid\": \"qid::shipment:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"shipmentExternalIdentifier\": \"S112154220\",\n  \"shipmentJobReceivablesReadinessStatus\": \"PENDING\",\n  \"artifactTags\": {\n    \"tag1\": \"value1\",\n    \"tag2\": \"value2\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "259ba3ff-b5d9-43db-98b9-2f4b562a22b9",
+          "name": "Create a shipment record artifact",
+          "request": {
+            "name": "Create a shipment record artifact",
+            "description": {
+              "content": "Creates a new shipment record artifact.\n\nThe shipment record artifact is a structured, schema-enforced object that represents a set of logistics activity at a point in time. This artifact is extracted and merged downstream with other artifacts from various sources (TMS, Email, etc) in different formats (PDF, PNG, JSON, etc) to form normalized shipment and job entities.\n\nA shipment record is expected to have a single unique external identifier that matches the identifier used for the shipment in the source system. This identifier is used to assign the shipment record.\n\nFor more information, please see our [public docs](https://docs.loop.com/how-loop-works/artifact-ingestion).\n\n**Note:** This endpoint is in development and subject to change.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "artifacts",
+                "shipment-record"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jobs\": [\n    {\n      \"jobType\": \"<string>\",\n      \"jobTypeInfo\": {\n        \"freightChargeTerms\": \"<string>\",\n        \"addresses\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"addressQid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"organizationTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"addressQid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"organizationTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"chargeableWeight\": \"<object>\",\n        \"grossWeight\": \"<object>\",\n        \"totalVolume\": \"<object>\",\n        \"routeLocations\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"carrierOrganizationQid\": \"<qid>\",\n        \"carrierOrganizationTag\": \"<object>\",\n        \"forwarderOrganizationQid\": \"<qid>\",\n        \"forwarderOrganizationTag\": \"<object>\",\n        \"forwarderRole\": \"<string>\",\n        \"incoterm\": \"<object>\",\n        \"dates\": [\n          {\n            \"dateType\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"date\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"iataCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"dateType\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"date\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"iataCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      },\n      \"jobKey\": \"<string>\",\n      \"customerOrganizationQid\": \"<qid>\",\n      \"customerOrganizationTag\": \"<object>\",\n      \"referenceNumbersList\": [\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ],\n      \"expectedCharges\": [\n        {\n          \"description\": \"<string>\",\n          \"category\": \"<string>\",\n          \"amount\": {\n            \"amount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"currencyCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"code\": \"<string>\",\n          \"tags\": \"<object>\"\n        },\n        {\n          \"description\": \"<string>\",\n          \"category\": \"<string>\",\n          \"amount\": {\n            \"amount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"currencyCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"code\": \"<string>\",\n          \"tags\": \"<object>\"\n        }\n      ],\n      \"payablesReadinessStatus\": \"<string>\",\n      \"receivablesReadinessStatus\": \"<string>\",\n      \"payments\": [\n        {\n          \"description\": \"<string>\",\n          \"amount\": {\n            \"amount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"currencyCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"externalIdentifier\": \"<string>\"\n        },\n        {\n          \"description\": \"<string>\",\n          \"amount\": {\n            \"amount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"currencyCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"externalIdentifier\": \"<string>\"\n        }\n      ],\n      \"tags\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\"\n      }\n    },\n    {\n      \"jobType\": \"<string>\",\n      \"jobTypeInfo\": {\n        \"freightChargeTerms\": \"<string>\",\n        \"addresses\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"addressQid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"organizationTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"address\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"addressQid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"organizationTag\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"chargeableWeight\": \"<object>\",\n        \"grossWeight\": \"<object>\",\n        \"totalVolume\": \"<object>\",\n        \"routeLocations\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"carrierOrganizationQid\": \"<qid>\",\n        \"carrierOrganizationTag\": \"<object>\",\n        \"forwarderOrganizationQid\": \"<qid>\",\n        \"forwarderOrganizationTag\": \"<object>\",\n        \"forwarderRole\": \"<string>\",\n        \"incoterm\": \"<object>\",\n        \"dates\": [\n          {\n            \"dateType\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"date\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"iataCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"dateType\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"date\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"iataCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      },\n      \"jobKey\": \"<string>\",\n      \"customerOrganizationQid\": \"<qid>\",\n      \"customerOrganizationTag\": \"<object>\",\n      \"referenceNumbersList\": [\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ],\n      \"expectedCharges\": [\n        {\n          \"description\": \"<string>\",\n          \"category\": \"<string>\",\n          \"amount\": {\n            \"amount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"currencyCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"code\": \"<string>\",\n          \"tags\": \"<object>\"\n        },\n        {\n          \"description\": \"<string>\",\n          \"category\": \"<string>\",\n          \"amount\": {\n            \"amount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"currencyCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"code\": \"<string>\",\n          \"tags\": \"<object>\"\n        }\n      ],\n      \"payablesReadinessStatus\": \"<string>\",\n      \"receivablesReadinessStatus\": \"<string>\",\n      \"payments\": [\n        {\n          \"description\": \"<string>\",\n          \"amount\": {\n            \"amount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"currencyCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"externalIdentifier\": \"<string>\"\n        },\n        {\n          \"description\": \"<string>\",\n          \"amount\": {\n            \"amount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"currencyCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"externalIdentifier\": \"<string>\"\n        }\n      ],\n      \"tags\": {\n        \"key_0\": \"<string>\"\n      }\n    }\n  ],\n  \"source\": \"<string>\",\n  \"artifactTags\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "961d1fbe-b043-49ed-9b2b-3da6e8423a66",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "artifacts",
+                    "shipment-record"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jobs\": [\n    {\n      \"jobType\": \"FTL\",\n      \"jobTypeInfo\": {\n        \"jobType\": \"FTL\",\n        \"freightChargeTerms\": \"COLLECT\",\n        \"carrierOrganizationTag\": {\n          \"tagType\": \"externalCarrierUuid\",\n          \"tagValue\": \"304fb3dd-1f4a-404b-9f9e-c9134584915b\"\n        },\n        \"stops\": [\n          {\n            \"address\": {\n              \"addressLine1\": \"123 Main Street\",\n              \"city\": \"Anytown\",\n              \"state\": \"CA\",\n              \"postalCode\": \"12345\",\n              \"country\": \"US\"\n            },\n            \"date\": \"2023-01-01\",\n            \"organizationQid\": \"qid::organization:b309f6cf-cc13-4c4c-a55b-da71a7405d04\",\n            \"organizationTag\": {\n              \"tagType\": \"externalShipperUuid\",\n              \"tagValue\": \"304fb3dd-1f4a-404b-9f9e-c9134584915b\"\n            },\n            \"stopType\": \"PICK_UP\",\n            \"articles\": [\n              {\n                \"dimensions\": {\n                  \"height\": \"12\",\n                  \"length\": \"12\",\n                  \"unit\": \"INCH\",\n                  \"width\": \"12\"\n                },\n                \"grossWeight\": {\n                  \"amount\": \"387\",\n                  \"unit\": \"POUND\"\n                },\n                \"nmfcClass\": \"50\",\n                \"packageCount\": {\n                  \"amount\": 11,\n                  \"unit\": \"CARTON\"\n                }\n              }\n            ]\n          },\n          {\n            \"address\": {\n              \"addressLine1\": \"123 Second Street\",\n              \"city\": \"Anytown\",\n              \"state\": \"CA\",\n              \"postalCode\": \"12345\",\n              \"country\": \"US\"\n            },\n            \"date\": \"2023-01-06\",\n            \"organizationQid\": \"qid::organization:92fc8b83-459c-450c-8f92-47bd5b7063f8\",\n            \"stopType\": \"DROP_OFF\",\n            \"articles\": [\n              {\n                \"dimensions\": {\n                  \"height\": \"12\",\n                  \"length\": \"12\",\n                  \"unit\": \"INCH\",\n                  \"width\": \"12\"\n                },\n                \"grossWeight\": {\n                  \"amount\": \"387\",\n                  \"unit\": \"POUND\"\n                },\n                \"nmfcClass\": \"50\",\n                \"packageCount\": {\n                  \"amount\": 11,\n                  \"unit\": \"CARTON\"\n                }\n              }\n            ]\n          }\n        ]\n      },\n      \"expectedCharges\": [\n        {\n          \"code\": \"240\",\n          \"description\": \"Linehaul Charge\",\n          \"category\": \"LINEHAUL\",\n          \"amount\": {\n            \"amount\": \"1200.56\",\n            \"currencyCode\": \"USD\"\n          }\n        },\n        {\n          \"code\": \"872\",\n          \"description\": \"California Fuel Surcharge\",\n          \"category\": \"FUEL_SURCHARGE\",\n          \"amount\": {\n            \"amount\": \"450.56\",\n            \"currencyCode\": \"USD\"\n          }\n        },\n        {\n          \"code\": \"950\",\n          \"description\": \"Loading Fee\",\n          \"category\": \"OTHER\",\n          \"amount\": {\n            \"amount\": \"100.23\",\n            \"currencyCode\": \"USD\"\n          }\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"artifactType\": \"INVOICE\",\n  \"artifactFormat\": \"PDF\",\n  \"displayName\": \"XPO Invoice 54219 - 2023-12-01\",\n  \"summary\": {\n    \"externalIdentifiers\": [\n      \"89213\",\n      \"OF7890\"\n    ],\n    \"bolNumber\": \"201946\",\n    \"carrierName\": \"Tom's Trucking LLC\",\n    \"consigneeAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"dropoffAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"dropoffAppointmentType\": \"FCFS, Appointment\",\n    \"equipmentRequirements\": \"straps, tarps, food grade, etc.\",\n    \"equipmentSize\": \"53', 48'\",\n    \"equipmentType\": \"Dry Van, Reefer, Flatbed, etc.\",\n    \"consigneeName\": \"Catherine's Culinary Corner\",\n    \"invoicedTotal\": {\n      \"amount\": \"3.50\",\n      \"currencyCode\": \"<string>\"\n    },\n    \"invoiceNumber\": \"419204\",\n    \"invoiceDate\": \"2023-12-01\",\n    \"pickupAppointmentDateTime\": \"2023-12-01T12:00:00.000Z\",\n    \"pickupDateAppointmentType\": \"FCFS, Appointment\",\n    \"pickupDate\": \"2023-11-01\",\n    \"poNumber\": \"19012\",\n    \"proNumber\": \"76910234\",\n    \"reeferEquipmentTemperature\": \"35-36F\",\n    \"shipperAddress\": {\n      \"addressLine1\": \"123 Main Street\",\n      \"addressLine2\": \"Suite 456\",\n      \"city\": \"Chicago\",\n      \"state\": \"IL\",\n      \"postalCode\": \"60601\",\n      \"country\": \"USA\"\n    },\n    \"shipperName\": \"Sally's Supply Store\",\n    \"transportationProvider\": \"TQL, CHR\"\n  },\n  \"derivativeArtifacts\": [\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    },\n    {\n      \"qid\": \"qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"artifactType\": \"INVOICE\"\n    }\n  ],\n  \"tags\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://onboarding.api.loop.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "9e1fc291-b499-4037-979b-76e0582d18bd",
+    "name": "Loop Onboarding artifacts artifacts-schema-validated API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "HTTP REST API for Loop Payments Onboarding.",
+      "type": "text/plain"
+    }
+  }
+}

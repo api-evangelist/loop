@@ -1,0 +1,429 @@
+{
+  "item": [
+    {
+      "id": "dd624852-fd47-44f6-bbea-3147d1e0574b",
+      "name": "invoicing-relationships",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "16677769-2a67-47bf-a10b-0cf4a056ad87",
+          "name": "Upsert an invoicing relationship",
+          "request": {
+            "name": "Upsert an invoicing relationship",
+            "description": {
+              "content": "Creates or updates a bilateral invoicing relationship between a payee and payor organization, or a default invoicing relationship for a payee or payor organization if the other is not specified. \n\nIf an invoicing relationship is currently active for the passed payee and payor organizations, the existing invoicing relationship will be merged with the passed invoicing relationship.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "invoicing-relationships"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payeeOrganizationQid\": \"<qid>\",\n  \"payorOrganizationQid\": \"<qid>\",\n  \"daysToPay\": \"<number>\",\n  \"daysToPayFrom\": \"<string>\",\n  \"effectiveFrom\": \"<utc-timestamp>\",\n  \"effectiveTo\": \"<utc-timestamp>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b379ce0a-78c6-4a2a-9ca8-ece38df63657",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "invoicing-relationships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"daysToPay\": 30,\n  \"daysToPayFrom\": \"ISSUE_DATE\",\n  \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n  \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::invoicing_relationship:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"daysToPay\": 30,\n  \"daysToPayFrom\": \"ISSUE_DATE\",\n  \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n  \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5bd4b71d-f35f-4379-8f4c-3d3e673f4597",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "invoicing-relationships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"daysToPay\": 30,\n  \"daysToPayFrom\": \"ISSUE_DATE\",\n  \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n  \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::invoicing_relationship:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"daysToPay\": 30,\n  \"daysToPayFrom\": \"ISSUE_DATE\",\n  \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n  \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "687ede91-6252-449a-a45f-656224f34c2c",
+          "name": "List invoicing relationships",
+          "request": {
+            "name": "List invoicing relationships",
+            "description": {
+              "content": "Returns a list of invoicing relationships.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "invoicing-relationships"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "revisedAfter",
+                  "value": "<utc-timestamp>",
+                  "description": "Filter to only results that have been revised after this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+                },
+                {
+                  "disabled": false,
+                  "key": "revisedBefore",
+                  "value": "<utc-timestamp>",
+                  "description": "Filter to only results that have been revised before this timestamp. This can be a UTC timestamp or a floating date. If a floating date is passed, the timestamp used will be the beginning (midnight UTC) of the date."
+                },
+                {
+                  "disabled": false,
+                  "key": "first",
+                  "value": "<number>",
+                  "description": "The number of results to return. Default value is 10. Any custom value specified must lie between 0 and 100, inclusive."
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "The cursor to start returning results from"
+                },
+                {
+                  "disabled": false,
+                  "key": "payorOrganizationQid",
+                  "value": "<qid>",
+                  "description": "The payor organization QID to filter by"
+                },
+                {
+                  "disabled": false,
+                  "key": "payeeOrganizationQid",
+                  "value": "<qid>",
+                  "description": "The payee organization QID to filter by"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f01704cb-7075-42f2-b569-aae04d27df0b",
+              "name": "The paginated response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "invoicing-relationships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "revisedAfter",
+                      "value": "2020-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "revisedBefore",
+                      "value": "2020-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "first",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "payorOrganizationQid",
+                      "value": "qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c5"
+                    },
+                    {
+                      "key": "payeeOrganizationQid",
+                      "value": "qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c5"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"qid\": \"qid::invoicing_relationship:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"daysToPay\": 30,\n      \"daysToPayFrom\": \"RECEIPT_DATE\",\n      \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n      \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n    },\n    {\n      \"qid\": \"qid::invoicing_relationship:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n      \"revisionNumber\": 1,\n      \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n      \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n      \"daysToPay\": 30,\n      \"daysToPayFrom\": \"RECEIPT_DATE\",\n      \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n      \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n    }\n  ],\n  \"pageInfo\": {\n    \"hasPreviousPage\": false,\n    \"hasNextPage\": false,\n    \"startCursor\": \"string\",\n    \"endCursor\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fdd9e60b-1a0d-444e-8bf8-c8a1f4d62bc1",
+          "name": "Retrieve an invoicing relationship",
+          "request": {
+            "name": "Retrieve an invoicing relationship",
+            "description": {
+              "content": "Returns the invoicing relationship with the specified QID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "invoicing-relationships",
+                ":qid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<qid>",
+                  "key": "qid",
+                  "description": "(Required) QID of the entity to retrieve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6f77b0d1-5e27-4b47-8298-332c396e4018",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "invoicing-relationships",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"qid\": \"qid::invoicing_relationship:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"createdAt\": \"2023-01-01T00:00:00.000Z\",\n  \"revisionNumber\": 1,\n  \"revisionCreatedAt\": \"2023-01-01T00:00:00.000Z\",\n  \"payeeOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"payorOrganizationQid\": \"qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4\",\n  \"daysToPay\": 30,\n  \"daysToPayFrom\": \"ISSUE_DATE\",\n  \"effectiveFrom\": \"2025-05-01T00:00:00.000Z\",\n  \"effectiveTo\": \"2025-06-01T00:00:00.000Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b0ebfd19-440c-42bf-be79-38067c7b8ce8",
+              "name": "Invoicing relationship not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "invoicing-relationships",
+                    ":qid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<qid>",
+                      "key": "qid",
+                      "description": "(Required) QID of the entity to retrieve"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://onboarding.api.loop.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "93091a74-8b69-4b48-b8d0-9a541ff1dbda",
+    "name": "Loop Onboarding artifacts invoicing-relationships API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "HTTP REST API for Loop Payments Onboarding.",
+      "type": "text/plain"
+    }
+  }
+}

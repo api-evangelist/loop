@@ -35,7 +35,7 @@ accessModel:
   - authentication
   generated: '2026-07-22'
   method: derived
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-07-17'
 modified: '2026-07-20'
 image: https://cdn.prod.website-files.com/668bb14a7a97da320e5022ed/66c70f294893e981b7a38704_OG%20Image.webp

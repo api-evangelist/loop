@@ -1,0 +1,54 @@
+slug: loop
+provider: Loop
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Transportation & Logistics
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: payable-invoice-reviews
+  spec_file: loop-payable-invoice-reviews-api-openapi.yml
+  capability_id: BC-2530.20
+  capability_id_l1: BC-2530
+  capability_name: Freight Audit and Payment Management
+  confidence: 0.88
+  evidence: GET /v1/payable-invoices/{qid}/review  PayableInvoiceReview_get  Retrieve a payable invoice
+    review; schemas PayableInvoiceLineItemGroupReview, ShipmentJobLtlInfo, NmfcClass
+  reason: Loop is a freight audit and payment platform; reviews of payable (carrier) invoices with freight
+    schemas (NMFC class, LTL/air/ocean shipment jobs) is freight audit of carrier invoices.
+- tag: payable-invoices
+  spec_file: loop-payable-invoices-api-openapi.yml
+  capability_id: BC-2530.20
+  capability_id_l1: BC-2530
+  capability_name: Freight Audit and Payment Management
+  confidence: 0.82
+  evidence: List payable invoices / Retrieve a payable invoice; schemas PayableInvoiceLineItem, ShipmentJobOceanDate,
+    NmfcClass
+  reason: Payable invoices here are carrier freight invoices in a freight-audit-and-pay platform, i.e.
+    carrier invoice audit and payment, rather than generic AP.
+- tag: receivable-invoices
+  spec_file: loop-receivable-invoices-api-openapi.yml
+  capability_id: BC-2530.10
+  capability_id_l1: BC-2530
+  capability_name: Freight Invoicing Management
+  confidence: 0.82
+  evidence: List receivable invoices; Void an open receivable invoice; schemas ReceivableInvoice, FreightChargeTerms,
+    ShipmentJobOceanContainer
+  reason: Issuance and lifecycle (draft, void) of freight invoices with freight charge terms attached
+    to shipment jobs = freight invoicing to customers.
+- tag: payments
+  spec_file: loop-payments-api-openapi.yml
+  capability_id: BC-2530.20
+  capability_id_l1: BC-2530
+  capability_name: Freight Audit and Payment Management
+  confidence: 0.78
+  evidence: GET /v1/payments  Payments_list  List payments; schemas PaymentPayableInvoiceSummary, PayableInvoiceExpanded
+  reason: Payments are tied to payable freight invoices (PaymentPayableInvoiceSummary) in Loop's freight
+    audit and payment product, i.e. execution of carrier payments.

@@ -1,19 +1,23 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Loop Onboarding artifacts invoicing-relationships API
-  description: HTTP REST API for Loop Payments Onboarding.
-  version: '1.0'
+  title: Loop Invoicing Relationships API
+  description: The HTTP REST API for Loop.
+  version: '0.1'
   contact: {}
 servers:
-- url: https://onboarding.api.loop.com
+- url: https://api.loop.com
+  description: Production
 security:
-- bearerAuth: []
+- bearer: []
 tags:
 - name: invoicing-relationships
 paths:
   /v1/invoicing-relationships:
     post:
-      description: "Creates or updates a bilateral invoicing relationship between a payee and payor organization, or a default invoicing relationship for a payee or payor organization if the other is not specified. \n\nIf an invoicing relationship is currently active for the passed payee and payor organizations, the existing invoicing relationship will be merged with the passed invoicing relationship."
+      description: 'Creates or updates a bilateral invoicing relationship between a payee and payor organization, or a default invoicing relationship for a payee or payor organization if the other is not specified.
+
+
+        If an invoicing relationship is currently active for the passed payee and payor organizations, the existing invoicing relationship will be merged with the passed invoicing relationship.'
       operationId: InvoicingRelationships_upsert
       parameters: []
       requestBody:
@@ -139,12 +143,6 @@ paths:
       - invoicing-relationships
 components:
   schemas:
-    DaysToPayFrom:
-      type: string
-      enum:
-      - ISSUE_DATE
-      - RECEIPT_DATE
-      description: The anchor date from which we determine the invoice due date.
     InvoicingRelationship:
       type: object
       properties:
@@ -165,21 +163,24 @@ components:
           format: utc-timestamp
           example: '2023-01-01T00:00:00.000Z'
         payeeOrganizationQid:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Qualified unique identifier.
           example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
-          nullable: true
         payorOrganizationQid:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Qualified unique identifier.
           example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
-          nullable: true
         daysToPay:
-          type: number
+          type:
+          - number
+          - 'null'
           description: Number of days until the invoice is due.
-          nullable: true
           example: 30
         daysToPayFrom:
           description: The anchor date from which we determine the invoice due date.
@@ -191,9 +192,10 @@ components:
           example: '2025-05-01T00:00:00.000Z'
           format: utc-timestamp
         effectiveTo:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Timestamp indicating when the invoicing relationship is no longer effective.
-          nullable: true
           example: '2025-06-01T00:00:00.000Z'
           format: utc-timestamp
       required:
@@ -211,40 +213,46 @@ components:
       type: object
       properties:
         payeeOrganizationQid:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Qualified unique identifier.
           example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
-          nullable: true
         payorOrganizationQid:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Qualified unique identifier.
           example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
-          nullable: true
         daysToPay:
-          type: number
+          type:
+          - number
+          - 'null'
           description: Number of days until the invoice is due.
-          nullable: true
           example: 30
         daysToPayFrom:
-          type: string
+          type:
+          - string
+          - 'null'
           description: The anchor date from which we determine the invoice due date.
-          nullable: true
           example: ISSUE_DATE
           enum:
           - ISSUE_DATE
           - RECEIPT_DATE
         effectiveFrom:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Timestamp indicating when the invoicing relationship becomes active. This timestamp must be in the future. If not specified, the current timestamp will be used (effective immediately).
-          nullable: true
           example: '2025-05-01T00:00:00.000Z'
           format: utc-timestamp
         effectiveTo:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Timestamp indicating when the invoicing relationship is no longer active. This timestamp must be after the effectiveFrom timestamp. If not specified, null will be used (effective indefinitely).
-          nullable: true
           example: '2025-06-01T00:00:00.000Z'
           format: utc-timestamp
       required:
@@ -252,6 +260,12 @@ components:
       - payorOrganizationQid
       - daysToPay
       - daysToPayFrom
+    DaysToPayFrom:
+      type: string
+      enum:
+      - ISSUE_DATE
+      - RECEIPT_DATE
+      description: The anchor date from which we determine the invoice due date.
   securitySchemes:
     bearer:
       scheme: bearer

@@ -1,15 +1,16 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Loop Onboarding artifacts ping API
-  description: HTTP REST API for Loop Payments Onboarding.
-  version: '1.0'
+  title: Loop Ping API
+  description: The HTTP REST API for Loop.
+  version: '0.1'
   contact: {}
 servers:
-- url: https://onboarding.api.loop.com
+- url: https://api.loop.com
+  description: Production
 security:
-- bearerAuth: []
+- bearer: []
 tags:
-- name: ping
+- name: Ping
 paths:
   /v1/ping:
     get:
@@ -24,7 +25,7 @@ paths:
                 $ref: '#/components/schemas/Pong'
       summary: Send a ping
       tags:
-      - ping
+      - Ping
 components:
   schemas:
     Pong:

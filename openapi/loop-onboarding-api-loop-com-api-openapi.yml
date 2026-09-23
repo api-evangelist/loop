@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Loop Onboarding artifacts onboarding.api.loop.com API
+  title: Loop Onboarding Onboarding.api.loop.com API
   description: HTTP REST API for Loop Payments Onboarding.
   version: '1.0'
   contact: {}
@@ -15,7 +15,6 @@ paths:
     post:
       operationId: Organizations_create
       summary: Create an organization
-      description: Create an organization
       parameters:
       - name: expand
         required: false
@@ -41,40 +40,7 @@ paths:
       - onboarding.api.loop.com
 components:
   schemas:
-    TruckingCarrierInfo:
-      type: object
-      properties:
-        factorOrganizationQid:
-          type: object
-          nullable: true
-          example: qid::organization:31ab766e-f991-4374-8e58-391aaadf29f1
-          description: QID of the organization the carrier currently uses for factoring
-        mcNumber:
-          type: string
-          nullable: true
-          example: MC-179059
-          description: Motor Carrier Number
-        scac:
-          type: string
-          nullable: true
-          example: FDEG
-          description: Standard Carrier Alpha Code (SCAC)
-        usdotNumber:
-          type: string
-          nullable: true
-          example: '265752'
-          description: US Department of Transportation Number
-        offersFtl:
-          type: boolean
-          nullable: true
-          example: true
-          description: Whether the carrier offers LTL services
-        offersLtl:
-          type: boolean
-          nullable: true
-          example: true
-          description: Whether the carrier offers LTL services
-    OrganizationAsPayeeInvoicingInput:
+    OrganizationAsPayeeQuickpayInput:
       type: object
       properties:
         daysToPay:
@@ -89,6 +55,117 @@ components:
       required:
       - daysToPay
       - discountPercentage
+    TruckingCarrierInfo:
+      type: object
+      properties:
+        factorOrganizationQid:
+          type:
+          - object
+          - 'null'
+          example: qid::organization:31ab766e-f991-4374-8e58-391aaadf29f1
+          description: QID of the organization the carrier currently uses for factoring
+        mcNumber:
+          type:
+          - string
+          - 'null'
+          example: MC-179059
+          description: Motor Carrier Number
+        scac:
+          type:
+          - string
+          - 'null'
+          example: FDEG
+          description: Standard Carrier Alpha Code (SCAC)
+        usdotNumber:
+          type:
+          - string
+          - 'null'
+          example: '265752'
+          description: US Department of Transportation Number
+        offersFtl:
+          type:
+          - boolean
+          - 'null'
+          example: true
+          description: Whether the carrier offers LTL services
+        offersLtl:
+          type:
+          - boolean
+          - 'null'
+          example: true
+          description: Whether the carrier offers LTL services
+    Organization:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          format: qid
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+        createdAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        revisionNumber:
+          type: number
+          example: 1
+        revisionCreatedAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        displayName:
+          type: string
+          example: ACME
+          description: Name of the organization.
+        legalName:
+          type:
+          - string
+          - 'null'
+          example: ACME Inc.
+          description: Legal name of the organization, if defined.
+        websiteUrl:
+          type:
+          - string
+          - 'null'
+          example: https://example.com
+          description: Website of the organization.
+        parentOrganizationQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier of the parent organization.
+          example: qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8
+          format: qid
+        truckingCarrierInfo:
+          example:
+            mcNumber: '179059'
+            scac: FDEB
+            usdotNumber: '265752'
+          description: Trucking carrier information, if relevant to the organization.
+          allOf:
+          - $ref: '#/components/schemas/TruckingCarrierInfo'
+        factorInfo:
+          example: {}
+          description: Factor information, if relevant to the organization.
+          allOf:
+          - $ref: '#/components/schemas/FactorInfo'
+        tags:
+          type: object
+          example:
+            accountNumber: AC-123
+            externalId: '123456789'
+          description: Entity tags assigned to the organization.
+      required:
+      - qid
+      - createdAt
+      - revisionNumber
+      - revisionCreatedAt
+      - displayName
+      - legalName
+      - websiteUrl
+      - parentOrganizationQid
+      - truckingCarrierInfo
+      - factorInfo
     CreateOrganizationWithPaymentDetailInput:
       type: object
       properties:
@@ -101,14 +178,16 @@ components:
           example: ACME Inc.
           description: Legal name of the organization. Required to onboard for payments.
         websiteUrl:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           example: https://example.com
           description: Website of the organization.
         parentOrganizationQid:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Qualified unique identifier of the parent organization.
-          nullable: true
           example: qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8
           format: qid
         tags:
@@ -118,7 +197,6 @@ components:
             uniqueIdentifier: '123456789'
           description: Object containing entity tags assigned to the organization. A unique tag type must be provided for payment onboarding. Please work with your Loop representative to determine the correct tag type.
         truckingCarrierInfo:
-          nullable: true
           example:
             mcNumber: '179059'
             scac: FDEB
@@ -127,7 +205,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/TruckingCarrierInfo'
         factorInfo:
-          nullable: true
           example: {}
           description: Factor information, if relevant to the organization. The presence of an empty object here will create the organization as a factor.
           allOf:
@@ -171,9 +248,49 @@ components:
       - legalName
       - tags
       - asPayee
-    FactorInfo:
+    OrganizationAsPayeePaymentInfoInput:
       type: object
-      properties: {}
+      properties:
+        achDisplayName:
+          type:
+          - string
+          - 'null'
+          description: Display name that shows up in ACH records, on statements opposite to this org in a payment. Max 13 characters; otherwise may be truncated.
+          example: ACME
+        businessType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - SOLE_PROPRIETORSHIP
+          - LLC
+          - TRUST
+          - PUBLIC_CORPORATION
+          - PRIVATE_CORPORATION
+          - PARTNERSHIP
+          - UNINCORPORATED_ASSOCIATION
+          - UNINCORPORATED_NONPROFIT
+          - INCORPORATED_NONPROFIT
+          example: LLC
+          description: Business type of the organization.
+        remittanceEmails:
+          example:
+          - acme@acme.com
+          items:
+            type: string
+          description: Array of emails that should receive remittance emails for payments to this organization.
+        primaryAddress:
+          description: Primary payment (billing) address of the organization.
+          allOf:
+          - $ref: '#/components/schemas/RawAddressValue'
+        remittanceAddress:
+          description: Payment remittance address of the organization, if different from the primary address.
+          allOf:
+          - $ref: '#/components/schemas/RawAddressValue'
+      required:
+      - discountPercentage
+      - remittanceEmails
+      - primaryAddress
     RawAddressValue:
       type: object
       properties:
@@ -197,6 +314,9 @@ components:
           type: string
           description: Any variation of a country name or country ISO 2 code. For example, it could be empty, "US", "USA", "United States", "United States of America", "America", etc.
           example: USA
+    FactorInfo:
+      type: object
+      properties: {}
     PaymentAccountDetailBankAccount:
       type: object
       properties:
@@ -215,47 +335,6 @@ components:
       - detailType
       - routingNumber
       - accountNumber
-    OrganizationAsPayeePaymentInfoInput:
-      type: object
-      properties:
-        achDisplayName:
-          type: string
-          description: Display name that shows up in ACH records, on statements opposite to this org in a payment. Max 13 characters; otherwise may be truncated.
-          example: ACME
-          nullable: true
-        businessType:
-          type: string
-          enum:
-          - SOLE_PROPRIETORSHIP
-          - LLC
-          - TRUST
-          - PUBLIC_CORPORATION
-          - PRIVATE_CORPORATION
-          - PARTNERSHIP
-          - UNINCORPORATED_ASSOCIATION
-          - UNINCORPORATED_NONPROFIT
-          - INCORPORATED_NONPROFIT
-          example: LLC
-          nullable: true
-          description: Business type of the organization.
-        remittanceEmails:
-          example:
-          - acme@acme.com
-          items:
-            type: string
-          description: Array of emails that should receive remittance emails for payments to this organization.
-        primaryAddress:
-          description: Primary payment (billing) address of the organization.
-          allOf:
-          - $ref: '#/components/schemas/RawAddressValue'
-        remittanceAddress:
-          description: Payment remittance address of the organization, if different from the primary address.
-          allOf:
-          - $ref: '#/components/schemas/RawAddressValue'
-      required:
-      - discountPercentage
-      - remittanceEmails
-      - primaryAddress
     OrganizationAsPayeeInput:
       type: object
       properties:
@@ -303,79 +382,7 @@ components:
       required:
       - paymentInfo
       - paymentAccountDetail
-    Organization:
-      type: object
-      properties:
-        qid:
-          type: string
-          description: Qualified unique identifier.
-          format: qid
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-        createdAt:
-          type: string
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-        revisionNumber:
-          type: number
-          example: 1
-        revisionCreatedAt:
-          type: string
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-        displayName:
-          type: string
-          example: ACME
-          description: Name of the organization.
-        legalName:
-          type: string
-          example: ACME Inc.
-          description: Legal name of the organization, if defined.
-          nullable: true
-        websiteUrl:
-          type: string
-          nullable: true
-          example: https://example.com
-          description: Website of the organization.
-        parentOrganizationQid:
-          type: string
-          description: Qualified unique identifier of the parent organization.
-          nullable: true
-          example: qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8
-          format: qid
-        truckingCarrierInfo:
-          nullable: true
-          example:
-            mcNumber: '179059'
-            scac: FDEB
-            usdotNumber: '265752'
-          description: Trucking carrier information, if relevant to the organization.
-          allOf:
-          - $ref: '#/components/schemas/TruckingCarrierInfo'
-        factorInfo:
-          nullable: true
-          example: {}
-          description: Factor information, if relevant to the organization.
-          allOf:
-          - $ref: '#/components/schemas/FactorInfo'
-        tags:
-          type: object
-          nullable: false
-          example:
-            accountNumber: AC-123
-            externalId: '123456789'
-          description: Entity tags assigned to the organization.
-      required:
-      - qid
-      - createdAt
-      - revisionNumber
-      - revisionCreatedAt
-      - displayName
-      - legalName
-      - websiteUrl
-      - parentOrganizationQid
-      - truckingCarrierInfo
-      - factorInfo
-    OrganizationAsPayeeQuickpayInput:
+    OrganizationAsPayeeInvoicingInput:
       type: object
       properties:
         daysToPay:

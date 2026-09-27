@@ -170,6 +170,238 @@ paths:
       - Organizations
 components:
   schemas:
+    OrganizationAsPayorInput:
+      type: object
+      properties:
+        invoicing:
+          description: An object specifying information about the organization's invoicing terms.
+          allOf:
+          - $ref: '#/components/schemas/OrganizationAsPayorInputInvoicingRelationship'
+        primaryBillingAddress:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/AddressValue'
+    OrganizationAsPayeeInputInvoicingRelationship:
+      type: object
+      properties:
+        daysToPay:
+          type: number
+          example: 30
+          description: Number of days until the invoice is due.
+        daysToPayFrom:
+          type: string
+          example: ISSUE_DATE
+          description: The anchor date from which we determine the invoice due date.
+          enum:
+          - ISSUE_DATE
+          - RECEIPT_DATE
+      required:
+      - daysToPay
+      - daysToPayFrom
+    OrganizationAsPayorInputInvoicingRelationship:
+      type: object
+      properties:
+        daysToPay:
+          type: number
+          example: 30
+          description: Number of days after invoice finalization until payment is due.
+      required:
+      - daysToPay
+    AirCarrierInfo:
+      type: object
+      properties:
+        scac:
+          type:
+          - string
+          - 'null'
+          example: AAL
+          description: Standard Carrier Alpha Code (SCAC) - 2 to 4 alphabetic characters
+        iataCode:
+          type:
+          - string
+          - 'null'
+          example: AA
+          description: International Air Transport Association (IATA) code - 2 to 3 alphabetic characters
+        icaoCode:
+          type:
+          - string
+          - 'null'
+          example: AAL
+          description: International Civil Aviation Organization (ICAO) code - 3 alphabetic characters
+    ClientDivisionInfo:
+      type: object
+      properties:
+        isEligiblePayor:
+          type: boolean
+          description: Whether the client division is an eligible payor for AP invoices.
+        vatRegistrationNumber:
+          type:
+          - string
+          - 'null'
+          description: VAT registration number for the organization.
+        payorClientId:
+          type:
+          - string
+          - 'null'
+          description: Legacy-system client id (D2L Client Id / SIQC Customer Id) this client division maps to, used for payor determination during replatforming.
+      required:
+      - isEligiblePayor
+    UpdateOrganizationInput:
+      type: object
+      properties:
+        displayName:
+          type: string
+          example: ACME
+          description: Name of the organization.
+        legalName:
+          type:
+          - string
+          - 'null'
+          example: ACME Inc.
+          description: Legal name of the organization, if defined.
+        tradeNames:
+          description: Array of trade names (also known as DBA names) for the organization.
+          example:
+          - ACME Trucking
+          - ACME Group
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        websiteUrl:
+          type:
+          - string
+          - 'null'
+          example: https://example.com
+          description: Website of the organization.
+        parentOrganizationQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier of the parent organization.
+          example: qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8
+          format: qid
+        tags:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          properties: {}
+          example:
+            tag1: value1
+            tag2: value2
+          description: Entity tags assigned to the organization.
+        clientDivisionInfo:
+          example:
+            isEligiblePayor: true
+            vatRegistrationNumber: DE123456789
+            payorClientId: '102019'
+          description: Client division information, if relevant to the organization.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/ClientDivisionInfo'
+        customerInfo:
+          example:
+            billingEmails:
+            - billing@customer.com
+            invoiceDeliveryMethod: EMAIL
+          description: Customer information, if relevant to the organization.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/CustomerInfo'
+        airCarrierInfo:
+          example:
+            scac: AAL
+            iataCode: AA
+            icaoCode: AAL
+          description: Air carrier information, if relevant to the organization.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/AirCarrierInfo'
+        oceanCarrierInfo:
+          example:
+            scac: MAEU
+            bicCode: MSCU
+          description: Ocean carrier information, if relevant to the organization.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/OceanCarrierInfo'
+        truckingCarrierInfo:
+          example:
+            mcNumber: '179059'
+            scac: FDEB
+            usdotNumber: '265752'
+          description: Trucking carrier information, if relevant to the organization.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/TruckingCarrierInfo'
+        forwarderInfo:
+          example:
+            scac: FDEG
+            fmcOrganizationNumber: FMC123456
+          description: Forwarder information, if relevant to the organization.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/ForwarderInfo'
+        factorInfo:
+          example: {}
+          description: Factor information, if relevant to the organization. The presence of an empty object here will create the organization as a factor.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/FactorInfo'
+        asPayee:
+          example:
+            invoicing:
+              daysToPay: 30
+              daysToPayFrom: ISSUE_DATE
+            quickPay:
+              daysToPay: 1
+              discountPercentage: '0.02'
+          description: Invoicing relationship information applicable when this organization is the payee on a payable invoice, such as payment terms.
+          allOf:
+          - $ref: '#/components/schemas/OrganizationAsPayeeInput'
+        asPayor:
+          description: Information applicable when this organization is the payor on a receivable invoice.
+          allOf:
+          - $ref: '#/components/schemas/OrganizationAsPayorInput'
+        occupiedAddresses:
+          description: Addresses occupied by the organization
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressValue'
+    ForwarderInfo:
+      type: object
+      properties:
+        scac:
+          type:
+          - string
+          - 'null'
+          example: FDEG
+          description: Standard Carrier Alpha Code (SCAC) - 2 to 4 alphabetic characters
+        fmcOrganizationNumber:
+          type:
+          - string
+          - 'null'
+          example: FMC123456
+          description: Federal Maritime Commission (FMC) Organization Number
     Organization:
       type: object
       properties:
@@ -320,27 +552,115 @@ components:
       - forwarderInfo
       - factorInfo
       - brokerageInfo
-    AirCarrierInfo:
+    OceanCarrierInfo:
       type: object
       properties:
         scac:
           type:
           - string
           - 'null'
-          example: AAL
+          example: MAEU
           description: Standard Carrier Alpha Code (SCAC) - 2 to 4 alphabetic characters
-        iataCode:
+        bicCode:
           type:
           - string
           - 'null'
-          example: AA
-          description: International Air Transport Association (IATA) code - 2 to 3 alphabetic characters
-        icaoCode:
+          example: MSCU
+          description: Bureau International des Containers (BIC) code - 4-letter prefix registered with BIC
+    FactorInfo:
+      type: object
+      properties: {}
+    OrganizationAsPayeeQuickpayInput:
+      type: object
+      properties:
+        daysToPay:
+          type: number
+          description: Number of days to pay.
+          example: 1
+        discountPercentage:
+          type: string
+          format: percent-string
+          example: '0.02'
+          description: Discount percentage if the `daysToPay` quickpay requirement is met. Must be between "0" and "1".
+      required:
+      - daysToPay
+      - discountPercentage
+    OrganizationAsPayeeInput:
+      type: object
+      properties:
+        invoicing:
+          description: An object specifying information about the organization's invoicing terms.
+          example:
+            daysToPay: 30
+            daysToPayFrom: ISSUE_DATE
+          allOf:
+          - $ref: '#/components/schemas/OrganizationAsPayeeInputInvoicingRelationship'
+        quickPay:
+          description: An object specifying information about the organization's quickPay terms. Leave blank if this organization does not use quickpay.
+          example:
+            daysToPay: 1
+            discountPercentage: '0.02'
+          allOf:
+          - $ref: '#/components/schemas/OrganizationAsPayeeQuickpayInput'
+        paymentInfo:
+          description: An object specifying information about the organization's payments.
+          allOf:
+          - $ref: '#/components/schemas/OrganizationAsPayeePaymentInfoInput'
+    QuickPayRelationship:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        revisionNumber:
+          type: number
+          example: 1
+        revisionCreatedAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        payeeOrganizationQid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        payorOrganizationQid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        daysToPay:
+          type: number
+          description: Number of days to pay under this QuickPay offer.
+          example: 1
+        discountPercentage:
+          type: string
+          format: percent-string
+          example: '0.02'
+          description: Discount percentage applied when the `daysToPay` requirement is met. Between "0" and "1".
+        effectiveFrom:
+          type: string
+          description: Timestamp when the QuickPay relationship became effective.
+          example: '2025-05-01T00:00:00.000Z'
+          format: utc-timestamp
+        effectiveTo:
           type:
           - string
           - 'null'
-          example: AAL
-          description: International Civil Aviation Organization (ICAO) code - 3 alphabetic characters
+          description: Timestamp when the QuickPay relationship is no longer effective, or null if open-ended.
+          example: '2025-06-01T00:00:00.000Z'
+          format: utc-timestamp
+      required:
+      - createdAt
+      - revisionNumber
+      - revisionCreatedAt
+      - payeeOrganizationQid
+      - payorOrganizationQid
+      - daysToPay
+      - discountPercentage
+      - effectiveFrom
+      - effectiveTo
     TruckingCarrierInfo:
       type: object
       properties:
@@ -379,251 +699,9 @@ components:
           - 'null'
           example: true
           description: Whether the carrier offers LTL services
-    OrganizationAsPayorInput:
+    BrokerageInfo:
       type: object
-      properties:
-        invoicing:
-          description: An object specifying information about the organization's invoicing terms.
-          allOf:
-          - $ref: '#/components/schemas/OrganizationAsPayorInputInvoicingRelationship'
-        primaryBillingAddress:
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/AddressValue'
-    UpdateOrganizationInput:
-      type: object
-      properties:
-        displayName:
-          type: string
-          example: ACME
-          description: Name of the organization.
-        legalName:
-          type:
-          - string
-          - 'null'
-          example: ACME Inc.
-          description: Legal name of the organization, if defined.
-        tradeNames:
-          description: Array of trade names (also known as DBA names) for the organization.
-          example:
-          - ACME Trucking
-          - ACME Group
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-        websiteUrl:
-          type:
-          - string
-          - 'null'
-          example: https://example.com
-          description: Website of the organization.
-        parentOrganizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier of the parent organization.
-          example: qid::organization:9bafb1b4-3bdf-4326-bc0d-2d0ff9d616a8
-          format: qid
-        tags:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          properties: {}
-          example:
-            tag1: value1
-            tag2: value2
-          description: Entity tags assigned to the organization.
-        clientDivisionInfo:
-          example:
-            isEligiblePayor: true
-            vatRegistrationNumber: DE123456789
-            payorClientId: '102019'
-          description: Client division information, if relevant to the organization.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/ClientDivisionInfo'
-        customerInfo:
-          example:
-            billingEmails:
-            - billing@customer.com
-            invoiceDeliveryMethod: EMAIL
-          description: Customer information, if relevant to the organization.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/CustomerInfo'
-        airCarrierInfo:
-          example:
-            scac: AAL
-            iataCode: AA
-            icaoCode: AAL
-          description: Air carrier information, if relevant to the organization.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/AirCarrierInfo'
-        oceanCarrierInfo:
-          example:
-            scac: MAEU
-            bicCode: MSCU
-          description: Ocean carrier information, if relevant to the organization.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/OceanCarrierInfo'
-        truckingCarrierInfo:
-          example:
-            mcNumber: '179059'
-            scac: FDEB
-            usdotNumber: '265752'
-          description: Trucking carrier information, if relevant to the organization.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/TruckingCarrierInfo'
-        forwarderInfo:
-          example:
-            scac: FDEG
-            fmcOrganizationNumber: FMC123456
-          description: Forwarder information, if relevant to the organization.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/ForwarderInfo'
-        factorInfo:
-          example: {}
-          description: Factor information, if relevant to the organization. The presence of an empty object here will create the organization as a factor.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/FactorInfo'
-        asPayee:
-          example:
-            invoicing:
-              daysToPay: 30
-              daysToPayFrom: ISSUE_DATE
-            quickPay:
-              daysToPay: 1
-              discountPercentage: '0.02'
-          description: Invoicing relationship information applicable when this organization is the payee on a payable invoice, such as payment terms.
-          allOf:
-          - $ref: '#/components/schemas/OrganizationAsPayeeInput'
-        asPayor:
-          description: Information applicable when this organization is the payor on a receivable invoice.
-          allOf:
-          - $ref: '#/components/schemas/OrganizationAsPayorInput'
-        occupiedAddresses:
-          description: Addresses occupied by the organization
-          type: array
-          items:
-            $ref: '#/components/schemas/AddressValue'
-    AddressValue:
-      type: object
-      properties:
-        addressLine1:
-          type: string
-          example: 123 Main Street
-        addressLine2:
-          type: string
-          example: Suite 456
-        city:
-          type: string
-          example: Chicago
-        state:
-          type: string
-          example: IL
-        postalCode:
-          type: string
-          example: '60601'
-        country:
-          type: string
-          example: US
-          description: ISO 3166-1 alpha-2 country code.
-      required:
-      - addressLine1
-      - city
-      - postalCode
-      - country
-    ForwarderInfo:
-      type: object
-      properties:
-        scac:
-          type:
-          - string
-          - 'null'
-          example: FDEG
-          description: Standard Carrier Alpha Code (SCAC) - 2 to 4 alphabetic characters
-        fmcOrganizationNumber:
-          type:
-          - string
-          - 'null'
-          example: FMC123456
-          description: Federal Maritime Commission (FMC) Organization Number
-    OrganizationAsPayeePaymentInfoInput:
-      type: object
-      properties:
-        achDisplayName:
-          type:
-          - string
-          - 'null'
-          description: Display name that shows up in ACH records, on statements opposite to this org in a payment. Max 13 characters; otherwise may be truncated.
-          example: ACME Inc.
-        businessType:
-          type:
-          - string
-          - 'null'
-          example: LLC
-          description: Business type of the organization.
-          enum:
-          - SOLE_PROPRIETORSHIP
-          - LLC
-          - TRUST
-          - PUBLIC_CORPORATION
-          - PRIVATE_CORPORATION
-          - PARTNERSHIP
-          - UNINCORPORATED_ASSOCIATION
-          - UNINCORPORATED_NONPROFIT
-          - INCORPORATED_NONPROFIT
-        remittanceEmails:
-          description: Array of emails that should receive remittance emails for payments to this organization.
-          example:
-          - acme@acme.com
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-        primaryAddress:
-          description: Primary payment (billing) address of the organization.
-          allOf:
-          - $ref: '#/components/schemas/AddressValue'
-        remittanceAddress:
-          description: Payment remittance address of the organization, if different from the primary address.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/AddressValue'
-        stopPayment:
-          type: boolean
-          description: Whether payments to this organization have been stopped.
-          example: true
-      required:
-      - primaryAddress
+      properties: {}
     CustomerInfo:
       type: object
       properties:
@@ -668,21 +746,6 @@ components:
           type: boolean
           example: true
           description: Whether the customer requires a proof of delivery for receivable invoice finalization. If set to true, at least one of the supporting artifacts must be marked as a proof of delivery.
-    OceanCarrierInfo:
-      type: object
-      properties:
-        scac:
-          type:
-          - string
-          - 'null'
-          example: MAEU
-          description: Standard Carrier Alpha Code (SCAC) - 2 to 4 alphabetic characters
-        bicCode:
-          type:
-          - string
-          - 'null'
-          example: MSCU
-          description: Bureau International des Containers (BIC) code - 4-letter prefix registered with BIC
     CreateOrganizationInput:
       type: object
       properties:
@@ -829,147 +892,84 @@ components:
             $ref: '#/components/schemas/AddressValue'
       required:
       - displayName
-    BrokerageInfo:
-      type: object
-      properties: {}
-    OrganizationAsPayeeInput:
+    OrganizationAsPayeePaymentInfoInput:
       type: object
       properties:
-        invoicing:
-          description: An object specifying information about the organization's invoicing terms.
-          example:
-            daysToPay: 30
-            daysToPayFrom: ISSUE_DATE
-          allOf:
-          - $ref: '#/components/schemas/OrganizationAsPayeeInputInvoicingRelationship'
-        quickPay:
-          description: An object specifying information about the organization's quickPay terms. Leave blank if this organization does not use quickpay.
-          example:
-            daysToPay: 1
-            discountPercentage: '0.02'
-          allOf:
-          - $ref: '#/components/schemas/OrganizationAsPayeeQuickpayInput'
-        paymentInfo:
-          description: An object specifying information about the organization's payments.
-          allOf:
-          - $ref: '#/components/schemas/OrganizationAsPayeePaymentInfoInput'
-    OrganizationAsPayeeQuickpayInput:
-      type: object
-      properties:
-        daysToPay:
-          type: number
-          description: Number of days to pay.
-          example: 1
-        discountPercentage:
-          type: string
-          format: percent-string
-          example: '0.02'
-          description: Discount percentage if the `daysToPay` quickpay requirement is met. Must be between "0" and "1".
-      required:
-      - daysToPay
-      - discountPercentage
-    ClientDivisionInfo:
-      type: object
-      properties:
-        isEligiblePayor:
-          type: boolean
-          description: Whether the client division is an eligible payor for AP invoices.
-        vatRegistrationNumber:
+        achDisplayName:
           type:
           - string
           - 'null'
-          description: VAT registration number for the organization.
-        payorClientId:
+          description: Display name that shows up in ACH records, on statements opposite to this org in a payment. Max 13 characters; otherwise may be truncated.
+          example: ACME Inc.
+        businessType:
           type:
           - string
           - 'null'
-          description: Legacy-system client id (D2L Client Id / SIQC Customer Id) this client division maps to, used for payor determination during replatforming.
-      required:
-      - isEligiblePayor
-    QuickPayRelationship:
-      type: object
-      properties:
-        createdAt:
-          type: string
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-        revisionNumber:
-          type: number
-          example: 1
-        revisionCreatedAt:
-          type: string
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-        payeeOrganizationQid:
-          type: string
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        payorOrganizationQid:
-          type: string
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        daysToPay:
-          type: number
-          description: Number of days to pay under this QuickPay offer.
-          example: 1
-        discountPercentage:
-          type: string
-          format: percent-string
-          example: '0.02'
-          description: Discount percentage applied when the `daysToPay` requirement is met. Between "0" and "1".
-        effectiveFrom:
-          type: string
-          description: Timestamp when the QuickPay relationship became effective.
-          example: '2025-05-01T00:00:00.000Z'
-          format: utc-timestamp
-        effectiveTo:
-          type:
-          - string
-          - 'null'
-          description: Timestamp when the QuickPay relationship is no longer effective, or null if open-ended.
-          example: '2025-06-01T00:00:00.000Z'
-          format: utc-timestamp
-      required:
-      - createdAt
-      - revisionNumber
-      - revisionCreatedAt
-      - payeeOrganizationQid
-      - payorOrganizationQid
-      - daysToPay
-      - discountPercentage
-      - effectiveFrom
-      - effectiveTo
-    OrganizationAsPayorInputInvoicingRelationship:
-      type: object
-      properties:
-        daysToPay:
-          type: number
-          example: 30
-          description: Number of days after invoice finalization until payment is due.
-      required:
-      - daysToPay
-    OrganizationAsPayeeInputInvoicingRelationship:
-      type: object
-      properties:
-        daysToPay:
-          type: number
-          example: 30
-          description: Number of days until the invoice is due.
-        daysToPayFrom:
-          type: string
-          example: ISSUE_DATE
-          description: The anchor date from which we determine the invoice due date.
+          example: LLC
+          description: Business type of the organization.
           enum:
-          - ISSUE_DATE
-          - RECEIPT_DATE
+          - SOLE_PROPRIETORSHIP
+          - LLC
+          - TRUST
+          - PUBLIC_CORPORATION
+          - PRIVATE_CORPORATION
+          - PARTNERSHIP
+          - UNINCORPORATED_ASSOCIATION
+          - UNINCORPORATED_NONPROFIT
+          - INCORPORATED_NONPROFIT
+        remittanceEmails:
+          description: Array of emails that should receive remittance emails for payments to this organization.
+          example:
+          - acme@acme.com
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        primaryAddress:
+          description: Primary payment (billing) address of the organization.
+          allOf:
+          - $ref: '#/components/schemas/AddressValue'
+        remittanceAddress:
+          description: Payment remittance address of the organization, if different from the primary address.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/AddressValue'
+        stopPayment:
+          type: boolean
+          description: Whether payments to this organization have been stopped.
+          example: true
       required:
-      - daysToPay
-      - daysToPayFrom
-    FactorInfo:
+      - primaryAddress
+    AddressValue:
       type: object
-      properties: {}
+      properties:
+        addressLine1:
+          type: string
+          example: 123 Main Street
+        addressLine2:
+          type: string
+          example: Suite 456
+        city:
+          type: string
+          example: Chicago
+        state:
+          type: string
+          example: IL
+        postalCode:
+          type: string
+          example: '60601'
+        country:
+          type: string
+          example: US
+          description: ISO 3166-1 alpha-2 country code.
+      required:
+      - addressLine1
+      - city
+      - postalCode
+      - country
   securitySchemes:
     bearer:
       scheme: bearer

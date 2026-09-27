@@ -296,6 +296,134 @@ paths:
       - Artifacts
 components:
   schemas:
+    ArtifactMetadataSummary:
+      type: object
+      properties:
+        bolNumber:
+          type: string
+          description: Bill of lading number in the artifact, if any.
+          example: '201946'
+        carrierName:
+          type: string
+          description: Carrier name in the artifact, if any.
+          example: Tom's Trucking LLC
+        consigneeAddress:
+          description: Consignee address as it appears in the artifact, if any.
+          allOf:
+          - $ref: '#/components/schemas/RawSparseAddressValue'
+        dropoffAppointmentDateTime:
+          type: string
+          description: Datetime of the dropoff appointment in the artifact, if any.
+          example: '2023-12-01T12:00:00.000Z'
+        dropoffAppointmentType:
+          type: string
+          description: Dropoff appointment type on the artifact, if any.
+          example: FCFS, Appointment
+        equipmentRequirements:
+          type: string
+          description: Freeform text of the equipment requirements listed on the artifact, if any.
+          example: straps, tarps, food grade, etc.
+        equipmentSize:
+          type: string
+          description: Length of the equipment listed on the artifact, if any.
+          example: 53', 48'
+        equipmentType:
+          type: string
+          description: Type of equipment listed on the artifact, if any.
+          example: Dry Van, Reefer, Flatbed, etc.
+        consigneeName:
+          type: string
+          description: Consignee name in the artifact, if any.
+          example: Catherine's Culinary Corner
+        externalIdentifiers:
+          description: Comma-separated list of non-standard external identifiers, such as shipment identifiers or other reference numbers.
+          example:
+          - '89213'
+          - OF7890
+          type: array
+          items:
+            type: string
+        invoicedTotal:
+          description: Total dollar amount of the invoice in the artifact, if any.
+          allOf:
+          - $ref: '#/components/schemas/Money'
+        invoiceNumber:
+          type: string
+          description: Invoice number in the artifact, if any.
+          example: '419204'
+        invoiceDate:
+          type: string
+          description: Invoice date in the artifact, if any. Typically this is interpreted as the invoice "issue" date.
+          example: '2023-12-01'
+        pickupAppointmentDateTime:
+          type: string
+          description: Datetime of the pickup appointment in the artifact, if any.
+          example: '2023-12-01T12:00:00.000Z'
+        pickupDateAppointmentType:
+          type: string
+          description: Pickup appointment type on the artifact, if any.
+          example: FCFS, Appointment
+        pickupDate:
+          type: string
+          description: Pickup date in the artifact, if any.
+          example: '2023-11-01'
+        poNumber:
+          type: string
+          description: Purchase order number in the artifact, if any.
+          example: '19012'
+        proNumber:
+          type: string
+          description: PRO number in the artifact, if any.
+          example: '76910234'
+        reeferEquipmentTemperature:
+          type: string
+          description: Reefer equipment temperature in the artifact, if any.
+          example: 35-36F
+        shipperAddress:
+          description: Shipper address as it appears in the artifact, if any.
+          allOf:
+          - $ref: '#/components/schemas/RawSparseAddressValue'
+        shipperName:
+          type: string
+          description: Shipper name, if any.
+          example: Sally's Supply Store
+        transportationProvider:
+          type: string
+          description: Transportation provider such as a 3PL if on the artifact, if any.
+          example: TQL, CHR
+      required:
+      - externalIdentifiers
+    ArtifactAssignedShipmentJobStatusComplete:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The artifact's data has been normalized into the shipment job
+          enum:
+          - COMPLETED
+        qid:
+          type: string
+          description: The unique identifier of the shipment job that the artifact is assigned to
+          example: qid::shipment_job:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        presentationLayerStatus:
+          description: The status of the artifact presentation layer for this shipment job. Presentation layer data includes any data configured for extraction for your tenant that is not strictly required for normalization of the shipment job
+          oneOf:
+          - $ref: '#/components/schemas/ArtifactEntityPresentationStatusComplete'
+          - $ref: '#/components/schemas/ArtifactEntityPresentationStatusInProgress'
+        linkedPayableInvoiceQids:
+          description: The unique identifiers of any payable invoices linked to the shipment job that the artifact is assigned to. These payable invoices are not necessarily status COMPLETED.
+          example:
+          - qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          type: array
+          items:
+            type: string
+            format: qid
+      required:
+      - status
+      - qid
+      - presentationLayerStatus
+      - linkedPayableInvoiceQids
     CurrencyCode:
       type: string
       enum:
@@ -454,16 +582,294 @@ components:
       - ZAR
       - ZMW
       - ZWG
-    ArtifactCategorizationStatusInProgress:
+    ArtifactAssignedPayableInvoiceStatusComplete:
       type: object
       properties:
         status:
           type: string
-          description: The artifact's categorization status is still being determined
+          description: The artifact's data has been normalized into the payable invoice
+          enum:
+          - COMPLETED
+        qid:
+          type: string
+          description: The unique identifier of the payable invoice that the artifact is assigned to
+          example: qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        artifactPayableInvoiceAssignmentType:
+          type: array
+          description: The artifact's type(s) in relation to its assigned payable invoice.
+          items:
+            type: string
+            enum:
+            - DUPLICATE
+            - CORRECTION
+            - BALANCE_DUE
+        presentationLayerStatus:
+          description: The status of the artifact presentation layer for the payable invoice. Presentation layer data includes any data configured for extraction for your tenant that is not strictly required for normalization of the payable invoice
+          oneOf:
+          - $ref: '#/components/schemas/ArtifactEntityPresentationStatusComplete'
+          - $ref: '#/components/schemas/ArtifactEntityPresentationStatusInProgress'
+      required:
+      - status
+      - qid
+      - artifactPayableInvoiceAssignmentType
+      - presentationLayerStatus
+    ArtifactScreeningStatusInProgress:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The artifact's screening status is still being determined
           enum:
           - IN_PROGRESS
       required:
       - status
+    ArtifactCategorizationStatusComplete:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The specific type of the artifact has been determined
+          enum:
+          - COMPLETED
+      required:
+      - status
+    CreateArtifactOutput:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          format: qid
+          example: qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+        createdAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        revisionNumber:
+          type: number
+          example: 1
+        revisionCreatedAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        artifactType:
+          type: string
+          description: Domain-specific type of the artifact.
+          enum:
+          - ACCOUNT_STATEMENT
+          - BILL_OF_LADING
+          - CUSTOMER_RATE_CONFIRMATION
+          - DELIVERY_ORDER
+          - DELIVERY_RECEIPT
+          - EXTERNAL_SHIPMENT_NOTE
+          - INVOICE
+          - IN_OUT_GATE
+          - LUMPER_RECEIPT
+          - OTHER
+          - PACKET
+          - PACKING_LIST
+          - RATE_CONFIRMATION
+          - SCALE_TICKET
+          - SHIPMENT_RECORD
+          - UNKNOWN
+          - WASHOUT_RECEIPT
+          - WEIGHT_INSPECTION
+          - WORK_ORDER
+          example: INVOICE
+        artifactFormat:
+          type: string
+          description: Encoding format of the artifact.
+          enum:
+          - BIN
+          - CSV
+          - DOC
+          - DOCX
+          - EDI_EDIFACT
+          - EDI_X12
+          - GIF
+          - HEIC
+          - HTML
+          - JPG
+          - JPEG
+          - JSON
+          - JSONL
+          - MALFORMED_PDF
+          - MD
+          - PDF
+          - PNG
+          - RTF
+          - TIFF
+          - TNEF
+          - TXT
+          - XLSB
+          - XLSX
+          - XLS
+          - XML
+          - ZIP
+          example: PDF
+        displayName:
+          type: string
+          description: Name of the artifact for display purposes.
+          example: XPO Invoice 54219 - 2023-12-01
+        tags:
+          type: object
+          description: Entity tags assigned to the artifact. This is an expansion field. To include this field, you must include `tags` in the query parameters.
+      required:
+      - qid
+      - createdAt
+      - revisionNumber
+      - revisionCreatedAt
+      - artifactType
+      - artifactFormat
+      - displayName
+    ArtifactAggregateIngestionStatusCompletionTimes:
+      type: object
+      properties:
+        firstCompletedAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+          description: The timestamp when artifact ingestion was first completed.
+        lastCompletedAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+          description: The timestamp when artifact ingestion was most recently completed. An artifact may flip from COMPLETED back to IN_PROGRESS if artifacts from a different source are assigned to entities shared with this artifact.
+      required:
+      - firstCompletedAt
+      - lastCompletedAt
+    ArtifactAggregateIngestionStatusInProgress:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Some part of the artifact's ingestion is still in progress, check the specific statuses to determine what is still being worked on
+          enum:
+          - IN_PROGRESS
+        completionTimes:
+          description: The timestamps when artifact ingestion was first and last completed, if any.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/ArtifactAggregateIngestionStatusCompletionTimes'
+      required:
+      - status
+      - completionTimes
+    ArtifactAssignedShipmentJobStatusInProgress:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The process of finding a matching shipment job for the artifact is still in progress or, if the shipment job qid is present, normalization of that job is still in progress
+          enum:
+          - IN_PROGRESS
+        qid:
+          type: object
+          description: The qid of the shipment job that the artifact is assigned to
+        linkedPayableInvoiceQids:
+          description: The unique identifiers of any payable invoices linked to the shipment job that the artifact is assigned to. These payable invoices are not necessarily status COMPLETED.
+          example:
+          - qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          type: array
+          items:
+            type: string
+            format: qid
+      required:
+      - status
+      - qid
+    ArtifactScreeningStatusComplete:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The artifact's screening status has been determined
+          enum:
+          - COMPLETE
+        result:
+          type: string
+          description: If the artifact will be further processed in our system, this will be set to SCREENED_IN. If this result is SCREENED_OUT, it is a terminal state
+          enum:
+          - SCREENED_IN
+          - SCREENED_OUT
+      required:
+      - status
+      - result
+    ArtifactPreprocessingStatusInProgress:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The artifact's preprocessing status is still being determined
+          enum:
+          - IN_PROGRESS
+      required:
+      - status
+    RawSparseAddressValue:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+          example: 123 Main Street
+        addressLine2:
+          type: string
+          example: Suite 456
+        city:
+          type: string
+          example: Chicago
+        state:
+          type: string
+          description: Any variation of state. For example, "IL" or "Illinois" or something else.
+          example: IL
+        postalCode:
+          type: string
+          example: '60601'
+        country:
+          type: string
+          description: Any variation of a country name or country ISO 2 code. For example, it could be empty, "US", "USA", "United States", "United States of America", "America", etc.
+          example: USA
+    ArtifactPreprocessingStatusComplete:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The artifact's preprocessing status has been determined
+          enum:
+          - COMPLETE
+        result:
+          type: string
+          description: If the artifact can be further processed in our system, this will be set to PROCESSABLE. If the artifact cannot be processed, this will be set to UNPROCESSABLE. If UNPROCESSABLE, this is artifact is in a terminal state
+          enum:
+          - NOT_APPLICABLE
+          - PROCESSABLE
+          - UNPROCESSABLE
+          - UNSUPPORTED
+          - ERROR
+      required:
+      - status
+      - result
+    Money:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal-string
+          example: '3.50'
+          description: The amount of money
+        currencyCode:
+          allOf:
+          - $ref: '#/components/schemas/CurrencyCode'
+      required:
+      - amount
+      - currencyCode
+    CreateArtifactOptions:
+      type: object
+      properties:
+        forceAssignToShipmentExternalIdentifier:
+          type: string
+          example: '123456789'
+          description: The external identifier of the shipment to assign the artifact to. If specified, the artifact will be directly assigned to the specified shipment during the request. A validation issue is returned if no shipment with the external identifier is found.
     CreateArtifactInput:
       type: object
       properties:
@@ -519,120 +925,114 @@ components:
           - $ref: '#/components/schemas/CreateArtifactOptions'
       required:
       - artifactType
-    ArtifactScreeningStatusComplete:
+    ArtifactCategorizationStatusInProgress:
       type: object
       properties:
         status:
           type: string
-          description: The artifact's screening status has been determined
+          description: The artifact's categorization status is still being determined
           enum:
-          - COMPLETE
-        result:
-          type: string
-          description: If the artifact will be further processed in our system, this will be set to SCREENED_IN. If this result is SCREENED_OUT, it is a terminal state
-          enum:
-          - SCREENED_IN
-          - SCREENED_OUT
+          - IN_PROGRESS
       required:
       - status
-      - result
-    ArtifactMetadataSummary:
+    Artifact:
       type: object
       properties:
-        bolNumber:
+        qid:
           type: string
-          description: Bill of lading number in the artifact, if any.
-          example: '201946'
-        carrierName:
+          description: Qualified unique identifier.
+          format: qid
+          example: qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+        createdAt:
           type: string
-          description: Carrier name in the artifact, if any.
-          example: Tom's Trucking LLC
-        consigneeAddress:
-          description: Consignee address as it appears in the artifact, if any.
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        revisionNumber:
+          type: number
+          example: 1
+        revisionCreatedAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        artifactType:
+          type: string
+          description: Domain-specific type of the artifact.
+          enum:
+          - ACCOUNT_STATEMENT
+          - BILL_OF_LADING
+          - CUSTOMER_RATE_CONFIRMATION
+          - DELIVERY_ORDER
+          - DELIVERY_RECEIPT
+          - EXTERNAL_SHIPMENT_NOTE
+          - INVOICE
+          - IN_OUT_GATE
+          - LUMPER_RECEIPT
+          - OTHER
+          - PACKET
+          - PACKING_LIST
+          - RATE_CONFIRMATION
+          - SCALE_TICKET
+          - SHIPMENT_RECORD
+          - UNKNOWN
+          - WASHOUT_RECEIPT
+          - WEIGHT_INSPECTION
+          - WORK_ORDER
+          example: INVOICE
+        artifactFormat:
+          type: string
+          description: Encoding format of the artifact.
+          enum:
+          - BIN
+          - CSV
+          - DOC
+          - DOCX
+          - EDI_EDIFACT
+          - EDI_X12
+          - GIF
+          - HEIC
+          - HTML
+          - JPG
+          - JPEG
+          - JSON
+          - JSONL
+          - MALFORMED_PDF
+          - MD
+          - PDF
+          - PNG
+          - RTF
+          - TIFF
+          - TNEF
+          - TXT
+          - XLSB
+          - XLSX
+          - XLS
+          - XML
+          - ZIP
+          example: PDF
+        displayName:
+          type: string
+          description: Name of the artifact for display purposes.
+          example: XPO Invoice 54219 - 2023-12-01
+        summary:
+          description: Summary of semi-structured metadata extracted or parsed from the artifact. This is an expansion field. To include this field, you must include `summary` in the query parameters.
           allOf:
-          - $ref: '#/components/schemas/RawSparseAddressValue'
-        dropoffAppointmentDateTime:
-          type: string
-          description: Datetime of the dropoff appointment in the artifact, if any.
-          example: '2023-12-01T12:00:00.000Z'
-        dropoffAppointmentType:
-          type: string
-          description: Dropoff appointment type on the artifact, if any.
-          example: FCFS, Appointment
-        equipmentRequirements:
-          type: string
-          description: Freeform text of the equipment requirements listed on the artifact, if any.
-          example: straps, tarps, food grade, etc.
-        equipmentSize:
-          type: string
-          description: Length of the equipment listed on the artifact, if any.
-          example: 53', 48'
-        equipmentType:
-          type: string
-          description: Type of equipment listed on the artifact, if any.
-          example: Dry Van, Reefer, Flatbed, etc.
-        consigneeName:
-          type: string
-          description: Consignee name in the artifact, if any.
-          example: Catherine's Culinary Corner
-        externalIdentifiers:
-          description: Comma-separated list of non-standard external identifiers, such as shipment identifiers or other reference numbers.
-          example:
-          - '89213'
-          - OF7890
+          - $ref: '#/components/schemas/ArtifactMetadataSummary'
+        derivativeArtifacts:
+          description: This API provides a list of QIDs and corresponding types for artifacts that have been derived from the queried artifact. This is particularly useful when the queried artifact is a collection of other artifacts, such as a PDF document containing an invoice and a bill of lading. This is an expansion field. To include this field, you must include `derivativeArtifacts` in the query parameters.
           type: array
           items:
-            type: string
-        invoicedTotal:
-          description: Total dollar amount of the invoice in the artifact, if any.
-          allOf:
-          - $ref: '#/components/schemas/Money'
-        invoiceNumber:
-          type: string
-          description: Invoice number in the artifact, if any.
-          example: '419204'
-        invoiceDate:
-          type: string
-          description: Invoice date in the artifact, if any. Typically this is interpreted as the invoice "issue" date.
-          example: '2023-12-01'
-        pickupAppointmentDateTime:
-          type: string
-          description: Datetime of the pickup appointment in the artifact, if any.
-          example: '2023-12-01T12:00:00.000Z'
-        pickupDateAppointmentType:
-          type: string
-          description: Pickup appointment type on the artifact, if any.
-          example: FCFS, Appointment
-        pickupDate:
-          type: string
-          description: Pickup date in the artifact, if any.
-          example: '2023-11-01'
-        poNumber:
-          type: string
-          description: Purchase order number in the artifact, if any.
-          example: '19012'
-        proNumber:
-          type: string
-          description: PRO number in the artifact, if any.
-          example: '76910234'
-        reeferEquipmentTemperature:
-          type: string
-          description: Reefer equipment temperature in the artifact, if any.
-          example: 35-36F
-        shipperAddress:
-          description: Shipper address as it appears in the artifact, if any.
-          allOf:
-          - $ref: '#/components/schemas/RawSparseAddressValue'
-        shipperName:
-          type: string
-          description: Shipper name, if any.
-          example: Sally's Supply Store
-        transportationProvider:
-          type: string
-          description: Transportation provider such as a 3PL if on the artifact, if any.
-          example: TQL, CHR
+            $ref: '#/components/schemas/ArtifactExpanded'
+        tags:
+          type: object
+          description: Entity tags assigned to the artifact. This is an expansion field. To include this field, you must include `tags` in the query parameters.
       required:
-      - externalIdentifiers
+      - qid
+      - createdAt
+      - revisionNumber
+      - revisionCreatedAt
+      - artifactType
+      - artifactFormat
+      - displayName
     ArtifactIngestionState:
       type: object
       properties:
@@ -749,188 +1149,6 @@ components:
       - assignedShipmentJobStatuses
       - assignedPayableInvoiceStatuses
       - aggregateIngestionStatus
-    CreateArtifactOutput:
-      type: object
-      properties:
-        qid:
-          type: string
-          description: Qualified unique identifier.
-          format: qid
-          example: qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-        createdAt:
-          type: string
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-        revisionNumber:
-          type: number
-          example: 1
-        revisionCreatedAt:
-          type: string
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-        artifactType:
-          type: string
-          description: Domain-specific type of the artifact.
-          enum:
-          - ACCOUNT_STATEMENT
-          - BILL_OF_LADING
-          - CUSTOMER_RATE_CONFIRMATION
-          - DELIVERY_ORDER
-          - DELIVERY_RECEIPT
-          - EXTERNAL_SHIPMENT_NOTE
-          - INVOICE
-          - IN_OUT_GATE
-          - LUMPER_RECEIPT
-          - OTHER
-          - PACKET
-          - PACKING_LIST
-          - RATE_CONFIRMATION
-          - SCALE_TICKET
-          - SHIPMENT_RECORD
-          - UNKNOWN
-          - WASHOUT_RECEIPT
-          - WEIGHT_INSPECTION
-          - WORK_ORDER
-          example: INVOICE
-        artifactFormat:
-          type: string
-          description: Encoding format of the artifact.
-          enum:
-          - BIN
-          - CSV
-          - DOC
-          - DOCX
-          - EDI_EDIFACT
-          - EDI_X12
-          - GIF
-          - HEIC
-          - HTML
-          - JPG
-          - JPEG
-          - JSON
-          - JSONL
-          - MALFORMED_PDF
-          - MD
-          - PDF
-          - PNG
-          - RTF
-          - TIFF
-          - TNEF
-          - TXT
-          - XLSB
-          - XLSX
-          - XLS
-          - XML
-          - ZIP
-          example: PDF
-        displayName:
-          type: string
-          description: Name of the artifact for display purposes.
-          example: XPO Invoice 54219 - 2023-12-01
-        tags:
-          type: object
-          description: Entity tags assigned to the artifact. This is an expansion field. To include this field, you must include `tags` in the query parameters.
-      required:
-      - qid
-      - createdAt
-      - revisionNumber
-      - revisionCreatedAt
-      - artifactType
-      - artifactFormat
-      - displayName
-    ArtifactAssignedShipmentJobStatusComplete:
-      type: object
-      properties:
-        status:
-          type: string
-          description: The artifact's data has been normalized into the shipment job
-          enum:
-          - COMPLETED
-        qid:
-          type: string
-          description: The unique identifier of the shipment job that the artifact is assigned to
-          example: qid::shipment_job:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        presentationLayerStatus:
-          description: The status of the artifact presentation layer for this shipment job. Presentation layer data includes any data configured for extraction for your tenant that is not strictly required for normalization of the shipment job
-          oneOf:
-          - $ref: '#/components/schemas/ArtifactEntityPresentationStatusComplete'
-          - $ref: '#/components/schemas/ArtifactEntityPresentationStatusInProgress'
-        linkedPayableInvoiceQids:
-          description: The unique identifiers of any payable invoices linked to the shipment job that the artifact is assigned to. These payable invoices are not necessarily status COMPLETED.
-          example:
-          - qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          type: array
-          items:
-            type: string
-            format: qid
-      required:
-      - status
-      - qid
-      - presentationLayerStatus
-      - linkedPayableInvoiceQids
-    ArtifactPreprocessingStatusInProgress:
-      type: object
-      properties:
-        status:
-          type: string
-          description: The artifact's preprocessing status is still being determined
-          enum:
-          - IN_PROGRESS
-      required:
-      - status
-    ArtifactAssignedPayableInvoiceStatusComplete:
-      type: object
-      properties:
-        status:
-          type: string
-          description: The artifact's data has been normalized into the payable invoice
-          enum:
-          - COMPLETED
-        qid:
-          type: string
-          description: The unique identifier of the payable invoice that the artifact is assigned to
-          example: qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        artifactPayableInvoiceAssignmentType:
-          type: array
-          description: The artifact's type(s) in relation to its assigned payable invoice.
-          items:
-            type: string
-            enum:
-            - DUPLICATE
-            - CORRECTION
-            - BALANCE_DUE
-        presentationLayerStatus:
-          description: The status of the artifact presentation layer for the payable invoice. Presentation layer data includes any data configured for extraction for your tenant that is not strictly required for normalization of the payable invoice
-          oneOf:
-          - $ref: '#/components/schemas/ArtifactEntityPresentationStatusComplete'
-          - $ref: '#/components/schemas/ArtifactEntityPresentationStatusInProgress'
-      required:
-      - status
-      - qid
-      - artifactPayableInvoiceAssignmentType
-      - presentationLayerStatus
-    ArtifactPreprocessingStatusComplete:
-      type: object
-      properties:
-        status:
-          type: string
-          description: The artifact's preprocessing status has been determined
-          enum:
-          - COMPLETE
-        result:
-          type: string
-          description: If the artifact can be further processed in our system, this will be set to PROCESSABLE. If the artifact cannot be processed, this will be set to UNPROCESSABLE. If UNPROCESSABLE, this is artifact is in a terminal state
-          enum:
-          - NOT_APPLICABLE
-          - PROCESSABLE
-          - UNPROCESSABLE
-          - UNSUPPORTED
-          - ERROR
-      required:
-      - status
-      - result
     ArtifactExpanded:
       type: object
       properties:
@@ -966,68 +1184,26 @@ components:
       required:
       - qid
       - artifactType
-    CreateArtifactOptions:
-      type: object
-      properties:
-        forceAssignToShipmentExternalIdentifier:
-          type: string
-          example: '123456789'
-          description: The external identifier of the shipment to assign the artifact to. If specified, the artifact will be directly assigned to the specified shipment during the request. A validation issue is returned if no shipment with the external identifier is found.
-    ArtifactAssignedShipmentJobStatusInProgress:
+    ArtifactAssignedPayableInvoiceStatusInProgress:
       type: object
       properties:
         status:
           type: string
-          description: The process of finding a matching shipment job for the artifact is still in progress or, if the shipment job qid is present, normalization of that job is still in progress
+          description: The process of normalizing the artifact into a payable invoice is still in progress
           enum:
           - IN_PROGRESS
-        qid:
-          type: object
-          description: The qid of the shipment job that the artifact is assigned to
-        linkedPayableInvoiceQids:
-          description: The unique identifiers of any payable invoices linked to the shipment job that the artifact is assigned to. These payable invoices are not necessarily status COMPLETED.
-          example:
-          - qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          type: array
-          items:
-            type: string
-            format: qid
       required:
       - status
-      - qid
-    ArtifactScreeningStatusInProgress:
+    ArtifactEntityPresentationStatusInProgress:
       type: object
       properties:
         status:
           type: string
-          description: The artifact's screening status is still being determined
+          description: Additional information is still being collected for this entity's presentation layer
           enum:
           - IN_PROGRESS
       required:
       - status
-    RawSparseAddressValue:
-      type: object
-      properties:
-        addressLine1:
-          type: string
-          example: 123 Main Street
-        addressLine2:
-          type: string
-          example: Suite 456
-        city:
-          type: string
-          example: Chicago
-        state:
-          type: string
-          description: Any variation of state. For example, "IL" or "Illinois" or something else.
-          example: IL
-        postalCode:
-          type: string
-          example: '60601'
-        country:
-          type: string
-          description: Any variation of a country name or country ISO 2 code. For example, it could be empty, "US", "USA", "United States", "United States of America", "America", etc.
-          example: USA
     ArtifactAggregateIngestionStatusComplete:
       type: object
       properties:
@@ -1055,182 +1231,6 @@ components:
       - status
       - completedAt
       - completionTimes
-    Artifact:
-      type: object
-      properties:
-        qid:
-          type: string
-          description: Qualified unique identifier.
-          format: qid
-          example: qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-        createdAt:
-          type: string
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-        revisionNumber:
-          type: number
-          example: 1
-        revisionCreatedAt:
-          type: string
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-        artifactType:
-          type: string
-          description: Domain-specific type of the artifact.
-          enum:
-          - ACCOUNT_STATEMENT
-          - BILL_OF_LADING
-          - CUSTOMER_RATE_CONFIRMATION
-          - DELIVERY_ORDER
-          - DELIVERY_RECEIPT
-          - EXTERNAL_SHIPMENT_NOTE
-          - INVOICE
-          - IN_OUT_GATE
-          - LUMPER_RECEIPT
-          - OTHER
-          - PACKET
-          - PACKING_LIST
-          - RATE_CONFIRMATION
-          - SCALE_TICKET
-          - SHIPMENT_RECORD
-          - UNKNOWN
-          - WASHOUT_RECEIPT
-          - WEIGHT_INSPECTION
-          - WORK_ORDER
-          example: INVOICE
-        artifactFormat:
-          type: string
-          description: Encoding format of the artifact.
-          enum:
-          - BIN
-          - CSV
-          - DOC
-          - DOCX
-          - EDI_EDIFACT
-          - EDI_X12
-          - GIF
-          - HEIC
-          - HTML
-          - JPG
-          - JPEG
-          - JSON
-          - JSONL
-          - MALFORMED_PDF
-          - MD
-          - PDF
-          - PNG
-          - RTF
-          - TIFF
-          - TNEF
-          - TXT
-          - XLSB
-          - XLSX
-          - XLS
-          - XML
-          - ZIP
-          example: PDF
-        displayName:
-          type: string
-          description: Name of the artifact for display purposes.
-          example: XPO Invoice 54219 - 2023-12-01
-        summary:
-          description: Summary of semi-structured metadata extracted or parsed from the artifact. This is an expansion field. To include this field, you must include `summary` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/ArtifactMetadataSummary'
-        derivativeArtifacts:
-          description: This API provides a list of QIDs and corresponding types for artifacts that have been derived from the queried artifact. This is particularly useful when the queried artifact is a collection of other artifacts, such as a PDF document containing an invoice and a bill of lading. This is an expansion field. To include this field, you must include `derivativeArtifacts` in the query parameters.
-          type: array
-          items:
-            $ref: '#/components/schemas/ArtifactExpanded'
-        tags:
-          type: object
-          description: Entity tags assigned to the artifact. This is an expansion field. To include this field, you must include `tags` in the query parameters.
-      required:
-      - qid
-      - createdAt
-      - revisionNumber
-      - revisionCreatedAt
-      - artifactType
-      - artifactFormat
-      - displayName
-    ArtifactAssignedPayableInvoiceStatusInProgress:
-      type: object
-      properties:
-        status:
-          type: string
-          description: The process of normalizing the artifact into a payable invoice is still in progress
-          enum:
-          - IN_PROGRESS
-      required:
-      - status
-    ArtifactAggregateIngestionStatusCompletionTimes:
-      type: object
-      properties:
-        firstCompletedAt:
-          type: string
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-          description: The timestamp when artifact ingestion was first completed.
-        lastCompletedAt:
-          type: string
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-          description: The timestamp when artifact ingestion was most recently completed. An artifact may flip from COMPLETED back to IN_PROGRESS if artifacts from a different source are assigned to entities shared with this artifact.
-      required:
-      - firstCompletedAt
-      - lastCompletedAt
-    ArtifactAggregateIngestionStatusInProgress:
-      type: object
-      properties:
-        status:
-          type: string
-          description: Some part of the artifact's ingestion is still in progress, check the specific statuses to determine what is still being worked on
-          enum:
-          - IN_PROGRESS
-        completionTimes:
-          description: The timestamps when artifact ingestion was first and last completed, if any.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/ArtifactAggregateIngestionStatusCompletionTimes'
-      required:
-      - status
-      - completionTimes
-    ArtifactEntityPresentationStatusInProgress:
-      type: object
-      properties:
-        status:
-          type: string
-          description: Additional information is still being collected for this entity's presentation layer
-          enum:
-          - IN_PROGRESS
-      required:
-      - status
-    ArtifactCategorizationStatusComplete:
-      type: object
-      properties:
-        status:
-          type: string
-          description: The specific type of the artifact has been determined
-          enum:
-          - COMPLETED
-      required:
-      - status
-    Money:
-      type: object
-      properties:
-        amount:
-          type: string
-          format: decimal-string
-          example: '3.50'
-          description: The amount of money
-        currencyCode:
-          allOf:
-          - $ref: '#/components/schemas/CurrencyCode'
-      required:
-      - amount
-      - currencyCode
     ArtifactEntityPresentationStatusComplete:
       type: object
       properties:

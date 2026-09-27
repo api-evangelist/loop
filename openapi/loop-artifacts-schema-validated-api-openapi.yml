@@ -714,6 +714,155 @@ paths:
       - artifacts-schema-validated
 components:
   schemas:
+    ArtifactMetadataSummary:
+      type: object
+      properties:
+        bolNumber:
+          type: string
+          description: Bill of lading number in the artifact, if any.
+          example: '201946'
+        carrierName:
+          type: string
+          description: Carrier name in the artifact, if any.
+          example: Tom's Trucking LLC
+        consigneeAddress:
+          description: Consignee address as it appears in the artifact, if any.
+          allOf:
+          - $ref: '#/components/schemas/RawSparseAddressValue'
+        dropoffAppointmentDateTime:
+          type: string
+          description: Datetime of the dropoff appointment in the artifact, if any.
+          example: '2023-12-01T12:00:00.000Z'
+        dropoffAppointmentType:
+          type: string
+          description: Dropoff appointment type on the artifact, if any.
+          example: FCFS, Appointment
+        equipmentRequirements:
+          type: string
+          description: Freeform text of the equipment requirements listed on the artifact, if any.
+          example: straps, tarps, food grade, etc.
+        equipmentSize:
+          type: string
+          description: Length of the equipment listed on the artifact, if any.
+          example: 53', 48'
+        equipmentType:
+          type: string
+          description: Type of equipment listed on the artifact, if any.
+          example: Dry Van, Reefer, Flatbed, etc.
+        consigneeName:
+          type: string
+          description: Consignee name in the artifact, if any.
+          example: Catherine's Culinary Corner
+        externalIdentifiers:
+          description: Comma-separated list of non-standard external identifiers, such as shipment identifiers or other reference numbers.
+          example:
+          - '89213'
+          - OF7890
+          type: array
+          items:
+            type: string
+        invoicedTotal:
+          description: Total dollar amount of the invoice in the artifact, if any.
+          allOf:
+          - $ref: '#/components/schemas/Money'
+        invoiceNumber:
+          type: string
+          description: Invoice number in the artifact, if any.
+          example: '419204'
+        invoiceDate:
+          type: string
+          description: Invoice date in the artifact, if any. Typically this is interpreted as the invoice "issue" date.
+          example: '2023-12-01'
+        pickupAppointmentDateTime:
+          type: string
+          description: Datetime of the pickup appointment in the artifact, if any.
+          example: '2023-12-01T12:00:00.000Z'
+        pickupDateAppointmentType:
+          type: string
+          description: Pickup appointment type on the artifact, if any.
+          example: FCFS, Appointment
+        pickupDate:
+          type: string
+          description: Pickup date in the artifact, if any.
+          example: '2023-11-01'
+        poNumber:
+          type: string
+          description: Purchase order number in the artifact, if any.
+          example: '19012'
+        proNumber:
+          type: string
+          description: PRO number in the artifact, if any.
+          example: '76910234'
+        reeferEquipmentTemperature:
+          type: string
+          description: Reefer equipment temperature in the artifact, if any.
+          example: 35-36F
+        shipperAddress:
+          description: Shipper address as it appears in the artifact, if any.
+          allOf:
+          - $ref: '#/components/schemas/RawSparseAddressValue'
+        shipperName:
+          type: string
+          description: Shipper name, if any.
+          example: Sally's Supply Store
+        transportationProvider:
+          type: string
+          description: Transportation provider such as a 3PL if on the artifact, if any.
+          example: TQL, CHR
+      required:
+      - externalIdentifiers
+    ShipmentRecordArtifactJobOceanAddress:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of address
+          enum:
+          - ORIGIN
+          - DESTINATION
+          example: ORIGIN
+        name:
+          type:
+          - object
+          - 'null'
+          description: The name associated with this address
+        addressQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        address:
+          description: The address details
+          example:
+            addressLine1: 123 Main St
+            addressLine2: Suite 100
+            city: San Diego
+            state: CA
+            postalCode: '92101'
+            country: US
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/RawSparseAddressValue'
+        organizationTag:
+          example:
+            tagType: exampleTagType
+            tagValue: exampleTagValue
+          description: A tag used to identify the organization associated with this address
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/RawEntityTag'
+      required:
+      - type
+      - name
+      - addressQid
+      - address
+      - organizationTag
     CurrencyCode:
       type: string
       enum:
@@ -872,55 +1021,7 @@ components:
       - ZAR
       - ZMW
       - ZWG
-    RawEntityTag:
-      type: object
-      properties:
-        tagType:
-          type: string
-          description: The tag type or key
-          example: externalCarrierUuid
-        tagValue:
-          type: string
-          description: The tag value
-          example: 304fb3dd-1f4a-404b-9f9e-c9134584915b
-      required:
-      - tagType
-      - tagValue
-    RawShipmentJobExpectedCharge:
-      type: object
-      properties:
-        code:
-          type: string
-          example: '660'
-          description: The client-provided code for this charge.
-        description:
-          type: string
-          example: California Fuel Surcharge
-          description: A description of the charge.
-        category:
-          type: string
-          enum:
-          - LINEHAUL
-          - FUEL_SURCHARGE
-          - OTHER
-          example: FUEL_SURCHARGE
-          description: The category of charge.
-        amount:
-          example:
-            amount: '3.50'
-            currencyCode: USD
-          allOf:
-          - $ref: '#/components/schemas/Money'
-        tags:
-          type: object
-          example:
-            chargeUuid: e00b356d-8db3-476d-86dc-2c1a6808ea2c
-          description: Entity tags assigned to the charge.
-      required:
-      - description
-      - category
-      - amount
-    ShipmentRecordArtifactAirRouteAirportLocation:
+    ShipmentRecordArtifactAirRouteUnlocodeLocation:
       type: object
       properties:
         qid:
@@ -938,55 +1039,319 @@ components:
           - DESTINATION_AIRPORT
           - INTERMEDIATE_AIRPORT
           - CONTAINER_FREIGHT_STATION
-          example: ORIGIN_AIRPORT
-        canonicalAirportQid:
+          example: CONTAINER_FREIGHT_STATION
+        unlocode:
+          type: string
+          description: The UN/LOCODE for this location
+          example: USNYC
+      required:
+      - type
+      - unlocode
+    RawPayableInvoiceReferenceNumberInput:
+      type: object
+      properties:
+        key:
+          type: string
+          enum:
+          - BILLING_ACCOUNT_NUMBER
+          - BOL_NUMBER
+          - CONSOLIDATED_INVOICE_NUMBER
+          - CONTAINER_NUMBER
+          - CUSTOMER_REFERENCE_NUMBER
+          - HAWB_NUMBER
+          - HBL_NUMBER
+          - INVOICE_NUMBER
+          - MAWB_NUMBER
+          - MBL_NUMBER
+          - PO_NUMBER
+          - PRO_NUMBER
+          - RAIL_WAYBILL_NUMBER
+          - SALES_ORDER_NUMBER
+          - SEA_WAYBILL_NUMBER
+          - UNKNOWN
+          example: BOL_NUMBER
+        value:
+          type: string
+          description: The value of the reference number.
+          example: '234287'
+      required:
+      - key
+      - value
+    Dimensions:
+      type: object
+      properties:
+        height:
+          type: string
+          format: decimal-string
+          example: '1.5'
+        length:
+          type: string
+          format: decimal-string
+          example: '1.5'
+        unit:
+          type: string
+          enum:
+          - INCH
+          - CENTIMETER
+          example: INCH
+        width:
+          type: string
+          format: decimal-string
+          example: '1.5'
+      required:
+      - height
+      - length
+      - unit
+      - width
+    ShipmentRecordArtifactJobGenericV1Location:
+      type: object
+      properties:
+        address:
+          description: The stop address.
+          example:
+            addressLine1: 123 Main St
+            addressLine2: Suite 100
+            city: San Diego
+            state: CA
+            postalCode: '92101'
+            country: US
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/RawSparseAddressValue'
+        date:
+          type:
+          - string
+          - 'null'
+          format: floating-date
+          example: '2023-01-01'
+        organizationQid:
           type:
           - string
           - 'null'
           description: Qualified unique identifier.
-          example: qid::canonical_airport:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
+        organizationTag:
+          example:
+            tagType: externalShipperUuid
+            tagValue: 304fb3dd-1f4a-404b-9f9e-c9134584915b
+          description: A tag used to identify the organization. If the organization does not exist, `organizationInfo` may be used to create an organization with the tag and organization info.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/RawEntityTag'
+        organizationInfo:
+          description: This object specifies information for the given organization. If the organization does not exist, this object may be used to create an organization with the tag and organization info.
+          allOf:
+          - $ref: '#/components/schemas/ShipmentRecordArtifactOrganizationInfo'
       required:
-      - type
-    ShipmentRecordArtifactJobOceanVoyage:
+      - date
+    CreateCostCodingTableEntryListArtifactInput:
       type: object
       properties:
-        vesselName:
-          type:
-          - string
-          - 'null'
-          description: The name of the vessel
-        voyageNumber:
-          type:
-          - string
-          - 'null'
-          description: The voyage or service number
-    ShipmentRecordArtifactJobAirIncoterm:
-      type: object
-      properties:
-        code:
+        tableQid:
           type: string
-          description: The Incoterm code (ICC 2020 list).
-          enum:
-          - EXW
-          - FCA
-          - CPT
-          - CIP
-          - DAP
-          - DPU
-          - DDP
-          - FAS
-          - FOB
-          - CFR
-          - CIF
-          example: FCA
-        namedPlace:
+          description: The QID of the cost coding table to add entries to. The table must exist and define the allowed fields for entries.
+          example: qid::cost_coding_table:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        entries:
+          description: The list of entries to add to the cost coding table. Each entry must contain all required fields as defined by the table's field definitions.
+          example:
+          - shipperAccountNumber: '12345'
+            glCodeDefault: 1000-2000-3000
+            shipperAccountName: ACME Shipping
+          - shipperAccountNumber: '67890'
+            glCodeDefault: 1000-2000-4000
+            shipperAccountName: Beta Logistics
+          type: array
+          items:
+            $ref: '#/components/schemas/CostCodingTableEntryInput'
+        artifactTags:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          properties: {}
+          example:
+            source: erp-system
+            uploadBatch: 2025-01-batch-001
+          description: Entity tags to be assigned to the cost coding table entries artifact.
+      required:
+      - tableQid
+      - entries
+    CostCodingTableEntryInput:
+      type: object
+      properties: {}
+    RawShipmentJobArticle:
+      type: object
+      properties:
+        dimensions:
+          example:
+            height: '2.8'
+            length: '12.1'
+            width: '1.5'
+            unit: INCH
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/Dimensions'
+        grossWeight:
+          example:
+            amount: '20.2'
+            unit: POUND
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/Weight'
+        nmfcClass:
+          allOf:
+          - $ref: '#/components/schemas/NmfcClass'
+        nmfcCodeString:
           type:
           - string
           - 'null'
-          description: The named place that qualifies the Incoterm (e.g. `FCA Shanghai`, `DDP Buyer's Warehouse Chicago`).
+          description: The raw NMFC code string.
+          example: 164390-08
+        packageCount:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/PackageCountInput'
+        handlingUnitCount:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/HandlingUnit'
+        description:
+          type: string
+          description: The description of the article.
+          example: dry goods
+    ShipmentRecordArtifactJobGenericV1Info:
+      type: object
+      properties:
+        vendorOrganizationQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        vendorOrganizationTag:
+          example:
+            tagType: externalCarrierUuid
+            tagValue: 304fb3dd-1f4a-404b-9f9e-c9134584915b
+          description: A tag used to identify the vendor organization. Must be specified if vendorOrganizationQid is not specified.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/RawEntityTag'
+        locations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentRecordArtifactJobGenericV1Location'
+        articles:
+          type: array
+          items:
+            $ref: '#/components/schemas/RawShipmentJobArticle'
+        modeLabel:
+          type: string
+          description: Mode label for the shipment job.
       required:
-      - code
+      - locations
+      - modeLabel
+    ShipmentRecordArtifactJobFtlStop:
+      type: object
+      properties:
+        address:
+          description: The stop address.
+          example:
+            addressLine1: 123 Main St
+            addressLine2: Suite 100
+            city: San Diego
+            state: CA
+            postalCode: '92101'
+            country: US
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/RawSparseAddressValue'
+        date:
+          type:
+          - string
+          - 'null'
+          format: floating-date
+          example: '2023-01-01'
+        organizationQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        organizationTag:
+          example:
+            tagType: externalShipperUuid
+            tagValue: 304fb3dd-1f4a-404b-9f9e-c9134584915b
+          description: A tag used to identify the organization. If the organization does not exist, `organizationInfo` may be used to create an organization with the tag and organization info.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/RawEntityTag'
+        organizationInfo:
+          description: This object specifies information for the given organization. If the organization does not exist, this object may be used to create an organization with the tag and organization info.
+          allOf:
+          - $ref: '#/components/schemas/ShipmentRecordArtifactOrganizationInfo'
+        stopType:
+          type: string
+          enum:
+          - DROP_OFF
+          - PICK_UP
+          example: DROP_OFF
+        articles:
+          type: array
+          items:
+            $ref: '#/components/schemas/RawShipmentJobArticle'
+        addressName:
+          type: string
+          description: The address name of the stop.
+      required:
+      - date
+      - stopType
+    CreateReceivableInvoiceLineItemInput:
+      type: object
+      properties:
+        chargeCode:
+          type: string
+          example: '201'
+        externalIdentifier:
+          type: string
+          description: The external identifier of the receivable charge.
+          example: '13423'
+        description:
+          type: string
+          description: The description of the charge.
+          example: Linehaul
+        amount:
+          example:
+            amount: '3.50'
+            currencyCode: USD
+          description: The amount being charged.
+          allOf:
+          - $ref: '#/components/schemas/Money'
+      required:
+      - description
+      - amount
     ShipmentRecordArtifactJobDrayageInfo:
       type: object
       properties:
@@ -1085,179 +1450,163 @@ components:
             $ref: '#/components/schemas/ShipmentRecordArtifactJobDrayageContainer'
       required:
       - freightChargeTerms
-    CreatePurchaseOrderRecordArtifactInput:
+    RawEntityTag:
       type: object
       properties:
-        purchaseOrderNumber:
+        tagType:
           type: string
-          description: The purchase order number. This will be used to match against existing shipments and parcels in Loop.
-          example: PO-2025-001234
-        createdDate:
+          description: The tag type or key
+          example: externalCarrierUuid
+        tagValue:
           type: string
-          description: The purchase order created date in YYYY-MM-DD format.
-          example: '2025-01-15'
-        supplierName:
+          description: The tag value
+          example: 304fb3dd-1f4a-404b-9f9e-c9134584915b
+      required:
+      - tagType
+      - tagValue
+    ShipmentRecordArtifactJobAirDate:
+      type: object
+      properties:
+        dateType:
           type: string
-          description: The supplier name as it appears in the source system. This field is used for informational purposes only. Use the supplierOrganizationTag to uniquely identify the supplier.
-          example: ACME Manufacturing Corp
-        supplierOrganizationTag:
-          example:
-            tagType: uniqueIdentifier
-            tagValue: '12345'
-          description: A tag used to identify the supplier organization.
+          description: The type of date
+          enum:
+          - EXECUTED
+          - FLIGHT_DEPARTURE
+          - FLIGHT_ARRIVAL
+          - ESTIMATED_ARRIVAL
+          - DELIVERY
+          example: FLIGHT_DEPARTURE
+        date:
+          type: string
+          format: floating-date
+          example: '2023-01-01'
+        iataCode:
+          type:
+          - string
+          - 'null'
+          description: The IATA airport code for this date if applicable (e.g. departure airport).
+      required:
+      - dateType
+      - date
+    ShipmentRecordArtifactJobFtlInfo:
+      type: object
+      properties:
+        freightChargeTerms:
           allOf:
-          - $ref: '#/components/schemas/RawEntityTag'
-        source:
-          type: string
-          description: The source of the purchase order data.
-        artifactTags:
+          - $ref: '#/components/schemas/FreightChargeTerms'
+        carrierOrganizationQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        carrierOrganizationTag:
+          example:
+            tagType: externalCarrierUuid
+            tagValue: 304fb3dd-1f4a-404b-9f9e-c9134584915b
+          description: A tag used to identify the carrier organization. Must be specified if carrierOrganizationQid is not specified.
           type:
           - object
           - 'null'
-          additionalProperties:
-            type: string
-          properties: {}
-          example:
-            tag1: value1
-            tag2: value2
-          description: Entity tags to be assigned to the purchase order artifact.
+          allOf:
+          - $ref: '#/components/schemas/RawEntityTag'
+        stops:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentRecordArtifactJobFtlStop'
       required:
-      - purchaseOrderNumber
-      - supplierOrganizationTag
-    RawShipmentJobPayment:
+      - freightChargeTerms
+      - stops
+    ShipmentRecordArtifactOrganizationInfo:
       type: object
       properties:
-        description:
+        displayName:
           type: string
-          example: Fuel surcharge advance
-          description: A description of the payment.
+          example: ACME Corp.
+      required:
+      - displayName
+    PackageCountInput:
+      type: object
+      properties:
         amount:
-          example:
-            amount: '3.50'
-            currencyCode: USD
-          description: The payment amount.
-          allOf:
-          - $ref: '#/components/schemas/Money'
-        externalIdentifier:
+          type: integer
+          example: 8
+        unit:
           type: string
-          example: e00b356d-8db3-476d-86dc-2c1a6808ea2c
-          description: An idempotency key for the payment.
+          enum:
+          - BAG
+          - BALE
+          - BOX
+          - BUNDLE
+          - CARTON
+          - CASE
+          - COIL
+          - EACH
+          - PACKAGE
+          - PAIL
+          - PIECE
+          - ROLL
+          - SQUARE
+          - TOTE
+          - TUBE
+          example: CARTON
       required:
-      - description
       - amount
-      - externalIdentifier
-    CreateShipmentRecordArtifactInput:
+      - unit
+    ShipmentRecordArtifactJobSeaAirAddress:
       type: object
       properties:
-        source:
+        type:
           type: string
-          description: The source of the shipment data.
-        jobs:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreateShipmentRecordJobInput'
-        artifactTags:
-          type: object
-          description: Entity tags assigned to the artifact
-      required:
-      - jobs
-    ArtifactMetadataSummary:
-      type: object
-      properties:
-        bolNumber:
-          type: string
-          description: Bill of lading number in the artifact, if any.
-          example: '201946'
-        carrierName:
-          type: string
-          description: Carrier name in the artifact, if any.
-          example: Tom's Trucking LLC
-        consigneeAddress:
-          description: Consignee address as it appears in the artifact, if any.
-          allOf:
-          - $ref: '#/components/schemas/RawSparseAddressValue'
-        dropoffAppointmentDateTime:
-          type: string
-          description: Datetime of the dropoff appointment in the artifact, if any.
-          example: '2023-12-01T12:00:00.000Z'
-        dropoffAppointmentType:
-          type: string
-          description: Dropoff appointment type on the artifact, if any.
-          example: FCFS, Appointment
-        equipmentRequirements:
-          type: string
-          description: Freeform text of the equipment requirements listed on the artifact, if any.
-          example: straps, tarps, food grade, etc.
-        equipmentSize:
-          type: string
-          description: Length of the equipment listed on the artifact, if any.
-          example: 53', 48'
-        equipmentType:
-          type: string
-          description: Type of equipment listed on the artifact, if any.
-          example: Dry Van, Reefer, Flatbed, etc.
-        consigneeName:
-          type: string
-          description: Consignee name in the artifact, if any.
-          example: Catherine's Culinary Corner
-        externalIdentifiers:
-          description: Comma-separated list of non-standard external identifiers, such as shipment identifiers or other reference numbers.
+          description: The type of address
+          enum:
+          - ORIGIN
+          - DESTINATION
+          example: ORIGIN
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name associated with this address
+        addressQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        address:
+          description: The address details
           example:
-          - '89213'
-          - OF7890
-          type: array
-          items:
-            type: string
-        invoicedTotal:
-          description: Total dollar amount of the invoice in the artifact, if any.
-          allOf:
-          - $ref: '#/components/schemas/Money'
-        invoiceNumber:
-          type: string
-          description: Invoice number in the artifact, if any.
-          example: '419204'
-        invoiceDate:
-          type: string
-          description: Invoice date in the artifact, if any. Typically this is interpreted as the invoice "issue" date.
-          example: '2023-12-01'
-        pickupAppointmentDateTime:
-          type: string
-          description: Datetime of the pickup appointment in the artifact, if any.
-          example: '2023-12-01T12:00:00.000Z'
-        pickupDateAppointmentType:
-          type: string
-          description: Pickup appointment type on the artifact, if any.
-          example: FCFS, Appointment
-        pickupDate:
-          type: string
-          description: Pickup date in the artifact, if any.
-          example: '2023-11-01'
-        poNumber:
-          type: string
-          description: Purchase order number in the artifact, if any.
-          example: '19012'
-        proNumber:
-          type: string
-          description: PRO number in the artifact, if any.
-          example: '76910234'
-        reeferEquipmentTemperature:
-          type: string
-          description: Reefer equipment temperature in the artifact, if any.
-          example: 35-36F
-        shipperAddress:
-          description: Shipper address as it appears in the artifact, if any.
+            addressLine1: 123 Main St
+            addressLine2: Suite 100
+            city: San Diego
+            state: CA
+            postalCode: '92101'
+            country: US
+          type:
+          - object
+          - 'null'
           allOf:
           - $ref: '#/components/schemas/RawSparseAddressValue'
-        shipperName:
-          type: string
-          description: Shipper name, if any.
-          example: Sally's Supply Store
-        transportationProvider:
-          type: string
-          description: Transportation provider such as a 3PL if on the artifact, if any.
-          example: TQL, CHR
+        organizationTag:
+          example:
+            tagType: exampleTagType
+            tagValue: exampleTagValue
+          description: A tag used to identify the organization associated with this address
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/RawEntityTag'
       required:
-      - externalIdentifiers
+      - type
+      - name
+      - addressQid
+      - address
+      - organizationTag
     ShipmentRecordArtifactJobCourierInfo:
       type: object
       properties:
@@ -1404,320 +1753,7 @@ components:
       - consigneeInTime
       - consigneeOutTime
       - articles
-    CreateShipmentRecordJobInput:
-      type: object
-      properties:
-        jobKey:
-          type: string
-          description: A stable, unique identifier for this job within the shipment record. When provided, this key is used to match jobs across submissions instead of array index. Must be unique across all jobs in the same shipment record.
-          example: '981960'
-        jobType:
-          type: string
-          enum:
-          - AIR
-          - CARTAGE
-          - COURIER
-          - CUSTOMS
-          - DRAYAGE
-          - FTL
-          - GENERIC_V1
-          - INTERMODAL
-          - LTL
-          - OCEAN
-          - ORIGIN_HANDLING
-          - RAIL
-          - SEA_AIR
-          - TONU
-          - TO_BE_DETERMINED
-          - UNKNOWN
-          - WAREHOUSING
-          example: FTL
-          description: Shipment job type
-        jobTypeInfo:
-          description: The job type info, if applicable. This must be a valid job type info for the job type.
-          oneOf:
-          - $ref: '#/components/schemas/ShipmentRecordArtifactJobAirInfo'
-          - $ref: '#/components/schemas/ShipmentRecordArtifactJobCourierInfo'
-          - $ref: '#/components/schemas/ShipmentRecordArtifactJobDrayageInfo'
-          - $ref: '#/components/schemas/ShipmentRecordArtifactJobFtlInfo'
-          - $ref: '#/components/schemas/ShipmentRecordArtifactJobLtlInfo'
-          - $ref: '#/components/schemas/ShipmentRecordArtifactJobOceanInfo'
-          - $ref: '#/components/schemas/ShipmentRecordArtifactJobSeaAirInfo'
-          - $ref: '#/components/schemas/ShipmentRecordArtifactJobTonuInfo'
-          - $ref: '#/components/schemas/ShipmentRecordArtifactJobGenericV1Info'
-          - $ref: '#/components/schemas/ShipmentRecordArtifactJobUnknownInfo'
-        customerOrganizationQid:
-          type: string
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        customerOrganizationTag:
-          example:
-            tagType: externalCustomerUuid
-            tagValue: e00b356d-8db3-476d-86dc-2c1a6808ea2c
-          description: A tag used to identify the customer organization. Must be specified if customerOrganizationQid is not specified.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/RawEntityTag'
-        referenceNumbersList:
-          description: Reference numbers associated with the shipment job. If specified, the display identifier is what is displayed for the job identifier in the Loop web application.
-          example:
-          - key: BOL_NUMBER
-            value: '234287'
-          - key: EXTERNAL_IDENTIFIER
-            value: '123456789'
-          type: array
-          items:
-            $ref: '#/components/schemas/RawShipmentReferenceNumberInput'
-        expectedCharges:
-          description: Expected charges for the shipment job.
-          type: array
-          items:
-            $ref: '#/components/schemas/RawShipmentJobExpectedCharge'
-        payablesReadinessStatus:
-          type: string
-          description: The payables readiness status of the shipment job. This is used to determine when the shipment job will be processed.
-          enum:
-          - IGNORE
-          - PENDING
-          - READY
-          example: READY
-        receivablesReadinessStatus:
-          type: string
-          description: The receivables readiness status of the shipment job. This is used to determine when the shipment job will be ready to be included in a receivable invoice.
-          enum:
-          - IGNORE
-          - PENDING
-          - READY
-          example: READY
-        payments:
-          description: Payments made for the shipment job (if any).
-          type: array
-          items:
-            $ref: '#/components/schemas/RawShipmentJobPayment'
-        tags:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          properties: {}
-          example:
-            tag1: value1
-            tag2: value2
-          description: Entity tags assigned to the shipment job.
-      required:
-      - jobType
-      - jobTypeInfo
-    CreateReceivableInvoiceRecordArtifactInput:
-      type: object
-      properties:
-        invoiceNumber:
-          type: string
-          description: The invoice number. This will be used to match against existing invoices in Loop.
-          example: I123412
-        currencyCode:
-          allOf:
-          - $ref: '#/components/schemas/CurrencyCode'
-        receivableLineItems:
-          description: The receivable line items to be invoiced.
-          type: array
-          items:
-            $ref: '#/components/schemas/CreateReceivableInvoiceLineItemInput'
-        customerOrganizationQid:
-          type: string
-          description: "The QID of the customer organization.\n      **Must be specified if customerOrganizationTag is not specified.**"
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        customerOrganizationTag:
-          example:
-            tagType: externalCustomerUuid
-            tagValue: e00b356d-8db3-476d-86dc-2c1a6808ea2c
-          description: "A tag used to identify the customer organization.\n      **Must be specified if customerOrganizationQid is not specified.**"
-          allOf:
-          - $ref: '#/components/schemas/RawEntityTag'
-        payeeOrganizationQid:
-          type: string
-          description: "The QID of the payee organization.\n      **Will default to the primary organization for the tenant if not specified.**"
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        shipmentQid:
-          type: string
-          description: "The QID of the shipment.\n      **Must be specified if shipmentExternalIdentifier is not specified.**"
-          example: qid::shipment:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        shipmentExternalIdentifier:
-          type: string
-          description: "The external identifier of the shipment.\n      **Must be specified if shipmentQid is not specified.**"
-          example: S112154220
-        shipmentJobReceivablesReadinessStatus:
-          type: string
-          description: The shipment job receivables readiness status. If this field is included, the receivables readiness status on all jobs of the linked shipments will be overridden to the value provided in this record. If you plan to send the `receivablesReadinessStatus` via the shipment record, its not recommended that you include this field in the payload.
-          enum:
-          - IGNORE
-          - PENDING
-          - READY
-          example: PENDING
-        artifactTags:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          properties: {}
-          example:
-            tag1: value1
-            tag2: value2
-          description: Entity tags to be assigned to the artifact.
-      required:
-      - invoiceNumber
-      - currencyCode
-      - receivableLineItems
-    ShipmentRecordArtifactJobFtlInfo:
-      type: object
-      properties:
-        freightChargeTerms:
-          allOf:
-          - $ref: '#/components/schemas/FreightChargeTerms'
-        carrierOrganizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        carrierOrganizationTag:
-          example:
-            tagType: externalCarrierUuid
-            tagValue: 304fb3dd-1f4a-404b-9f9e-c9134584915b
-          description: A tag used to identify the carrier organization. Must be specified if carrierOrganizationQid is not specified.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/RawEntityTag'
-        stops:
-          type: array
-          items:
-            $ref: '#/components/schemas/ShipmentRecordArtifactJobFtlStop'
-      required:
-      - freightChargeTerms
-      - stops
-    ShipmentRecordArtifactJobSeaAirContainer:
-      type: object
-      properties:
-        containerNumber:
-          type:
-          - string
-          - 'null'
-          description: The container number
-          example: MSKU1234567
-        containerType:
-          type:
-          - string
-          - 'null'
-          description: The type of container
-          enum:
-          - GP20
-          - GP40
-          - HC40
-          - HC45
-          - RF20
-          - RF40
-          - RF40HC
-          - OT20
-          - OT40
-          - FR20
-          - FR40
-          - TK20
-          example: GP20
-      required:
-      - containerNumber
-      - containerType
-    ShipmentRecordArtifactJobUnknownInfo:
-      type: object
-      properties:
-        vendorOrganizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        vendorOrganizationTag:
-          example:
-            tagType: externalCarrierUuid
-            tagValue: 304fb3dd-1f4a-404b-9f9e-c9134584915b
-          description: A tag used to identify the vendor organization. Must be specified if vendorOrganizationQid is not specified.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/RawEntityTag'
-    ShipmentRecordArtifactJobDrayageContainer:
-      type: object
-      properties:
-        containerNumber:
-          type:
-          - string
-          - 'null'
-          description: The container number.
-        containerType:
-          type:
-          - string
-          - 'null'
-          description: The type of container (e.g. GP20, GP40, HC40).
-          enum:
-          - GP20
-          - GP40
-          - HC40
-          - HC45
-          - RF20
-          - RF40
-          - RF40HC
-          - OT20
-          - OT40
-          - FR20
-          - FR40
-          - TK20
-        pickupDate:
-          type:
-          - string
-          - 'null'
-          format: floating-date
-          example: '2023-01-01'
-        returnDate:
-          type:
-          - string
-          - 'null'
-          format: floating-date
-          example: '2023-01-01'
-        chassisNumber:
-          type:
-          - string
-          - 'null'
-          description: The chassis number.
-        chassisProviderOrganizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        containerGrossWeight:
-          description: The gross weight of the container including cargo.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/Weight'
-      required:
-      - containerNumber
-      - pickupDate
-      - returnDate
-    ShipmentRecordArtifactAirRouteUnlocodeLocation:
+    ShipmentRecordArtifactAirRouteAirportLocation:
       type: object
       properties:
         qid:
@@ -1735,49 +1771,80 @@ components:
           - DESTINATION_AIRPORT
           - INTERMEDIATE_AIRPORT
           - CONTAINER_FREIGHT_STATION
-          example: CONTAINER_FREIGHT_STATION
-        unlocode:
-          type: string
-          description: The UN/LOCODE for this location
-          example: USNYC
+          example: ORIGIN_AIRPORT
+        canonicalAirportQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::canonical_airport:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
       required:
       - type
-      - unlocode
-    ShipmentRecordArtifactOrganizationInfo:
+    ShipmentRecordArtifactJobTonuInfo:
       type: object
       properties:
-        displayName:
-          type: string
-          example: ACME Corp.
-      required:
-      - displayName
-    ShipmentRecordArtifactJobOceanRouteLocation:
+        carrierOrganizationQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        carrierOrganizationTag:
+          example:
+            tagType: externalCarrierUuid
+            tagValue: 304fb3dd-1f4a-404b-9f9e-c9134584915b
+          description: A tag used to identify the carrier. Must be specified if carrierOrganizationQid is not specified.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/RawEntityTag'
+    FreightChargeTerms:
+      type: string
+      enum:
+      - COLLECT
+      - PREPAID
+      - THIRD_PARTY
+      - UNKNOWN
+    ShipmentRecordArtifactJobSeaAirRouteLocation:
       type: object
       properties:
         type:
           type: string
-          description: The type of route location
-          enum:
-          - PORT_OF_LOADING
-          - PORT_OF_DISCHARGE
-          - PORT_OF_ENTRY
-          - CONTAINER_FREIGHT_STATION
-          - PLACE_OF_RECEIPT
-          - PLACE_OF_DELIVERY
+          description: The type of route location (OceanRouteLocationType or AirRouteLocationType)
           example: PORT_OF_LOADING
         unlocode:
-          type: string
-          description: The UN/LOCODE for this location
-          example: USNYC
-        name:
           type:
-          - object
+          - string
           - 'null'
-          description: The name of this location
+          description: The UN/LOCODE for this location (for ocean and CFS locations)
+          example: USNYC
+        canonicalAirportQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::canonical_airport:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
       required:
       - type
       - unlocode
-      - name
+      - canonicalAirportQid
+    CreateOrganizationFactorAssignmentRecordArtifactInput:
+      type: object
+      properties:
+        carrierOrganizationQid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        factorInfo:
+          $ref: '#/components/schemas/CreateOrganizationFactorAssignmentRecordFactorInfoInput'
+      required:
+      - carrierOrganizationQid
+      - factorInfo
     CreatePayableInvoiceRecordArtifactInput:
       type: object
       properties:
@@ -1868,585 +1935,6 @@ components:
       - paymentDueDate
       - invoicedTotal
       - lineItems
-    ArtifactExpanded:
-      type: object
-      properties:
-        qid:
-          type: string
-          description: Qualified unique identifier.
-          example: qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        artifactType:
-          type: string
-          description: Domain-specific type of the artifact.
-          enum:
-          - ACCOUNT_STATEMENT
-          - BILL_OF_LADING
-          - CUSTOMER_RATE_CONFIRMATION
-          - DELIVERY_ORDER
-          - DELIVERY_RECEIPT
-          - EXTERNAL_SHIPMENT_NOTE
-          - INVOICE
-          - IN_OUT_GATE
-          - LUMPER_RECEIPT
-          - OTHER
-          - PACKET
-          - PACKING_LIST
-          - RATE_CONFIRMATION
-          - SCALE_TICKET
-          - SHIPMENT_RECORD
-          - UNKNOWN
-          - WASHOUT_RECEIPT
-          - WEIGHT_INSPECTION
-          - WORK_ORDER
-          example: INVOICE
-      required:
-      - qid
-      - artifactType
-    ShipmentRecordArtifactJobOceanContainer:
-      type: object
-      properties:
-        containerNumber:
-          type:
-          - string
-          - 'null'
-          description: The container number
-          example: MSKU1234567
-        containerType:
-          type:
-          - string
-          - 'null'
-          description: The type of container
-          enum:
-          - GP20
-          - GP40
-          - HC40
-          - HC45
-          - RF20
-          - RF40
-          - RF40HC
-          - OT20
-          - OT40
-          - FR20
-          - FR40
-          - TK20
-          example: GP20
-      required:
-      - containerNumber
-      - containerType
-    PackageCountInput:
-      type: object
-      properties:
-        amount:
-          type: integer
-          example: 8
-        unit:
-          type: string
-          enum:
-          - BAG
-          - BALE
-          - BOX
-          - BUNDLE
-          - CARTON
-          - CASE
-          - COIL
-          - EACH
-          - PACKAGE
-          - PAIL
-          - PIECE
-          - ROLL
-          - SQUARE
-          - TOTE
-          - TUBE
-          example: CARTON
-      required:
-      - amount
-      - unit
-    CreateOrganizationFactorAssignmentRecordFactorInfoInput:
-      type: object
-      properties:
-        name:
-          type: string
-        primaryAddress:
-          example:
-            addressLine1: 123 Main St
-            addressLine2: Suite 100
-            city: San Diego
-            state: CA
-            postalCode: '92101'
-            country: US
-          allOf:
-          - $ref: '#/components/schemas/RawSparseAddressValue'
-        remittanceAddress:
-          example:
-            addressLine1: 123 Main St
-            addressLine2: Suite 100
-            city: San Diego
-            state: CA
-            postalCode: '92101'
-            country: US
-          allOf:
-          - $ref: '#/components/schemas/RawSparseAddressValue'
-        additionalInfo:
-          type: object
-      required:
-      - name
-      - primaryAddress
-    RawShipmentReferenceNumberInput:
-      type: object
-      properties:
-        key:
-          type: string
-          enum:
-          - APPOINTMENT_REFERENCE_NUMBER
-          - BILLING_ACCOUNT_NUMBER
-          - BOL_NUMBER
-          - CARRIER_IDENTIFIER
-          - CONSOLIDATED_INVOICE_NUMBER
-          - CONTAINER_NUMBER
-          - CUSTOMER_REFERENCE_NUMBER
-          - DELIVERY_NUMBER
-          - DESTINATION_LOCATION_NUMBER
-          - DISPLAY_IDENTIFIER
-          - EXTERNAL_IDENTIFIER
-          - HAWB_NUMBER
-          - HBL_NUMBER
-          - INVOICE_NUMBER
-          - MAWB_NUMBER
-          - MBL_NUMBER
-          - ORIGIN_LOCATION_NUMBER
-          - PICKUP_CONFIRMATION_NUMBER
-          - PICKUP_REFERENCE_NUMBER
-          - PO_NUMBER
-          - PRO_NUMBER
-          - RAIL_WAYBILL_NUMBER
-          - SALES_ORDER_NUMBER
-          - SEA_WAYBILL_NUMBER
-          - TRACKING_NUMBER
-          - TRAILER_NUMBER
-          - UNKNOWN
-          example: PO_NUMBER
-        value:
-          type: string
-          description: The value of the reference number.
-          example: '123'
-      required:
-      - key
-      - value
-    ShipmentRecordArtifactJobGenericV1Info:
-      type: object
-      properties:
-        vendorOrganizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        vendorOrganizationTag:
-          example:
-            tagType: externalCarrierUuid
-            tagValue: 304fb3dd-1f4a-404b-9f9e-c9134584915b
-          description: A tag used to identify the vendor organization. Must be specified if vendorOrganizationQid is not specified.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/RawEntityTag'
-        locations:
-          type: array
-          items:
-            $ref: '#/components/schemas/ShipmentRecordArtifactJobGenericV1Location'
-        articles:
-          type: array
-          items:
-            $ref: '#/components/schemas/RawShipmentJobArticle'
-        modeLabel:
-          type: string
-          description: Mode label for the shipment job.
-      required:
-      - locations
-      - modeLabel
-    CreatePayableInvoiceLineItemInput:
-      type: object
-      properties:
-        description:
-          type: string
-          description: The description of the line item.
-        amount:
-          example:
-            amount: '3.50'
-            currencyCode: USD
-          description: The amount charged for this line item.
-          allOf:
-          - $ref: '#/components/schemas/Money'
-        category:
-          type: string
-          description: The category of the line item.
-          enum:
-          - LINEHAUL
-          - FUEL_SURCHARGE
-          - DISCOUNT
-          - OTHER
-      required:
-      - description
-      - amount
-      - category
-    ShipmentRecordArtifactJobOceanAddress:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of address
-          enum:
-          - ORIGIN
-          - DESTINATION
-          example: ORIGIN
-        name:
-          type:
-          - object
-          - 'null'
-          description: The name associated with this address
-        addressQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        address:
-          description: The address details
-          example:
-            addressLine1: 123 Main St
-            addressLine2: Suite 100
-            city: San Diego
-            state: CA
-            postalCode: '92101'
-            country: US
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/RawSparseAddressValue'
-        organizationTag:
-          example:
-            tagType: exampleTagType
-            tagValue: exampleTagValue
-          description: A tag used to identify the organization associated with this address
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/RawEntityTag'
-      required:
-      - type
-      - name
-      - addressQid
-      - address
-      - organizationTag
-    ShipmentRecordArtifactJobGenericV1Location:
-      type: object
-      properties:
-        address:
-          description: The stop address.
-          example:
-            addressLine1: 123 Main St
-            addressLine2: Suite 100
-            city: San Diego
-            state: CA
-            postalCode: '92101'
-            country: US
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/RawSparseAddressValue'
-        date:
-          type:
-          - string
-          - 'null'
-          format: floating-date
-          example: '2023-01-01'
-        organizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        organizationTag:
-          example:
-            tagType: externalShipperUuid
-            tagValue: 304fb3dd-1f4a-404b-9f9e-c9134584915b
-          description: A tag used to identify the organization. If the organization does not exist, `organizationInfo` may be used to create an organization with the tag and organization info.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/RawEntityTag'
-        organizationInfo:
-          description: This object specifies information for the given organization. If the organization does not exist, this object may be used to create an organization with the tag and organization info.
-          allOf:
-          - $ref: '#/components/schemas/ShipmentRecordArtifactOrganizationInfo'
-      required:
-      - date
-    FreightChargeTerms:
-      type: string
-      enum:
-      - COLLECT
-      - PREPAID
-      - THIRD_PARTY
-      - UNKNOWN
-    RawSparseAddressValue:
-      type: object
-      properties:
-        addressLine1:
-          type: string
-          example: 123 Main Street
-        addressLine2:
-          type: string
-          example: Suite 456
-        city:
-          type: string
-          example: Chicago
-        state:
-          type: string
-          description: Any variation of state. For example, "IL" or "Illinois" or something else.
-          example: IL
-        postalCode:
-          type: string
-          example: '60601'
-        country:
-          type: string
-          description: Any variation of a country name or country ISO 2 code. For example, it could be empty, "US", "USA", "United States", "United States of America", "America", etc.
-          example: USA
-    ShipmentRecordArtifactJobOceanInfo:
-      type: object
-      properties:
-        freightChargeTerms:
-          allOf:
-          - $ref: '#/components/schemas/FreightChargeTerms'
-        carrierOrganizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        carrierOrganizationTag:
-          example:
-            tagType: exampleTagType
-            tagValue: exampleTagValue
-          description: A tag used to identify the carrier organization. Must be specified if carrierOrganizationQid is not specified.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/RawEntityTag'
-        forwarderOrganizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        forwarderOrganizationTag:
-          example:
-            tagType: exampleTagType
-            tagValue: exampleTagValue
-          description: A tag used to identify the forwarder organization. Must be specified if forwarderOrganizationQid is not specified.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/RawEntityTag'
-        consolidationType:
-          type:
-          - string
-          - 'null'
-          description: The consolidation type for this ocean shipment
-          enum:
-          - FCL
-          - LCL
-          example: FCL
-        forwarderRole:
-          type:
-          - string
-          - 'null'
-          description: The role of the forwarder on this ocean shipment job. BOOKING_AGENT means the BCO contracts directly with the steamship line and the carrier is the vendor; NVOCC means the forwarder issues its own rates and is the vendor.
-          enum:
-          - BOOKING_AGENT
-          - NVOCC
-          example: NVOCC
-        addresses:
-          description: The addresses associated with this ocean shipment
-          type: array
-          items:
-            $ref: '#/components/schemas/ShipmentRecordArtifactJobOceanAddress'
-        routeLocations:
-          description: The route locations for this ocean shipment
-          type: array
-          items:
-            $ref: '#/components/schemas/ShipmentRecordArtifactJobOceanRouteLocation'
-        containers:
-          description: The containers used for this ocean shipment
-          type: array
-          items:
-            $ref: '#/components/schemas/ShipmentRecordArtifactJobOceanContainer'
-        totalVolume:
-          description: The total volume of the ocean shipment
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/Volume'
-        grossWeight:
-          description: The total gross weight of the ocean shipment
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/Weight'
-        dates:
-          description: Dates associated with this ocean shipment (e.g. cargo received, laden on board, arrival).
-          type: array
-          items:
-            $ref: '#/components/schemas/ShipmentRecordArtifactJobOceanDate'
-        voyages:
-          description: Vessel and voyage pairs for this ocean shipment. A shipment may have multiple legs with different vessels.
-          type: array
-          items:
-            $ref: '#/components/schemas/ShipmentRecordArtifactJobOceanVoyage'
-      required:
-      - freightChargeTerms
-      - consolidationType
-      - addresses
-      - routeLocations
-      - containers
-      - totalVolume
-      - grossWeight
-    Artifact:
-      type: object
-      properties:
-        qid:
-          type: string
-          description: Qualified unique identifier.
-          format: qid
-          example: qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-        createdAt:
-          type: string
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-        revisionNumber:
-          type: number
-          example: 1
-        revisionCreatedAt:
-          type: string
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-        artifactType:
-          type: string
-          description: Domain-specific type of the artifact.
-          enum:
-          - ACCOUNT_STATEMENT
-          - BILL_OF_LADING
-          - CUSTOMER_RATE_CONFIRMATION
-          - DELIVERY_ORDER
-          - DELIVERY_RECEIPT
-          - EXTERNAL_SHIPMENT_NOTE
-          - INVOICE
-          - IN_OUT_GATE
-          - LUMPER_RECEIPT
-          - OTHER
-          - PACKET
-          - PACKING_LIST
-          - RATE_CONFIRMATION
-          - SCALE_TICKET
-          - SHIPMENT_RECORD
-          - UNKNOWN
-          - WASHOUT_RECEIPT
-          - WEIGHT_INSPECTION
-          - WORK_ORDER
-          example: INVOICE
-        artifactFormat:
-          type: string
-          description: Encoding format of the artifact.
-          enum:
-          - BIN
-          - CSV
-          - DOC
-          - DOCX
-          - EDI_EDIFACT
-          - EDI_X12
-          - GIF
-          - HEIC
-          - HTML
-          - JPG
-          - JPEG
-          - JSON
-          - JSONL
-          - MALFORMED_PDF
-          - MD
-          - PDF
-          - PNG
-          - RTF
-          - TIFF
-          - TNEF
-          - TXT
-          - XLSB
-          - XLSX
-          - XLS
-          - XML
-          - ZIP
-          example: PDF
-        displayName:
-          type: string
-          description: Name of the artifact for display purposes.
-          example: XPO Invoice 54219 - 2023-12-01
-        summary:
-          description: Summary of semi-structured metadata extracted or parsed from the artifact. This is an expansion field. To include this field, you must include `summary` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/ArtifactMetadataSummary'
-        derivativeArtifacts:
-          description: This API provides a list of QIDs and corresponding types for artifacts that have been derived from the queried artifact. This is particularly useful when the queried artifact is a collection of other artifacts, such as a PDF document containing an invoice and a bill of lading. This is an expansion field. To include this field, you must include `derivativeArtifacts` in the query parameters.
-          type: array
-          items:
-            $ref: '#/components/schemas/ArtifactExpanded'
-        tags:
-          type: object
-          description: Entity tags assigned to the artifact. This is an expansion field. To include this field, you must include `tags` in the query parameters.
-      required:
-      - qid
-      - createdAt
-      - revisionNumber
-      - revisionCreatedAt
-      - artifactType
-      - artifactFormat
-      - displayName
-    ShipmentRecordArtifactJobSeaAirRouteLocation:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of route location (OceanRouteLocationType or AirRouteLocationType)
-          example: PORT_OF_LOADING
-        unlocode:
-          type:
-          - string
-          - 'null'
-          description: The UN/LOCODE for this location (for ocean and CFS locations)
-          example: USNYC
-        canonicalAirportQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::canonical_airport:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-      required:
-      - type
-      - unlocode
-      - canonicalAirportQid
     ShipmentRecordArtifactJobAirInfo:
       type: object
       properties:
@@ -2548,79 +2036,51 @@ components:
       - grossWeight
       - totalVolume
       - routeLocations
-    ShipmentRecordArtifactJobOceanDate:
+    RawSparseAddressValue:
       type: object
       properties:
-        dateType:
+        addressLine1:
           type: string
-          description: The type of date
-          enum:
-          - CARGO_RECEIVED
-          - LADEN_ON_BOARD
-          - DEPARTURE
-          - ESTIMATED_ARRIVAL
-          - ARRIVAL
-          - DISCHARGE
-          - DELIVERY
-          example: LADEN_ON_BOARD
-        date:
+          example: 123 Main Street
+        addressLine2:
           type: string
-          format: floating-date
-          example: '2023-01-01'
-        unlocode:
-          type:
-          - string
-          - 'null'
-          description: The UN/LOCODE for this date if applicable (e.g. port of laden-on-board)
-      required:
-      - dateType
-      - date
-    ShipmentRecordArtifactJobTonuInfo:
+          example: Suite 456
+        city:
+          type: string
+          example: Chicago
+        state:
+          type: string
+          description: Any variation of state. For example, "IL" or "Illinois" or something else.
+          example: IL
+        postalCode:
+          type: string
+          example: '60601'
+        country:
+          type: string
+          description: Any variation of a country name or country ISO 2 code. For example, it could be empty, "US", "USA", "United States", "United States of America", "America", etc.
+          example: USA
+    RawShipmentJobPayment:
       type: object
       properties:
-        carrierOrganizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        carrierOrganizationTag:
+        description:
+          type: string
+          example: Fuel surcharge advance
+          description: A description of the payment.
+        amount:
           example:
-            tagType: externalCarrierUuid
-            tagValue: 304fb3dd-1f4a-404b-9f9e-c9134584915b
-          description: A tag used to identify the carrier. Must be specified if carrierOrganizationQid is not specified.
-          type:
-          - object
-          - 'null'
+            amount: '3.50'
+            currencyCode: USD
+          description: The payment amount.
           allOf:
-          - $ref: '#/components/schemas/RawEntityTag'
-    Dimensions:
-      type: object
-      properties:
-        height:
+          - $ref: '#/components/schemas/Money'
+        externalIdentifier:
           type: string
-          format: decimal-string
-          example: '1.5'
-        length:
-          type: string
-          format: decimal-string
-          example: '1.5'
-        unit:
-          type: string
-          enum:
-          - INCH
-          - CENTIMETER
-          example: INCH
-        width:
-          type: string
-          format: decimal-string
-          example: '1.5'
+          example: e00b356d-8db3-476d-86dc-2c1a6808ea2c
+          description: An idempotency key for the payment.
       required:
-      - height
-      - length
-      - unit
-      - width
+      - description
+      - amount
+      - externalIdentifier
     ShipmentRecordArtifactJobLtlInfo:
       type: object
       properties:
@@ -2734,222 +2194,269 @@ components:
       - destinationAddress
       - deliveryDate
       - articles
-    CreateCostCodingTableEntryListArtifactInput:
+    ShipmentRecordArtifactJobUnknownInfo:
       type: object
       properties:
-        tableQid:
-          type: string
-          description: The QID of the cost coding table to add entries to. The table must exist and define the allowed fields for entries.
-          example: qid::cost_coding_table:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        entries:
-          description: The list of entries to add to the cost coding table. Each entry must contain all required fields as defined by the table's field definitions.
-          example:
-          - shipperAccountNumber: '12345'
-            glCodeDefault: 1000-2000-3000
-            shipperAccountName: ACME Shipping
-          - shipperAccountNumber: '67890'
-            glCodeDefault: 1000-2000-4000
-            shipperAccountName: Beta Logistics
-          type: array
-          items:
-            $ref: '#/components/schemas/CostCodingTableEntryInput'
-        artifactTags:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          properties: {}
-          example:
-            source: erp-system
-            uploadBatch: 2025-01-batch-001
-          description: Entity tags to be assigned to the cost coding table entries artifact.
-      required:
-      - tableQid
-      - entries
-    ShipmentRecordArtifactJobSeaAirAddress:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of address
-          enum:
-          - ORIGIN
-          - DESTINATION
-          example: ORIGIN
-        name:
-          type:
-          - string
-          - 'null'
-          description: The name associated with this address
-        addressQid:
+        vendorOrganizationQid:
           type:
           - string
           - 'null'
           description: Qualified unique identifier.
-          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
-        address:
-          description: The address details
+        vendorOrganizationTag:
           example:
-            addressLine1: 123 Main St
-            addressLine2: Suite 100
-            city: San Diego
-            state: CA
-            postalCode: '92101'
-            country: US
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/RawSparseAddressValue'
-        organizationTag:
-          example:
-            tagType: exampleTagType
-            tagValue: exampleTagValue
-          description: A tag used to identify the organization associated with this address
+            tagType: externalCarrierUuid
+            tagValue: 304fb3dd-1f4a-404b-9f9e-c9134584915b
+          description: A tag used to identify the vendor organization. Must be specified if vendorOrganizationQid is not specified.
           type:
           - object
           - 'null'
           allOf:
           - $ref: '#/components/schemas/RawEntityTag'
-      required:
-      - type
-      - name
-      - addressQid
-      - address
-      - organizationTag
-    HandlingUnit:
+    ShipmentRecordArtifactJobOceanInfo:
       type: object
       properties:
-        amount:
-          type: integer
-          example: 8
-        unit:
-          type: string
-          enum:
-          - BARREL
-          - CARLOAD
-          - CONTAINER
-          - CRATE
-          - DRUM
-          - EACH
-          - PALLET
-          - RACK
-          - SKID
-          - TOTE
-          - TRAILER
-          example: PALLET
-      required:
-      - amount
-      - unit
-    CreateReceivableInvoiceLineItemInput:
-      type: object
-      properties:
-        chargeCode:
-          type: string
-          example: '201'
-        externalIdentifier:
-          type: string
-          description: The external identifier of the receivable charge.
-          example: '13423'
-        description:
-          type: string
-          description: The description of the charge.
-          example: Linehaul
-        amount:
-          example:
-            amount: '3.50'
-            currencyCode: USD
-          description: The amount being charged.
+        freightChargeTerms:
           allOf:
-          - $ref: '#/components/schemas/Money'
+          - $ref: '#/components/schemas/FreightChargeTerms'
+        carrierOrganizationQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        carrierOrganizationTag:
+          example:
+            tagType: exampleTagType
+            tagValue: exampleTagValue
+          description: A tag used to identify the carrier organization. Must be specified if carrierOrganizationQid is not specified.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/RawEntityTag'
+        forwarderOrganizationQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        forwarderOrganizationTag:
+          example:
+            tagType: exampleTagType
+            tagValue: exampleTagValue
+          description: A tag used to identify the forwarder organization. Must be specified if forwarderOrganizationQid is not specified.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/RawEntityTag'
+        consolidationType:
+          type:
+          - string
+          - 'null'
+          description: The consolidation type for this ocean shipment
+          enum:
+          - FCL
+          - LCL
+          example: FCL
+        forwarderRole:
+          type:
+          - string
+          - 'null'
+          description: The role of the forwarder on this ocean shipment job. BOOKING_AGENT means the BCO contracts directly with the steamship line and the carrier is the vendor; NVOCC means the forwarder issues its own rates and is the vendor.
+          enum:
+          - BOOKING_AGENT
+          - NVOCC
+          example: NVOCC
+        addresses:
+          description: The addresses associated with this ocean shipment
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentRecordArtifactJobOceanAddress'
+        routeLocations:
+          description: The route locations for this ocean shipment
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentRecordArtifactJobOceanRouteLocation'
+        containers:
+          description: The containers used for this ocean shipment
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentRecordArtifactJobOceanContainer'
+        totalVolume:
+          description: The total volume of the ocean shipment
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/Volume'
+        grossWeight:
+          description: The total gross weight of the ocean shipment
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/Weight'
+        dates:
+          description: Dates associated with this ocean shipment (e.g. cargo received, laden on board, arrival).
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentRecordArtifactJobOceanDate'
+        voyages:
+          description: Vessel and voyage pairs for this ocean shipment. A shipment may have multiple legs with different vessels.
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentRecordArtifactJobOceanVoyage'
       required:
-      - description
-      - amount
-    RawPayableInvoiceReferenceNumberInput:
+      - freightChargeTerms
+      - consolidationType
+      - addresses
+      - routeLocations
+      - containers
+      - totalVolume
+      - grossWeight
+    ShipmentRecordArtifactJobSeaAirContainer:
       type: object
       properties:
-        key:
-          type: string
+        containerNumber:
+          type:
+          - string
+          - 'null'
+          description: The container number
+          example: MSKU1234567
+        containerType:
+          type:
+          - string
+          - 'null'
+          description: The type of container
           enum:
-          - BILLING_ACCOUNT_NUMBER
-          - BOL_NUMBER
-          - CONSOLIDATED_INVOICE_NUMBER
-          - CONTAINER_NUMBER
-          - CUSTOMER_REFERENCE_NUMBER
-          - HAWB_NUMBER
-          - HBL_NUMBER
-          - INVOICE_NUMBER
-          - MAWB_NUMBER
-          - MBL_NUMBER
-          - PO_NUMBER
-          - PRO_NUMBER
-          - RAIL_WAYBILL_NUMBER
-          - SALES_ORDER_NUMBER
-          - SEA_WAYBILL_NUMBER
-          - UNKNOWN
-          example: BOL_NUMBER
-        value:
-          type: string
-          description: The value of the reference number.
-          example: '234287'
+          - GP20
+          - GP40
+          - HC40
+          - HC45
+          - RF20
+          - RF40
+          - RF40HC
+          - OT20
+          - OT40
+          - FR20
+          - FR40
+          - TK20
+          example: GP20
       required:
-      - key
-      - value
-    Weight:
+      - containerNumber
+      - containerType
+    ShipmentRecordArtifactJobOceanContainer:
+      type: object
+      properties:
+        containerNumber:
+          type:
+          - string
+          - 'null'
+          description: The container number
+          example: MSKU1234567
+        containerType:
+          type:
+          - string
+          - 'null'
+          description: The type of container
+          enum:
+          - GP20
+          - GP40
+          - HC40
+          - HC45
+          - RF20
+          - RF40
+          - RF40HC
+          - OT20
+          - OT40
+          - FR20
+          - FR40
+          - TK20
+          example: GP20
+      required:
+      - containerNumber
+      - containerType
+    Money:
       type: object
       properties:
         amount:
           type: string
           format: decimal-string
-          example: '1.5'
-        unit:
-          type: string
-          enum:
-          - KILOGRAM
-          - OUNCE
-          - POUND
-          - SHORT_TON
-          example: POUND
+          example: '3.50'
+          description: The amount of money
+        currencyCode:
+          allOf:
+          - $ref: '#/components/schemas/CurrencyCode'
       required:
       - amount
-      - unit
-    CreateOrganizationFactorAssignmentRecordArtifactInput:
+      - currencyCode
+    RawShipmentJobExpectedCharge:
       type: object
       properties:
-        carrierOrganizationQid:
+        code:
           type: string
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        factorInfo:
-          $ref: '#/components/schemas/CreateOrganizationFactorAssignmentRecordFactorInfoInput'
+          example: '660'
+          description: The client-provided code for this charge.
+        description:
+          type: string
+          example: California Fuel Surcharge
+          description: A description of the charge.
+        category:
+          type: string
+          enum:
+          - LINEHAUL
+          - FUEL_SURCHARGE
+          - OTHER
+          example: FUEL_SURCHARGE
+          description: The category of charge.
+        amount:
+          example:
+            amount: '3.50'
+            currencyCode: USD
+          allOf:
+          - $ref: '#/components/schemas/Money'
+        tags:
+          type: object
+          example:
+            chargeUuid: e00b356d-8db3-476d-86dc-2c1a6808ea2c
+          description: Entity tags assigned to the charge.
       required:
-      - carrierOrganizationQid
-      - factorInfo
-    NmfcClass:
-      type: string
-      enum:
-      - '50'
-      - '55'
-      - '60'
-      - '65'
-      - '70'
-      - '77.5'
-      - '85'
-      - '92.5'
-      - '100'
-      - '110'
-      - '125'
-      - '150'
-      - '175'
-      - '200'
-      - '250'
-      - '300'
-      - '400'
-      - '500'
+      - description
+      - category
+      - amount
+    ShipmentRecordArtifactJobOceanVoyage:
+      type: object
+      properties:
+        vesselName:
+          type:
+          - string
+          - 'null'
+          description: The name of the vessel
+        voyageNumber:
+          type:
+          - string
+          - 'null'
+          description: The voyage or service number
+    CreateShipmentRecordArtifactInput:
+      type: object
+      properties:
+        source:
+          type: string
+          description: The source of the shipment data.
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateShipmentRecordJobInput'
+        artifactTags:
+          type: object
+          description: Entity tags assigned to the artifact
+      required:
+      - jobs
     Volume:
       type: object
       properties:
@@ -2968,91 +2475,278 @@ components:
       required:
       - value
       - unit
-    ShipmentRecordArtifactJobAirDate:
+    CreateShipmentRecordJobInput:
       type: object
       properties:
-        dateType:
+        jobKey:
           type: string
-          description: The type of date
+          description: A stable, unique identifier for this job within the shipment record. When provided, this key is used to match jobs across submissions instead of array index. Must be unique across all jobs in the same shipment record.
+          example: '981960'
+        jobType:
+          type: string
           enum:
-          - EXECUTED
-          - FLIGHT_DEPARTURE
-          - FLIGHT_ARRIVAL
-          - ESTIMATED_ARRIVAL
-          - DELIVERY
-          example: FLIGHT_DEPARTURE
-        date:
+          - AIR
+          - CARTAGE
+          - COURIER
+          - CUSTOMS
+          - DRAYAGE
+          - FTL
+          - GENERIC_V1
+          - INTERMODAL
+          - LTL
+          - OCEAN
+          - ORIGIN_HANDLING
+          - RAIL
+          - SEA_AIR
+          - TONU
+          - TO_BE_DETERMINED
+          - UNKNOWN
+          - WAREHOUSING
+          example: FTL
+          description: Shipment job type
+        jobTypeInfo:
+          description: The job type info, if applicable. This must be a valid job type info for the job type.
+          oneOf:
+          - $ref: '#/components/schemas/ShipmentRecordArtifactJobAirInfo'
+          - $ref: '#/components/schemas/ShipmentRecordArtifactJobCourierInfo'
+          - $ref: '#/components/schemas/ShipmentRecordArtifactJobDrayageInfo'
+          - $ref: '#/components/schemas/ShipmentRecordArtifactJobFtlInfo'
+          - $ref: '#/components/schemas/ShipmentRecordArtifactJobLtlInfo'
+          - $ref: '#/components/schemas/ShipmentRecordArtifactJobOceanInfo'
+          - $ref: '#/components/schemas/ShipmentRecordArtifactJobSeaAirInfo'
+          - $ref: '#/components/schemas/ShipmentRecordArtifactJobTonuInfo'
+          - $ref: '#/components/schemas/ShipmentRecordArtifactJobGenericV1Info'
+          - $ref: '#/components/schemas/ShipmentRecordArtifactJobUnknownInfo'
+        customerOrganizationQid:
           type: string
-          format: floating-date
-          example: '2023-01-01'
-        iataCode:
-          type:
-          - string
-          - 'null'
-          description: The IATA airport code for this date if applicable (e.g. departure airport).
-      required:
-      - dateType
-      - date
-    ShipmentRecordArtifactJobAirAddress:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The address name.
-        type:
-          type: string
-          description: The type of address
-          enum:
-          - ORIGIN
-          - DESTINATION
-          example: ORIGIN
-        addressQid:
-          type:
-          - string
-          - 'null'
           description: Qualified unique identifier.
-          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
-        address:
-          description: The address details
+        customerOrganizationTag:
           example:
-            addressLine1: 123 Main St
-            addressLine2: Suite 100
-            city: San Diego
-            state: CA
-            postalCode: '92101'
-            country: US
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/RawSparseAddressValue'
-        organizationTag:
-          example:
-            tagType: exampleTagType
-            tagValue: exampleTagValue
+            tagType: externalCustomerUuid
+            tagValue: e00b356d-8db3-476d-86dc-2c1a6808ea2c
+          description: A tag used to identify the customer organization. Must be specified if customerOrganizationQid is not specified.
           type:
           - object
           - 'null'
           allOf:
           - $ref: '#/components/schemas/RawEntityTag'
+        referenceNumbersList:
+          description: Reference numbers associated with the shipment job. If specified, the display identifier is what is displayed for the job identifier in the Loop web application.
+          example:
+          - key: BOL_NUMBER
+            value: '234287'
+          - key: EXTERNAL_IDENTIFIER
+            value: '123456789'
+          type: array
+          items:
+            $ref: '#/components/schemas/RawShipmentReferenceNumberInput'
+        expectedCharges:
+          description: Expected charges for the shipment job.
+          type: array
+          items:
+            $ref: '#/components/schemas/RawShipmentJobExpectedCharge'
+        payablesReadinessStatus:
+          type: string
+          description: The payables readiness status of the shipment job. This is used to determine when the shipment job will be processed.
+          enum:
+          - IGNORE
+          - PENDING
+          - READY
+          example: READY
+        receivablesReadinessStatus:
+          type: string
+          description: The receivables readiness status of the shipment job. This is used to determine when the shipment job will be ready to be included in a receivable invoice.
+          enum:
+          - IGNORE
+          - PENDING
+          - READY
+          example: READY
+        payments:
+          description: Payments made for the shipment job (if any).
+          type: array
+          items:
+            $ref: '#/components/schemas/RawShipmentJobPayment'
+        tags:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          properties: {}
+          example:
+            tag1: value1
+            tag2: value2
+          description: Entity tags assigned to the shipment job.
       required:
-      - type
-      - address
-    Money:
+      - jobType
+      - jobTypeInfo
+    RawShipmentReferenceNumberInput:
       type: object
       properties:
-        amount:
+        key:
           type: string
-          format: decimal-string
-          example: '3.50'
-          description: The amount of money
-        currencyCode:
-          allOf:
-          - $ref: '#/components/schemas/CurrencyCode'
+          enum:
+          - APPOINTMENT_REFERENCE_NUMBER
+          - BILLING_ACCOUNT_NUMBER
+          - BOL_NUMBER
+          - CARRIER_IDENTIFIER
+          - CONSOLIDATED_INVOICE_NUMBER
+          - CONTAINER_NUMBER
+          - CUSTOMER_REFERENCE_NUMBER
+          - DELIVERY_NUMBER
+          - DESTINATION_LOCATION_NUMBER
+          - DISPLAY_IDENTIFIER
+          - EXTERNAL_IDENTIFIER
+          - HAWB_NUMBER
+          - HBL_NUMBER
+          - INVOICE_NUMBER
+          - MAWB_NUMBER
+          - MBL_NUMBER
+          - ORIGIN_LOCATION_NUMBER
+          - PICKUP_CONFIRMATION_NUMBER
+          - PICKUP_REFERENCE_NUMBER
+          - PO_NUMBER
+          - PRO_NUMBER
+          - RAIL_WAYBILL_NUMBER
+          - SALES_ORDER_NUMBER
+          - SEA_WAYBILL_NUMBER
+          - TRACKING_NUMBER
+          - TRAILER_NUMBER
+          - UNKNOWN
+          example: PO_NUMBER
+        value:
+          type: string
+          description: The value of the reference number.
+          example: '123'
       required:
-      - amount
-      - currencyCode
+      - key
+      - value
+    Artifact:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          format: qid
+          example: qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+        createdAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        revisionNumber:
+          type: number
+          example: 1
+        revisionCreatedAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        artifactType:
+          type: string
+          description: Domain-specific type of the artifact.
+          enum:
+          - ACCOUNT_STATEMENT
+          - BILL_OF_LADING
+          - CUSTOMER_RATE_CONFIRMATION
+          - DELIVERY_ORDER
+          - DELIVERY_RECEIPT
+          - EXTERNAL_SHIPMENT_NOTE
+          - INVOICE
+          - IN_OUT_GATE
+          - LUMPER_RECEIPT
+          - OTHER
+          - PACKET
+          - PACKING_LIST
+          - RATE_CONFIRMATION
+          - SCALE_TICKET
+          - SHIPMENT_RECORD
+          - UNKNOWN
+          - WASHOUT_RECEIPT
+          - WEIGHT_INSPECTION
+          - WORK_ORDER
+          example: INVOICE
+        artifactFormat:
+          type: string
+          description: Encoding format of the artifact.
+          enum:
+          - BIN
+          - CSV
+          - DOC
+          - DOCX
+          - EDI_EDIFACT
+          - EDI_X12
+          - GIF
+          - HEIC
+          - HTML
+          - JPG
+          - JPEG
+          - JSON
+          - JSONL
+          - MALFORMED_PDF
+          - MD
+          - PDF
+          - PNG
+          - RTF
+          - TIFF
+          - TNEF
+          - TXT
+          - XLSB
+          - XLSX
+          - XLS
+          - XML
+          - ZIP
+          example: PDF
+        displayName:
+          type: string
+          description: Name of the artifact for display purposes.
+          example: XPO Invoice 54219 - 2023-12-01
+        summary:
+          description: Summary of semi-structured metadata extracted or parsed from the artifact. This is an expansion field. To include this field, you must include `summary` in the query parameters.
+          allOf:
+          - $ref: '#/components/schemas/ArtifactMetadataSummary'
+        derivativeArtifacts:
+          description: This API provides a list of QIDs and corresponding types for artifacts that have been derived from the queried artifact. This is particularly useful when the queried artifact is a collection of other artifacts, such as a PDF document containing an invoice and a bill of lading. This is an expansion field. To include this field, you must include `derivativeArtifacts` in the query parameters.
+          type: array
+          items:
+            $ref: '#/components/schemas/ArtifactExpanded'
+        tags:
+          type: object
+          description: Entity tags assigned to the artifact. This is an expansion field. To include this field, you must include `tags` in the query parameters.
+      required:
+      - qid
+      - createdAt
+      - revisionNumber
+      - revisionCreatedAt
+      - artifactType
+      - artifactFormat
+      - displayName
+    ShipmentRecordArtifactJobAirIncoterm:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The Incoterm code (ICC 2020 list).
+          enum:
+          - EXW
+          - FCA
+          - CPT
+          - CIP
+          - DAP
+          - DPU
+          - DDP
+          - FAS
+          - FOB
+          - CFR
+          - CIF
+          example: FCA
+        namedPlace:
+          type:
+          - string
+          - 'null'
+          description: The named place that qualifies the Incoterm (e.g. `FCA Shanghai`, `DDP Buyer's Warehouse Chicago`).
+      required:
+      - code
     ShipmentRecordArtifactJobSeaAirInfo:
       type: object
       properties:
@@ -3152,62 +2846,88 @@ components:
       - containers
       - chargeableWeight
       - totalVolume
-    RawShipmentJobArticle:
+    CreatePurchaseOrderRecordArtifactInput:
       type: object
       properties:
-        dimensions:
+        purchaseOrderNumber:
+          type: string
+          description: The purchase order number. This will be used to match against existing shipments and parcels in Loop.
+          example: PO-2025-001234
+        createdDate:
+          type: string
+          description: The purchase order created date in YYYY-MM-DD format.
+          example: '2025-01-15'
+        supplierName:
+          type: string
+          description: The supplier name as it appears in the source system. This field is used for informational purposes only. Use the supplierOrganizationTag to uniquely identify the supplier.
+          example: ACME Manufacturing Corp
+        supplierOrganizationTag:
           example:
-            height: '2.8'
-            length: '12.1'
-            width: '1.5'
-            unit: INCH
+            tagType: uniqueIdentifier
+            tagValue: '12345'
+          description: A tag used to identify the supplier organization.
+          allOf:
+          - $ref: '#/components/schemas/RawEntityTag'
+        source:
+          type: string
+          description: The source of the purchase order data.
+        artifactTags:
           type:
           - object
           - 'null'
-          allOf:
-          - $ref: '#/components/schemas/Dimensions'
-        grossWeight:
+          additionalProperties:
+            type: string
+          properties: {}
           example:
-            amount: '20.2'
-            unit: POUND
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/Weight'
-        nmfcClass:
-          allOf:
-          - $ref: '#/components/schemas/NmfcClass'
-        nmfcCodeString:
+            tag1: value1
+            tag2: value2
+          description: Entity tags to be assigned to the purchase order artifact.
+      required:
+      - purchaseOrderNumber
+      - supplierOrganizationTag
+    NmfcClass:
+      type: string
+      enum:
+      - '50'
+      - '55'
+      - '60'
+      - '65'
+      - '70'
+      - '77.5'
+      - '85'
+      - '92.5'
+      - '100'
+      - '110'
+      - '125'
+      - '150'
+      - '175'
+      - '200'
+      - '250'
+      - '300'
+      - '400'
+      - '500'
+    ShipmentRecordArtifactJobAirAddress:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The address name.
+        type:
+          type: string
+          description: The type of address
+          enum:
+          - ORIGIN
+          - DESTINATION
+          example: ORIGIN
+        addressQid:
           type:
           - string
           - 'null'
-          description: The raw NMFC code string.
-          example: 164390-08
-        packageCount:
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/PackageCountInput'
-        handlingUnitCount:
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/HandlingUnit'
-        description:
-          type: string
-          description: The description of the article.
-          example: dry goods
-    CostCodingTableEntryInput:
-      type: object
-      properties: {}
-    ShipmentRecordArtifactJobFtlStop:
-      type: object
-      properties:
+          description: Qualified unique identifier.
+          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
         address:
-          description: The stop address.
+          description: The address details
           example:
             addressLine1: 123 Main St
             addressLine2: Suite 100
@@ -3220,49 +2940,329 @@ components:
           - 'null'
           allOf:
           - $ref: '#/components/schemas/RawSparseAddressValue'
+        organizationTag:
+          example:
+            tagType: exampleTagType
+            tagValue: exampleTagValue
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/RawEntityTag'
+      required:
+      - type
+      - address
+    ArtifactExpanded:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        artifactType:
+          type: string
+          description: Domain-specific type of the artifact.
+          enum:
+          - ACCOUNT_STATEMENT
+          - BILL_OF_LADING
+          - CUSTOMER_RATE_CONFIRMATION
+          - DELIVERY_ORDER
+          - DELIVERY_RECEIPT
+          - EXTERNAL_SHIPMENT_NOTE
+          - INVOICE
+          - IN_OUT_GATE
+          - LUMPER_RECEIPT
+          - OTHER
+          - PACKET
+          - PACKING_LIST
+          - RATE_CONFIRMATION
+          - SCALE_TICKET
+          - SHIPMENT_RECORD
+          - UNKNOWN
+          - WASHOUT_RECEIPT
+          - WEIGHT_INSPECTION
+          - WORK_ORDER
+          example: INVOICE
+      required:
+      - qid
+      - artifactType
+    CreateReceivableInvoiceRecordArtifactInput:
+      type: object
+      properties:
+        invoiceNumber:
+          type: string
+          description: The invoice number. This will be used to match against existing invoices in Loop.
+          example: I123412
+        currencyCode:
+          allOf:
+          - $ref: '#/components/schemas/CurrencyCode'
+        receivableLineItems:
+          description: The receivable line items to be invoiced.
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateReceivableInvoiceLineItemInput'
+        customerOrganizationQid:
+          type: string
+          description: "The QID of the customer organization.\n      **Must be specified if customerOrganizationTag is not specified.**"
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        customerOrganizationTag:
+          example:
+            tagType: externalCustomerUuid
+            tagValue: e00b356d-8db3-476d-86dc-2c1a6808ea2c
+          description: "A tag used to identify the customer organization.\n      **Must be specified if customerOrganizationQid is not specified.**"
+          allOf:
+          - $ref: '#/components/schemas/RawEntityTag'
+        payeeOrganizationQid:
+          type: string
+          description: "The QID of the payee organization.\n      **Will default to the primary organization for the tenant if not specified.**"
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        shipmentQid:
+          type: string
+          description: "The QID of the shipment.\n      **Must be specified if shipmentExternalIdentifier is not specified.**"
+          example: qid::shipment:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        shipmentExternalIdentifier:
+          type: string
+          description: "The external identifier of the shipment.\n      **Must be specified if shipmentQid is not specified.**"
+          example: S112154220
+        shipmentJobReceivablesReadinessStatus:
+          type: string
+          description: The shipment job receivables readiness status. If this field is included, the receivables readiness status on all jobs of the linked shipments will be overridden to the value provided in this record. If you plan to send the `receivablesReadinessStatus` via the shipment record, its not recommended that you include this field in the payload.
+          enum:
+          - IGNORE
+          - PENDING
+          - READY
+          example: PENDING
+        artifactTags:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          properties: {}
+          example:
+            tag1: value1
+            tag2: value2
+          description: Entity tags to be assigned to the artifact.
+      required:
+      - invoiceNumber
+      - currencyCode
+      - receivableLineItems
+    CreatePayableInvoiceLineItemInput:
+      type: object
+      properties:
+        description:
+          type: string
+          description: The description of the line item.
+        amount:
+          example:
+            amount: '3.50'
+            currencyCode: USD
+          description: The amount charged for this line item.
+          allOf:
+          - $ref: '#/components/schemas/Money'
+        category:
+          type: string
+          description: The category of the line item.
+          enum:
+          - LINEHAUL
+          - FUEL_SURCHARGE
+          - DISCOUNT
+          - OTHER
+      required:
+      - description
+      - amount
+      - category
+    CreateOrganizationFactorAssignmentRecordFactorInfoInput:
+      type: object
+      properties:
+        name:
+          type: string
+        primaryAddress:
+          example:
+            addressLine1: 123 Main St
+            addressLine2: Suite 100
+            city: San Diego
+            state: CA
+            postalCode: '92101'
+            country: US
+          allOf:
+          - $ref: '#/components/schemas/RawSparseAddressValue'
+        remittanceAddress:
+          example:
+            addressLine1: 123 Main St
+            addressLine2: Suite 100
+            city: San Diego
+            state: CA
+            postalCode: '92101'
+            country: US
+          allOf:
+          - $ref: '#/components/schemas/RawSparseAddressValue'
+        additionalInfo:
+          type: object
+      required:
+      - name
+      - primaryAddress
+    ShipmentRecordArtifactJobOceanDate:
+      type: object
+      properties:
+        dateType:
+          type: string
+          description: The type of date
+          enum:
+          - CARGO_RECEIVED
+          - LADEN_ON_BOARD
+          - DEPARTURE
+          - ESTIMATED_ARRIVAL
+          - ARRIVAL
+          - DISCHARGE
+          - DELIVERY
+          example: LADEN_ON_BOARD
         date:
+          type: string
+          format: floating-date
+          example: '2023-01-01'
+        unlocode:
+          type:
+          - string
+          - 'null'
+          description: The UN/LOCODE for this date if applicable (e.g. port of laden-on-board)
+      required:
+      - dateType
+      - date
+    Weight:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal-string
+          example: '1.5'
+        unit:
+          type: string
+          enum:
+          - KILOGRAM
+          - OUNCE
+          - POUND
+          - SHORT_TON
+          example: POUND
+      required:
+      - amount
+      - unit
+    HandlingUnit:
+      type: object
+      properties:
+        amount:
+          type: integer
+          example: 8
+        unit:
+          type: string
+          enum:
+          - BARREL
+          - CARLOAD
+          - CONTAINER
+          - CRATE
+          - DRUM
+          - EACH
+          - PALLET
+          - RACK
+          - SKID
+          - TOTE
+          - TRAILER
+          example: PALLET
+      required:
+      - amount
+      - unit
+    ShipmentRecordArtifactJobDrayageContainer:
+      type: object
+      properties:
+        containerNumber:
+          type:
+          - string
+          - 'null'
+          description: The container number.
+        containerType:
+          type:
+          - string
+          - 'null'
+          description: The type of container (e.g. GP20, GP40, HC40).
+          enum:
+          - GP20
+          - GP40
+          - HC40
+          - HC45
+          - RF20
+          - RF40
+          - RF40HC
+          - OT20
+          - OT40
+          - FR20
+          - FR40
+          - TK20
+        pickupDate:
           type:
           - string
           - 'null'
           format: floating-date
           example: '2023-01-01'
-        organizationQid:
+        returnDate:
+          type:
+          - string
+          - 'null'
+          format: floating-date
+          example: '2023-01-01'
+        chassisNumber:
+          type:
+          - string
+          - 'null'
+          description: The chassis number.
+        chassisProviderOrganizationQid:
           type:
           - string
           - 'null'
           description: Qualified unique identifier.
           example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
-        organizationTag:
-          example:
-            tagType: externalShipperUuid
-            tagValue: 304fb3dd-1f4a-404b-9f9e-c9134584915b
-          description: A tag used to identify the organization. If the organization does not exist, `organizationInfo` may be used to create an organization with the tag and organization info.
+        containerGrossWeight:
+          description: The gross weight of the container including cargo.
           type:
           - object
           - 'null'
           allOf:
-          - $ref: '#/components/schemas/RawEntityTag'
-        organizationInfo:
-          description: This object specifies information for the given organization. If the organization does not exist, this object may be used to create an organization with the tag and organization info.
-          allOf:
-          - $ref: '#/components/schemas/ShipmentRecordArtifactOrganizationInfo'
-        stopType:
-          type: string
-          enum:
-          - DROP_OFF
-          - PICK_UP
-          example: DROP_OFF
-        articles:
-          type: array
-          items:
-            $ref: '#/components/schemas/RawShipmentJobArticle'
-        addressName:
-          type: string
-          description: The address name of the stop.
+          - $ref: '#/components/schemas/Weight'
       required:
-      - date
-      - stopType
+      - containerNumber
+      - pickupDate
+      - returnDate
+    ShipmentRecordArtifactJobOceanRouteLocation:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of route location
+          enum:
+          - PORT_OF_LOADING
+          - PORT_OF_DISCHARGE
+          - PORT_OF_ENTRY
+          - CONTAINER_FREIGHT_STATION
+          - PLACE_OF_RECEIPT
+          - PLACE_OF_DELIVERY
+          example: PORT_OF_LOADING
+        unlocode:
+          type: string
+          description: The UN/LOCODE for this location
+          example: USNYC
+        name:
+          type:
+          - object
+          - 'null'
+          description: The name of this location
+      required:
+      - type
+      - unlocode
+      - name
   securitySchemes:
     bearer:
       scheme: bearer

@@ -143,63 +143,6 @@ paths:
       - invoicing-relationships
 components:
   schemas:
-    UpsertInvoicingRelationshipInput:
-      type: object
-      properties:
-        payeeOrganizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        payorOrganizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        daysToPay:
-          type:
-          - number
-          - 'null'
-          description: Number of days until the invoice is due.
-          example: 30
-        daysToPayFrom:
-          type:
-          - string
-          - 'null'
-          description: The anchor date from which we determine the invoice due date.
-          example: ISSUE_DATE
-          enum:
-          - ISSUE_DATE
-          - RECEIPT_DATE
-        effectiveFrom:
-          type:
-          - string
-          - 'null'
-          description: Timestamp indicating when the invoicing relationship becomes active. This timestamp must be in the future. If not specified, the current timestamp will be used (effective immediately).
-          example: '2025-05-01T00:00:00.000Z'
-          format: utc-timestamp
-        effectiveTo:
-          type:
-          - string
-          - 'null'
-          description: Timestamp indicating when the invoicing relationship is no longer active. This timestamp must be after the effectiveFrom timestamp. If not specified, null will be used (effective indefinitely).
-          example: '2025-06-01T00:00:00.000Z'
-          format: utc-timestamp
-      required:
-      - payeeOrganizationQid
-      - payorOrganizationQid
-      - daysToPay
-      - daysToPayFrom
-    DaysToPayFrom:
-      type: string
-      enum:
-      - ISSUE_DATE
-      - RECEIPT_DATE
-      description: The anchor date from which we determine the invoice due date.
     InvoicingRelationship:
       type: object
       properties:
@@ -266,6 +209,63 @@ components:
       - daysToPayFrom
       - effectiveFrom
       - effectiveTo
+    UpsertInvoicingRelationshipInput:
+      type: object
+      properties:
+        payeeOrganizationQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        payorOrganizationQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        daysToPay:
+          type:
+          - number
+          - 'null'
+          description: Number of days until the invoice is due.
+          example: 30
+        daysToPayFrom:
+          type:
+          - string
+          - 'null'
+          description: The anchor date from which we determine the invoice due date.
+          example: ISSUE_DATE
+          enum:
+          - ISSUE_DATE
+          - RECEIPT_DATE
+        effectiveFrom:
+          type:
+          - string
+          - 'null'
+          description: Timestamp indicating when the invoicing relationship becomes active. This timestamp must be in the future. If not specified, the current timestamp will be used (effective immediately).
+          example: '2025-05-01T00:00:00.000Z'
+          format: utc-timestamp
+        effectiveTo:
+          type:
+          - string
+          - 'null'
+          description: Timestamp indicating when the invoicing relationship is no longer active. This timestamp must be after the effectiveFrom timestamp. If not specified, null will be used (effective indefinitely).
+          example: '2025-06-01T00:00:00.000Z'
+          format: utc-timestamp
+      required:
+      - payeeOrganizationQid
+      - payorOrganizationQid
+      - daysToPay
+      - daysToPayFrom
+    DaysToPayFrom:
+      type: string
+      enum:
+      - ISSUE_DATE
+      - RECEIPT_DATE
+      description: The anchor date from which we determine the invoice due date.
   securitySchemes:
     bearer:
       scheme: bearer

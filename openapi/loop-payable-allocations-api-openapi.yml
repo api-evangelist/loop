@@ -90,6 +90,41 @@ paths:
       - payable-allocations
 components:
   schemas:
+    PayableAllocation:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          format: qid
+          example: qid::payable_allocation:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+        createdAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        payableInvoiceQid:
+          type: string
+          description: The invoice where the cost was allocated to a GL code.
+          example: qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        paymentQid:
+          type: string
+          description: The payment that triggered the cost allocation.
+          example: qid::payment:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        amount:
+          example:
+            amount: '3.50'
+            currencyCode: USD
+          description: The amount being allocated to this GL code.
+          allOf:
+          - $ref: '#/components/schemas/Money'
+      required:
+      - qid
+      - createdAt
+      - payableInvoiceQid
+      - paymentQid
+      - amount
     CurrencyCode:
       type: string
       enum:
@@ -262,41 +297,6 @@ components:
       required:
       - amount
       - currencyCode
-    PayableAllocation:
-      type: object
-      properties:
-        qid:
-          type: string
-          description: Qualified unique identifier.
-          format: qid
-          example: qid::payable_allocation:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-        createdAt:
-          type: string
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-        payableInvoiceQid:
-          type: string
-          description: The invoice where the cost was allocated to a GL code.
-          example: qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        paymentQid:
-          type: string
-          description: The payment that triggered the cost allocation.
-          example: qid::payment:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        amount:
-          example:
-            amount: '3.50'
-            currencyCode: USD
-          description: The amount being allocated to this GL code.
-          allOf:
-          - $ref: '#/components/schemas/Money'
-      required:
-      - qid
-      - createdAt
-      - payableInvoiceQid
-      - paymentQid
-      - amount
   securitySchemes:
     bearer:
       scheme: bearer

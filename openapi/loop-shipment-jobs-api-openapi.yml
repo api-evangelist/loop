@@ -255,6 +255,184 @@ paths:
       - shipment-jobs
 components:
   schemas:
+    Volume:
+      type: object
+      properties:
+        value:
+          type: string
+          format: decimal-string
+          example: '1.5'
+        unit:
+          type: string
+          enum:
+          - CUBIC_CENTIMETER
+          - CUBIC_FEET
+          - CUBIC_INCH
+          - CUBIC_METER
+          example: CUBIC_FEET
+      required:
+      - value
+      - unit
+    ShipmentJobAirRouteUnlocodeLocation:
+      type: object
+      properties:
+        qid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::shipment_job_air_route_location:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        type:
+          type: string
+          description: The type of route location
+          enum:
+          - ORIGIN_AIRPORT
+          - DESTINATION_AIRPORT
+          - INTERMEDIATE_AIRPORT
+          - CONTAINER_FREIGHT_STATION
+          example: CONTAINER_FREIGHT_STATION
+        unlocode:
+          type: string
+          description: The UN/LOCODE for this location
+          example: USNYC
+      required:
+      - qid
+      - type
+      - unlocode
+    RawShipmentReferenceNumbers:
+      type: object
+      properties:
+        bolNumber:
+          type: string
+        containerNumber:
+          type: string
+        customerReferenceNumber:
+          type: string
+        deliveryNumber:
+          type: string
+        displayIdentifier:
+          type: string
+          description: The human-readable identifier for the shipment.
+        externalIdentifier:
+          type: string
+        invoiceNumber:
+          type: string
+        pickupConfirmationNumber:
+          type: string
+        pickupReferenceNumber:
+          type: string
+        poNumber:
+          type: string
+        proNumber:
+          type: string
+        trackingNumber:
+          type: string
+        trailerNumber:
+          type: string
+    ShipmentWithoutShipmentJobsExpanded:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::shipment:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        exceptions:
+          description: A list of business exceptions related to the shipment. This is an expansion field. To include this field, you must include `exceptions` in the query parameters.
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessException'
+      required:
+      - qid
+    BusinessException:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        label:
+          type: string
+          description: The description of the business exception
+          example: Variance over threshold
+        resolvedAt:
+          type:
+          - string
+          - 'null'
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+          description: If resolved, the time the exception was resolved. If the exception was resolved and re-opened, this will be null.
+        targetQid:
+          type: string
+          description: Qualified unique identifier of the business exception's target entity.
+          format: qid
+          example: qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+        note:
+          type:
+          - string
+          - 'null'
+          description: The note on the business exception
+      required:
+      - qid
+      - label
+      - resolvedAt
+      - targetQid
+    OrganizationExpanded:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        displayName:
+          type: string
+          example: ACME
+          description: Name of the organization.
+        tags:
+          type: object
+          description: Entity tags associated with the organization
+          example:
+            externalCarrierUuid: 304fb3dd-1f4a-404b-9f9e-c9134584915b
+      required:
+      - qid
+      - displayName
+    ShipmentJobSeaAirAddress:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of address
+          enum:
+          - ORIGIN
+          - DESTINATION
+          example: ORIGIN
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name associated with this address
+        addressQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        address:
+          description: The address details (expansion field).
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/Address'
+      required:
+      - type
+      - name
+      - addressQid
+      - address
     ShipmentJobIntermodalInfo:
       type: object
       properties:
@@ -277,153 +455,7 @@ components:
       required:
       - carrierOrganizationName
       - carrierOrganizationQid
-    ShipmentJobTonuInfo:
-      type: object
-      properties:
-        carrierOrganizationQid:
-          type: string
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        carrierOrganization:
-          description: The carrier associated with this job. This is an expansion field. To include this field, you must include `organization` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/OrganizationExpanded'
-      required:
-      - carrierOrganizationQid
-    PayableInvoiceExpanded:
-      type: object
-      properties:
-        qid:
-          type: string
-          description: Qualified unique identifier.
-          format: qid
-          example: qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-        invoiceNumber:
-          type: string
-          description: The invoice number
-          example: 555-555555
-        billingDomain:
-          type: string
-          description: The business billing domain that categorizes how this invoice is processed
-          enum:
-          - PARCEL
-          - FREIGHT
-          example: FREIGHT
-        paymentDueDate:
-          type:
-          - string
-          - 'null'
-          format: floating-date
-          example: '2023-01-01'
-        issueDate:
-          type:
-          - string
-          - 'null'
-          format: floating-date
-          example: '2023-01-01'
-        invoicedTotal:
-          example:
-            amount: '3.50'
-            currencyCode: USD
-          description: The total amount invoiced for the payable invoice
-          allOf:
-          - $ref: '#/components/schemas/Money'
-        shipmentJobQids:
-          description: Qualified unique identifier.
-          example:
-          - qid::shipment_job:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          type: array
-          items:
-            type: string
-            format: qid
-        shipmentJobs:
-          description: The shipment jobs. This is an expansion field. To include this field, you must include `shipmentJobs` in the query parameters.
-          type: array
-          items:
-            $ref: '#/components/schemas/ShipmentJobExpanded'
-        artifactQids:
-          description: Qualified unique identifier.
-          example:
-          - qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          type: array
-          items:
-            type: string
-            format: qid
-        artifacts:
-          description: The artifacts. This is an expansion field. To include this field, you must include `artifacts` in the query parameters.
-          type: array
-          items:
-            $ref: '#/components/schemas/ArtifactExpanded'
-        referenceNumbers:
-          description: The reference numbers associated with this invoice.
-          type: array
-          items:
-            $ref: '#/components/schemas/PayableInvoiceReferenceNumber'
-        payeeOrganizationQid:
-          type: string
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        payeeOrganization:
-          description: The payee associated with this invoice. This is an expansion field. To include this field, you must include `organization` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/OrganizationExpanded'
-        payeeFboOrganizationQid:
-          type:
-          - string
-          - 'null'
-          description: Deprecated, prefer vendorOrganizationQid
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        payorOrganizationQid:
-          type: string
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        payorOrganization:
-          description: The payor associated with this invoice. This is an expansion field. To include this field, you must include `organization` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/OrganizationExpanded'
-        vendorOrganizationQid:
-          type: string
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        vendorOrganization:
-          description: The vendor associated with this invoice. This is an expansion field. To include this field, you must include `organization` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/OrganizationExpanded'
-        receivedAt:
-          type:
-          - string
-          - 'null'
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-        exceptions:
-          description: A list of exceptions related to the payable invoice. This is an expansion field. To include this field, you must include `exceptions` in the query parameters.
-          type: array
-          items:
-            $ref: '#/components/schemas/BusinessException'
-        tags:
-          type: object
-          description: Entity tags assigned to the payable invoice. This is an expansion field. To include this field, you must include `tags` in the query parameters.
-      required:
-      - qid
-      - invoiceNumber
-      - billingDomain
-      - paymentDueDate
-      - issueDate
-      - invoicedTotal
-      - shipmentJobQids
-      - artifactQids
-      - referenceNumbers
-      - payeeOrganizationQid
-      - payeeFboOrganizationQid
-      - payorOrganizationQid
-      - vendorOrganizationQid
-      - receivedAt
-    HandlingUnit:
+    PackageCountInput:
       type: object
       properties:
         amount:
@@ -432,75 +464,214 @@ components:
         unit:
           type: string
           enum:
-          - BARREL
-          - CARLOAD
-          - CONTAINER
-          - CRATE
-          - DRUM
+          - BAG
+          - BALE
+          - BOX
+          - BUNDLE
+          - CARTON
+          - CASE
+          - COIL
           - EACH
-          - PALLET
-          - RACK
-          - SKID
+          - PACKAGE
+          - PAIL
+          - PIECE
+          - ROLL
+          - SQUARE
           - TOTE
-          - TRAILER
-          example: PALLET
+          - TUBE
+          example: CARTON
       required:
       - amount
       - unit
-    ShipmentJobArticlesSummary:
+    NmfcClass:
+      type: string
+      enum:
+      - '50'
+      - '55'
+      - '60'
+      - '65'
+      - '70'
+      - '77.5'
+      - '85'
+      - '92.5'
+      - '100'
+      - '110'
+      - '125'
+      - '150'
+      - '175'
+      - '200'
+      - '250'
+      - '300'
+      - '400'
+      - '500'
+    ShipmentJobOceanRouteLocation:
       type: object
       properties:
-        totalGrossWeight:
-          example:
-            amount: '20.2'
-            unit: POUND
+        qid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::shipment_job_ocean_route_location:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        type:
+          type: string
+          description: The type of route location
+          enum:
+          - PORT_OF_LOADING
+          - PORT_OF_DISCHARGE
+          - PORT_OF_ENTRY
+          - CONTAINER_FREIGHT_STATION
+          - PLACE_OF_RECEIPT
+          - PLACE_OF_DELIVERY
+          example: PORT_OF_LOADING
+        unlocode:
+          type: string
+          description: The UN/LOCODE for this location
+          example: USNYC
+        name:
           type:
           - object
           - 'null'
-          allOf:
-          - $ref: '#/components/schemas/Weight'
-        totalPackageCount:
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/PackageCount'
-        totalHandlingUnit:
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/HandlingUnit'
+          description: The name of this location
       required:
-      - totalGrossWeight
-      - totalPackageCount
-      - totalHandlingUnit
-    Dimensions:
+      - qid
+      - type
+      - unlocode
+      - name
+    ReceivableInvoice:
       type: object
       properties:
-        height:
+        qid:
           type: string
-          format: decimal-string
-          example: '1.5'
-        length:
+          description: Qualified unique identifier.
+          format: qid
+          example: qid::receivable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+        createdAt:
           type: string
-          format: decimal-string
-          example: '1.5'
-        unit:
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        revisionNumber:
+          type: number
+          example: 1
+        revisionCreatedAt:
+          type: string
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        invoiceNumber:
+          type: string
+          description: The invoice number
+          example: 555-555555
+        payorOrganizationQid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        payeeOrganizationQid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        status:
           type: string
           enum:
-          - INCH
-          - CENTIMETER
-          example: INCH
-        width:
+          - DRAFT
+          - OPEN
+          - VOID
+          - PAID
+        noteToPayor:
           type: string
-          format: decimal-string
-          example: '1.5'
+          example: This is a payor note.
+          description: The note to the payor. This is the note that gets included in the generated AR invoice.
+        note:
+          type:
+          - string
+          - 'null'
+          example: This is an internal note.
+          description: The internal note on the invoice.
+        issuedAt:
+          type:
+          - string
+          - 'null'
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+          description: When the draft version of this invoice was finalized.
+        dueDate:
+          type:
+          - string
+          - 'null'
+          format: floating-date
+          example: '2023-01-01'
+          description: The date the invoice is due.
+        total:
+          example:
+            amount: '3.50'
+            currencyCode: USD
+          description: The total amount invoiced.
+          allOf:
+          - $ref: '#/components/schemas/Money'
+        adjustmentSubtotal:
+          example:
+            amount: '3.50'
+            currencyCode: USD
+          description: The total amount invoiced from ADJUSTMENT line items.
+          allOf:
+          - $ref: '#/components/schemas/Money'
+        lineItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReceivableInvoiceLineItem'
+        supportingArtifacts:
+          description: Supporting artifacts attached to the receivable invoice. This is an expansion field. To include this field, you must include `supportingArtifacts` in the query parameters.
+          allOf:
+          - $ref: '#/components/schemas/ArtifactExpanded'
+        shipments:
+          description: Shipments related to the receivable invoice. This is an expansion field. To include this field, you must include `shipments` in the query parameters.
+          allOf:
+          - $ref: '#/components/schemas/ShipmentExpanded'
+        exceptions:
+          description: The exceptions related to the receivable invoice. This is an expansion field. To include this field, you must include `exceptions` in the query parameters.
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessException'
+        finalizedAt:
+          type:
+          - string
+          - 'null'
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+          description: The date the invoice was finalized.
+        finalizedBy:
+          description: The user who finalized the invoice. This is an expansion field. To include this field, you must include `finalizedBy` in the query parameters.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/User'
+        voidReason:
+          example: INTERNAL_PRICING_ERROR
+          allOf:
+          - $ref: '#/components/schemas/ReceivableInvoiceVoidReasonType'
+        voidReasonNote:
+          type: string
+          example: Invoice voided due to error
+          description: Additional information about why the invoice was voided.
       required:
-      - height
-      - length
-      - unit
-      - width
+      - qid
+      - createdAt
+      - revisionNumber
+      - revisionCreatedAt
+      - invoiceNumber
+      - payorOrganizationQid
+      - payeeOrganizationQid
+      - status
+      - noteToPayor
+      - note
+      - issuedAt
+      - dueDate
+      - total
+      - adjustmentSubtotal
+      - lineItems
     ShipmentJob:
       type: object
       properties:
@@ -648,20 +819,511 @@ components:
       - referenceNumbers
       - referenceNumbersList
       - metadata
-    ShipmentJobUnknownInfo:
+    ShipmentJobLtlInfoArticle:
       type: object
       properties:
-        vendorOrganizationQid:
+        description:
+          type:
+          - object
+          - 'null'
+        dimensions:
+          example:
+            height: '2.8'
+            length: '12.1'
+            width: '1.5'
+            unit: INCH
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/Dimensions'
+        grossWeight:
+          example:
+            amount: '20.2'
+            unit: POUND
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/Weight'
+        nmfcClass:
+          allOf:
+          - $ref: '#/components/schemas/NmfcClass'
+        nmfcCode:
+          type:
+          - string
+          - 'null'
+          description: The NMFC code string associated with this article.
+          example: '87700'
+        packageCount:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/PackageCount'
+        handlingUnit:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/HandlingUnit'
+      required:
+      - description
+      - dimensions
+      - grossWeight
+      - nmfcClass
+      - nmfcCode
+      - packageCount
+      - handlingUnit
+    Dimensions:
+      type: object
+      properties:
+        height:
           type: string
+          format: decimal-string
+          example: '1.5'
+        length:
+          type: string
+          format: decimal-string
+          example: '1.5'
+        unit:
+          type: string
+          enum:
+          - INCH
+          - CENTIMETER
+          example: INCH
+        width:
+          type: string
+          format: decimal-string
+          example: '1.5'
+      required:
+      - height
+      - length
+      - unit
+      - width
+    Address:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        addressLine1:
+          type: string
+          example: 123 Main Street
+        addressLine2:
+          type: string
+          example: Suite 456
+        city:
+          type: string
+          example: Chicago
+        state:
+          type: string
+          example: IL
+        postalCode:
+          type: string
+          example: '60601'
+        country:
+          type: string
+          example: US
+          description: ISO 3166-1 alpha-2 country code.
+      required:
+      - qid
+      - addressLine1
+      - city
+      - postalCode
+      - country
+    CurrencyCode:
+      type: string
+      enum:
+      - AED
+      - AFN
+      - ALL
+      - AMD
+      - AOA
+      - ARS
+      - AUD
+      - AWG
+      - AZN
+      - BAM
+      - BBD
+      - BDT
+      - BHD
+      - BIF
+      - BMD
+      - BND
+      - BOB
+      - BRL
+      - BSD
+      - BTN
+      - BWP
+      - BYN
+      - BZD
+      - CAD
+      - CDF
+      - CHF
+      - CLP
+      - CNY
+      - COP
+      - CRC
+      - CUP
+      - CVE
+      - CZK
+      - DJF
+      - DKK
+      - DOP
+      - DZD
+      - EGP
+      - ERN
+      - ETB
+      - EUR
+      - FJD
+      - FKP
+      - GBP
+      - GEL
+      - GHS
+      - GIP
+      - GMD
+      - GNF
+      - GTQ
+      - GYD
+      - HKD
+      - HNL
+      - HTG
+      - HUF
+      - IDR
+      - ILS
+      - INR
+      - IQD
+      - IRR
+      - ISK
+      - JMD
+      - JOD
+      - JPY
+      - KES
+      - KGS
+      - KHR
+      - KMF
+      - KPW
+      - KRW
+      - KWD
+      - KYD
+      - KZT
+      - LAK
+      - LBP
+      - LKR
+      - LRD
+      - LSL
+      - LYD
+      - MAD
+      - MDL
+      - MGA
+      - MKD
+      - MMK
+      - MNT
+      - MOP
+      - MRU
+      - MUR
+      - MVR
+      - MWK
+      - MXN
+      - MYR
+      - MZN
+      - NAD
+      - NGN
+      - NIO
+      - NOK
+      - NPR
+      - NZD
+      - OMR
+      - PAB
+      - PEN
+      - PGK
+      - PHP
+      - PKR
+      - PLN
+      - PYG
+      - QAR
+      - RON
+      - RSD
+      - RUB
+      - RWF
+      - SAR
+      - SBD
+      - SCR
+      - SDG
+      - SEK
+      - SGD
+      - SHP
+      - SLE
+      - SOS
+      - SRD
+      - SSP
+      - STN
+      - SVC
+      - SYP
+      - SZL
+      - THB
+      - TJS
+      - TMT
+      - TND
+      - TOP
+      - TRY
+      - TTD
+      - TWD
+      - TZS
+      - UAH
+      - UGX
+      - USD
+      - UYU
+      - UZS
+      - VED
+      - VES
+      - VND
+      - VUV
+      - WST
+      - XAF
+      - XCD
+      - XCG
+      - XOF
+      - XPF
+      - YER
+      - ZAR
+      - ZMW
+      - ZWG
+    ShipmentJobLtlInfo:
+      type: object
+      properties:
+        billToAddressName:
+          type:
+          - object
+          - 'null'
+          description: The name associated with the bill to address on the job artifact
+        billToAddressQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        billToAddress:
+          description: The bill to address on the job artifact This is an expansion field. To include this field, you must include `address` in the query parameters.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/Address'
+        carrierOrganizationName:
+          type:
+          - string
+          - 'null'
+          description: The name of the carrier
+        carrierOrganizationQid:
+          type:
+          - string
+          - 'null'
           description: Qualified unique identifier.
           example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
-        vendorOrganization:
-          description: The vendor associated with this job. This is an expansion field. To include this field, you must include `organization` in the query parameters.
+        carrierOrganization:
+          description: The carrier associated with this job. This is an expansion field. To include this field, you must include `organization` in the query parameters.
           allOf:
           - $ref: '#/components/schemas/OrganizationExpanded'
+        brokerOrganizationQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        brokerOrganization:
+          description: The broker associated with this job. This is an expansion field. To include this field, you must include `organization` in the query parameters.
+          allOf:
+          - $ref: '#/components/schemas/OrganizationExpanded'
+        freightChargeTerms:
+          allOf:
+          - $ref: '#/components/schemas/FreightChargeTerms'
+        originAddressName:
+          type:
+          - object
+          - 'null'
+          description: The name associated with the origin address
+        originAddressQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        originAddress:
+          description: The origin address of the shipment. This is an expansion field. To include this field, you must include `address` in the query parameters.
+          allOf:
+          - $ref: '#/components/schemas/Address'
+        pickupDate:
+          type:
+          - string
+          - 'null'
+          format: floating-date
+          example: '2023-01-01'
+        destinationAddressName:
+          type:
+          - object
+          - 'null'
+          description: The name associated with the destination address
+        destinationAddressQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        destinationAddress:
+          description: The destination address of the shipment. This is an expansion field. To include this field, you must include `address` in the query parameters.
+          allOf:
+          - $ref: '#/components/schemas/Address'
+        deliveryDate:
+          type:
+          - string
+          - 'null'
+          format: floating-date
+          example: '2023-01-01'
+        articlesSummary:
+          $ref: '#/components/schemas/ShipmentJobArticlesSummary'
+        articles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentJobLtlInfoArticle'
       required:
-      - vendorOrganizationQid
+      - billToAddressName
+      - billToAddressQid
+      - carrierOrganizationName
+      - carrierOrganizationQid
+      - brokerOrganizationQid
+      - freightChargeTerms
+      - originAddressName
+      - originAddressQid
+      - pickupDate
+      - destinationAddressName
+      - destinationAddressQid
+      - deliveryDate
+      - articlesSummary
+      - articles
+    ShipmentJobFtlStopArticle:
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        dimensions:
+          example:
+            height: '2.8'
+            length: '12.1'
+            width: '1.5'
+            unit: INCH
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/Dimensions'
+        grossWeight:
+          example:
+            amount: '20.2'
+            unit: POUND
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/Weight'
+        nmfcClass:
+          allOf:
+          - $ref: '#/components/schemas/NmfcClass'
+        nmfcCode:
+          type:
+          - string
+          - 'null'
+          description: The raw NMFC code string associated with this article.
+          example: '87700'
+        packageCount:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/PackageCountInput'
+        handlingUnit:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/HandlingUnit'
+      required:
+      - description
+      - dimensions
+      - grossWeight
+      - nmfcClass
+      - nmfcCode
+      - packageCount
+      - handlingUnit
+    ShipmentJobAddress:
+      type: object
+      properties:
+        addressName:
+          type:
+          - string
+          - 'null'
+          description: The name associated with this address
+        addressQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        address:
+          description: The address object. This is an expansion field. To include this field, you must include `address` in the query parameters.
+          allOf:
+          - $ref: '#/components/schemas/Address'
+        addressType:
+          type: string
+          enum:
+          - PICKUP
+          - DROPOFF
+          - BILL_TO
+          - OTHER
+          example: PICKUP
+      required:
+      - addressName
+      - addressQid
+      - addressType
+    ShipmentJobArticlesSummary:
+      type: object
+      properties:
+        totalGrossWeight:
+          example:
+            amount: '20.2'
+            unit: POUND
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/Weight'
+        totalPackageCount:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/PackageCount'
+        totalHandlingUnit:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/HandlingUnit'
+      required:
+      - totalGrossWeight
+      - totalPackageCount
+      - totalHandlingUnit
     ShipmentJobGenericV1Info:
       type: object
       properties:
@@ -672,16 +1334,336 @@ components:
           format: qid
       required:
       - vendorOrganizationQid
-    PayableShipmentJobReviewExpanded:
+    Money:
       type: object
       properties:
-        latestRateEngineRun:
-          description: The latest rate engine run for the shipment job. This is an expansion field. To include this field, you must include `latestRateEngineRun` in the query parameters.
-          type:
-          - object
-          - 'null'
+        amount:
+          type: string
+          format: decimal-string
+          example: '3.50'
+          description: The amount of money
+        currencyCode:
           allOf:
-          - $ref: '#/components/schemas/RateEngineRunExpanded'
+          - $ref: '#/components/schemas/CurrencyCode'
+      required:
+      - amount
+      - currencyCode
+    ShipmentJobOceanContainer:
+      type: object
+      properties:
+        qid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::shipment_job_ocean_container:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        containerNumber:
+          type:
+          - string
+          - 'null'
+          description: The container number
+          example: MSKU1234567
+        containerType:
+          type:
+          - string
+          - 'null'
+          description: The type of container
+          enum:
+          - GP20
+          - GP40
+          - HC40
+          - HC45
+          - RF20
+          - RF40
+          - RF40HC
+          - OT20
+          - OT40
+          - FR20
+          - FR40
+          - TK20
+          example: GP20
+      required:
+      - qid
+      - containerNumber
+      - containerType
+    ShipmentJobTonuInfo:
+      type: object
+      properties:
+        carrierOrganizationQid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        carrierOrganization:
+          description: The carrier associated with this job. This is an expansion field. To include this field, you must include `organization` in the query parameters.
+          allOf:
+          - $ref: '#/components/schemas/OrganizationExpanded'
+      required:
+      - carrierOrganizationQid
+    PayableInvoiceExpanded:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          format: qid
+          example: qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+        invoiceNumber:
+          type: string
+          description: The invoice number
+          example: 555-555555
+        billingDomain:
+          type: string
+          description: The business billing domain that categorizes how this invoice is processed
+          enum:
+          - PARCEL
+          - FREIGHT
+          example: FREIGHT
+        paymentDueDate:
+          type:
+          - string
+          - 'null'
+          format: floating-date
+          example: '2023-01-01'
+        issueDate:
+          type:
+          - string
+          - 'null'
+          format: floating-date
+          example: '2023-01-01'
+        invoicedTotal:
+          example:
+            amount: '3.50'
+            currencyCode: USD
+          description: The total amount invoiced for the payable invoice
+          allOf:
+          - $ref: '#/components/schemas/Money'
+        shipmentJobQids:
+          description: Qualified unique identifier.
+          example:
+          - qid::shipment_job:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          type: array
+          items:
+            type: string
+            format: qid
+        shipmentJobs:
+          description: The shipment jobs. This is an expansion field. To include this field, you must include `shipmentJobs` in the query parameters.
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentJobExpanded'
+        artifactQids:
+          description: Qualified unique identifier.
+          example:
+          - qid::artifact:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          type: array
+          items:
+            type: string
+            format: qid
+        artifacts:
+          description: The artifacts. This is an expansion field. To include this field, you must include `artifacts` in the query parameters.
+          type: array
+          items:
+            $ref: '#/components/schemas/ArtifactExpanded'
+        referenceNumbers:
+          description: The reference numbers associated with this invoice.
+          type: array
+          items:
+            $ref: '#/components/schemas/PayableInvoiceReferenceNumber'
+        payeeOrganizationQid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        payeeOrganization:
+          description: The payee associated with this invoice. This is an expansion field. To include this field, you must include `organization` in the query parameters.
+          allOf:
+          - $ref: '#/components/schemas/OrganizationExpanded'
+        payeeFboOrganizationQid:
+          type:
+          - string
+          - 'null'
+          description: Deprecated, prefer vendorOrganizationQid
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        payorOrganizationQid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        payorOrganization:
+          description: The payor associated with this invoice. This is an expansion field. To include this field, you must include `organization` in the query parameters.
+          allOf:
+          - $ref: '#/components/schemas/OrganizationExpanded'
+        vendorOrganizationQid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        vendorOrganization:
+          description: The vendor associated with this invoice. This is an expansion field. To include this field, you must include `organization` in the query parameters.
+          allOf:
+          - $ref: '#/components/schemas/OrganizationExpanded'
+        receivedAt:
+          type:
+          - string
+          - 'null'
+          format: utc-timestamp
+          example: '2023-01-01T00:00:00.000Z'
+        exceptions:
+          description: A list of exceptions related to the payable invoice. This is an expansion field. To include this field, you must include `exceptions` in the query parameters.
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessException'
+        tags:
+          type: object
+          description: Entity tags assigned to the payable invoice. This is an expansion field. To include this field, you must include `tags` in the query parameters.
+      required:
+      - qid
+      - invoiceNumber
+      - billingDomain
+      - paymentDueDate
+      - issueDate
+      - invoicedTotal
+      - shipmentJobQids
+      - artifactQids
+      - referenceNumbers
+      - payeeOrganizationQid
+      - payeeFboOrganizationQid
+      - payorOrganizationQid
+      - vendorOrganizationQid
+      - receivedAt
+    ShipmentJobFtlStopReferenceNumber:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The type of reference number associated with this stop.
+          enum:
+          - APPOINTMENT_REFERENCE_NUMBER
+          - BILLING_ACCOUNT_NUMBER
+          - BOL_NUMBER
+          - CARRIER_IDENTIFIER
+          - CONSOLIDATED_INVOICE_NUMBER
+          - CONTAINER_NUMBER
+          - CUSTOMER_REFERENCE_NUMBER
+          - DELIVERY_NUMBER
+          - DESTINATION_LOCATION_NUMBER
+          - DISPLAY_IDENTIFIER
+          - EXTERNAL_IDENTIFIER
+          - HAWB_NUMBER
+          - HBL_NUMBER
+          - INVOICE_NUMBER
+          - MAWB_NUMBER
+          - MBL_NUMBER
+          - ORIGIN_LOCATION_NUMBER
+          - PICKUP_CONFIRMATION_NUMBER
+          - PICKUP_REFERENCE_NUMBER
+          - PO_NUMBER
+          - PRO_NUMBER
+          - RAIL_WAYBILL_NUMBER
+          - SALES_ORDER_NUMBER
+          - SEA_WAYBILL_NUMBER
+          - TRACKING_NUMBER
+          - TRAILER_NUMBER
+          - UNKNOWN
+          example: PO_NUMBER
+        value:
+          type: string
+          description: The value of the reference number associated with this stop.
+          example: '123'
+      required:
+      - key
+      - value
+    ShipmentReferenceNumber:
+      type: object
+      properties:
+        key:
+          type: string
+          enum:
+          - APPOINTMENT_REFERENCE_NUMBER
+          - BILLING_ACCOUNT_NUMBER
+          - BOL_NUMBER
+          - CARRIER_IDENTIFIER
+          - CONSOLIDATED_INVOICE_NUMBER
+          - CONTAINER_NUMBER
+          - CUSTOMER_REFERENCE_NUMBER
+          - DELIVERY_NUMBER
+          - DESTINATION_LOCATION_NUMBER
+          - DISPLAY_IDENTIFIER
+          - EXTERNAL_IDENTIFIER
+          - HAWB_NUMBER
+          - HBL_NUMBER
+          - INVOICE_NUMBER
+          - MAWB_NUMBER
+          - MBL_NUMBER
+          - ORIGIN_LOCATION_NUMBER
+          - PICKUP_CONFIRMATION_NUMBER
+          - PICKUP_REFERENCE_NUMBER
+          - PO_NUMBER
+          - PRO_NUMBER
+          - RAIL_WAYBILL_NUMBER
+          - SALES_ORDER_NUMBER
+          - SEA_WAYBILL_NUMBER
+          - TRACKING_NUMBER
+          - TRAILER_NUMBER
+          - UNKNOWN
+          example: PO_NUMBER
+        value:
+          type: string
+          description: The value of the reference number.
+          example: '123'
+        label:
+          type: string
+          description: The raw associated label for the reference number if present.
+          example: po
+      required:
+      - key
+      - value
+    RateEngineRunRateItemExpanded:
+      type: object
+      properties:
+        qid:
+          type: string
+          description: Qualified unique identifier.
+          example: qid::rate_engine_run_rate_item:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        code:
+          type:
+          - string
+          - 'null'
+          example: '660'
+          description: The client provided code for this charge.
+        description:
+          type:
+          - string
+          - 'null'
+          example: California Fuel Surcharge
+          description: A description of the charge.
+        classification:
+          type: string
+          enum:
+          - LINEHAUL
+          - FUEL_SURCHARGE
+          - OTHER
+          example: FUEL_SURCHARGE
+          description: The classification of the charge.
+        tags:
+          type: object
+          description: The rate engine rate item tags. This is an expansion field. To include this field, you must include `tags` in the query parameters.
+        cost:
+          example:
+            amount: '3.50'
+            currencyCode: USD
+          description: The cost assigned to the rate item.
+          allOf:
+          - $ref: '#/components/schemas/Money'
+      required:
+      - qid
+      - code
+      - description
+      - classification
+      - cost
     RateEngineRunExpanded:
       type: object
       properties:
@@ -698,26 +1680,79 @@ components:
           - $ref: '#/components/schemas/RateEngineRunRateItemExpanded'
       required:
       - rateEngineKey
-    OrganizationExpanded:
+    ShipmentJobSeaAirContainer:
       type: object
       properties:
         qid:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          example: qid::shipment_job_sea_air_container:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
-        displayName:
-          type: string
-          example: ACME
-          description: Name of the organization.
-        tags:
-          type: object
-          description: Entity tags associated with the organization
-          example:
-            externalCarrierUuid: 304fb3dd-1f4a-404b-9f9e-c9134584915b
+        containerNumber:
+          type:
+          - string
+          - 'null'
+          description: The container number
+          example: MSKU1234567
+        containerType:
+          type:
+          - string
+          - 'null'
+          description: The type of container
+          enum:
+          - GP20
+          - GP40
+          - HC40
+          - HC45
+          - RF20
+          - RF40
+          - RF40HC
+          - OT20
+          - OT40
+          - FR20
+          - FR40
+          - TK20
+          example: GP20
       required:
       - qid
-      - displayName
+      - containerNumber
+      - containerType
+    PayableInvoiceReferenceNumber:
+      type: object
+      properties:
+        key:
+          type: string
+          enum:
+          - BILLING_ACCOUNT_NUMBER
+          - BOL_NUMBER
+          - CONSOLIDATED_INVOICE_NUMBER
+          - CONTAINER_NUMBER
+          - CUSTOMER_REFERENCE_NUMBER
+          - HAWB_NUMBER
+          - HBL_NUMBER
+          - INVOICE_NUMBER
+          - MAWB_NUMBER
+          - MBL_NUMBER
+          - PO_NUMBER
+          - PRO_NUMBER
+          - RAIL_WAYBILL_NUMBER
+          - SALES_ORDER_NUMBER
+          - SEA_WAYBILL_NUMBER
+          - UNKNOWN
+          example: PO_NUMBER
+        value:
+          type: string
+          description: The value of the reference number.
+          example: '123'
+        label:
+          type: string
+          description: The raw associated label for the reference number if present.
+          example: po
+      required:
+      - key
+      - value
     ShipmentJobExpanded:
       type: object
       properties:
@@ -919,161 +1954,15 @@ components:
       - referenceNumbers
       - referenceNumbersList
       - tareWeights
-    ShipmentJobSeaAirAddress:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of address
-          enum:
-          - ORIGIN
-          - DESTINATION
-          example: ORIGIN
-        name:
-          type:
-          - string
-          - 'null'
-          description: The name associated with this address
-        addressQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        address:
-          description: The address details (expansion field).
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/Address'
-      required:
-      - type
-      - name
-      - addressQid
-      - address
-    ShipmentReferenceNumber:
-      type: object
-      properties:
-        key:
-          type: string
-          enum:
-          - APPOINTMENT_REFERENCE_NUMBER
-          - BILLING_ACCOUNT_NUMBER
-          - BOL_NUMBER
-          - CARRIER_IDENTIFIER
-          - CONSOLIDATED_INVOICE_NUMBER
-          - CONTAINER_NUMBER
-          - CUSTOMER_REFERENCE_NUMBER
-          - DELIVERY_NUMBER
-          - DESTINATION_LOCATION_NUMBER
-          - DISPLAY_IDENTIFIER
-          - EXTERNAL_IDENTIFIER
-          - HAWB_NUMBER
-          - HBL_NUMBER
-          - INVOICE_NUMBER
-          - MAWB_NUMBER
-          - MBL_NUMBER
-          - ORIGIN_LOCATION_NUMBER
-          - PICKUP_CONFIRMATION_NUMBER
-          - PICKUP_REFERENCE_NUMBER
-          - PO_NUMBER
-          - PRO_NUMBER
-          - RAIL_WAYBILL_NUMBER
-          - SALES_ORDER_NUMBER
-          - SEA_WAYBILL_NUMBER
-          - TRACKING_NUMBER
-          - TRAILER_NUMBER
-          - UNKNOWN
-          example: PO_NUMBER
-        value:
-          type: string
-          description: The value of the reference number.
-          example: '123'
-        label:
-          type: string
-          description: The raw associated label for the reference number if present.
-          example: po
-      required:
-      - key
-      - value
-    ShipmentJobFtlStopReferenceNumber:
-      type: object
-      properties:
-        key:
-          type: string
-          description: The type of reference number associated with this stop.
-          enum:
-          - APPOINTMENT_REFERENCE_NUMBER
-          - BILLING_ACCOUNT_NUMBER
-          - BOL_NUMBER
-          - CARRIER_IDENTIFIER
-          - CONSOLIDATED_INVOICE_NUMBER
-          - CONTAINER_NUMBER
-          - CUSTOMER_REFERENCE_NUMBER
-          - DELIVERY_NUMBER
-          - DESTINATION_LOCATION_NUMBER
-          - DISPLAY_IDENTIFIER
-          - EXTERNAL_IDENTIFIER
-          - HAWB_NUMBER
-          - HBL_NUMBER
-          - INVOICE_NUMBER
-          - MAWB_NUMBER
-          - MBL_NUMBER
-          - ORIGIN_LOCATION_NUMBER
-          - PICKUP_CONFIRMATION_NUMBER
-          - PICKUP_REFERENCE_NUMBER
-          - PO_NUMBER
-          - PRO_NUMBER
-          - RAIL_WAYBILL_NUMBER
-          - SALES_ORDER_NUMBER
-          - SEA_WAYBILL_NUMBER
-          - TRACKING_NUMBER
-          - TRAILER_NUMBER
-          - UNKNOWN
-          example: PO_NUMBER
-        value:
-          type: string
-          description: The value of the reference number associated with this stop.
-          example: '123'
-      required:
-      - key
-      - value
-    Address:
-      type: object
-      properties:
-        qid:
-          type: string
-          description: Qualified unique identifier.
-          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        addressLine1:
-          type: string
-          example: 123 Main Street
-        addressLine2:
-          type: string
-          example: Suite 456
-        city:
-          type: string
-          example: Chicago
-        state:
-          type: string
-          example: IL
-        postalCode:
-          type: string
-          example: '60601'
-        country:
-          type: string
-          example: US
-          description: ISO 3166-1 alpha-2 country code.
-      required:
-      - qid
-      - addressLine1
-      - city
-      - postalCode
-      - country
-    ShipmentJobOceanContainer:
+    ReceivableInvoiceVoidReasonType:
+      type: string
+      enum:
+      - INTERNAL_PRICING_ERROR
+      - BILLED_TO_BILLED_FROM_ERROR
+      - CURRENCY_ERROR
+      - WRITE_OFF
+      - OTHER
+    ShipmentJobAirDate:
       type: object
       properties:
         qid:
@@ -1081,72 +1970,73 @@ components:
           - string
           - 'null'
           description: Qualified unique identifier.
-          example: qid::shipment_job_ocean_container:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          example: qid::shipment_job_air_date:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
-        containerNumber:
-          type:
-          - string
-          - 'null'
-          description: The container number
-          example: MSKU1234567
-        containerType:
-          type:
-          - string
-          - 'null'
-          description: The type of container
+        dateType:
+          type: string
+          description: The type of date
           enum:
-          - GP20
-          - GP40
-          - HC40
-          - HC45
-          - RF20
-          - RF40
-          - RF40HC
-          - OT20
-          - OT40
-          - FR20
-          - FR40
-          - TK20
-          example: GP20
+          - EXECUTED
+          - FLIGHT_DEPARTURE
+          - FLIGHT_ARRIVAL
+          - ESTIMATED_ARRIVAL
+          - DELIVERY
+          example: FLIGHT_DEPARTURE
+        date:
+          type: string
+          format: floating-date
+          example: '2023-01-01'
+        iataCode:
+          type:
+          - string
+          - 'null'
+          description: The IATA airport code for this date if applicable (e.g. departure airport).
       required:
       - qid
-      - containerNumber
-      - containerType
-    ShipmentJobAirAddress:
+      - dateType
+      - date
+      - iataCode
+    ReceivableInvoiceLineItem:
       type: object
       properties:
-        type:
+        description:
           type: string
-          description: The type of address
-          enum:
-          - ORIGIN
-          - DESTINATION
-          example: ORIGIN
-        name:
-          type:
-          - string
-          - 'null'
-          description: The name associated with this address
-        addressQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        address:
-          description: The address details. This is an expansion field. To include this field, you must include `address` in the query parameters.
-          type:
-          - object
-          - 'null'
+          description: The invoice line item description
+          example: Linehaul
+        amount:
+          example:
+            amount: '3.50'
+            currencyCode: USD
           allOf:
-          - $ref: '#/components/schemas/Address'
+          - $ref: '#/components/schemas/Money'
+        kind:
+          type: string
+          enum:
+          - ORIGINAL
+          - ADJUSTMENT
+          description: The kind of line item. ORIGINAL line items are created in the draft invoice. ADJUSTMENT line items are created after the invoice is finalized.
+          example: ORIGINAL
+        invoiceDeliveryMethod:
+          type:
+          - string
+          - 'null'
+          enum:
+          - EMAIL
+          - OFFLINE
+          example: EMAIL
+          description: Optional expansion field to return the invoice delivery method for the given line item.
+        externalChargeCode:
+          type:
+          - string
+          - 'null'
+          description: The external (non-Loop) charge code provided when creating the invoice. This will be null if a charge code was not provided.
+          example: LH
       required:
-      - type
-      - name
-      - addressQid
-      - address
-    PackageCountInput:
+      - description
+      - amount
+      - kind
+      - externalChargeCode
+    HandlingUnit:
       type: object
       properties:
         amount:
@@ -1155,302 +2045,154 @@ components:
         unit:
           type: string
           enum:
-          - BAG
-          - BALE
-          - BOX
-          - BUNDLE
-          - CARTON
-          - CASE
-          - COIL
+          - BARREL
+          - CARLOAD
+          - CONTAINER
+          - CRATE
+          - DRUM
           - EACH
-          - PACKAGE
-          - PAIL
-          - PIECE
-          - ROLL
-          - SQUARE
+          - PALLET
+          - RACK
+          - SKID
           - TOTE
-          - TUBE
-          example: CARTON
+          - TRAILER
+          example: PALLET
       required:
       - amount
       - unit
-    ShipmentWithoutShipmentJobsExpanded:
+    ShipmentJobOceanDate:
       type: object
       properties:
         qid:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Qualified unique identifier.
-          example: qid::shipment:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          example: qid::shipment_job_ocean_date:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
-        exceptions:
-          description: A list of business exceptions related to the shipment. This is an expansion field. To include this field, you must include `exceptions` in the query parameters.
-          type: array
-          items:
-            $ref: '#/components/schemas/BusinessException'
-      required:
-      - qid
-    Volume:
-      type: object
-      properties:
-        value:
+        dateType:
           type: string
-          format: decimal-string
-          example: '1.5'
-        unit:
-          type: string
+          description: The type of date
           enum:
-          - CUBIC_CENTIMETER
-          - CUBIC_FEET
-          - CUBIC_INCH
-          - CUBIC_METER
-          example: CUBIC_FEET
-      required:
-      - value
-      - unit
-    Money:
-      type: object
-      properties:
-        amount:
+          - CARGO_RECEIVED
+          - LADEN_ON_BOARD
+          - DEPARTURE
+          - ESTIMATED_ARRIVAL
+          - ARRIVAL
+          - DISCHARGE
+          - DELIVERY
+          example: LADEN_ON_BOARD
+        date:
           type: string
-          format: decimal-string
-          example: '3.50'
-          description: The amount of money
-        currencyCode:
-          allOf:
-          - $ref: '#/components/schemas/CurrencyCode'
-      required:
-      - amount
-      - currencyCode
-    ReceivableInvoice:
-      type: object
-      properties:
-        qid:
-          type: string
-          description: Qualified unique identifier.
-          format: qid
-          example: qid::receivable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-        createdAt:
-          type: string
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-        revisionNumber:
-          type: number
-          example: 1
-        revisionCreatedAt:
-          type: string
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-        invoiceNumber:
-          type: string
-          description: The invoice number
-          example: 555-555555
-        payorOrganizationQid:
-          type: string
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        payeeOrganizationQid:
-          type: string
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        status:
-          type: string
-          enum:
-          - DRAFT
-          - OPEN
-          - VOID
-          - PAID
-        noteToPayor:
-          type: string
-          example: This is a payor note.
-          description: The note to the payor. This is the note that gets included in the generated AR invoice.
-        note:
-          type:
-          - string
-          - 'null'
-          example: This is an internal note.
-          description: The internal note on the invoice.
-        issuedAt:
-          type:
-          - string
-          - 'null'
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-          description: When the draft version of this invoice was finalized.
-        dueDate:
-          type:
-          - string
-          - 'null'
           format: floating-date
           example: '2023-01-01'
-          description: The date the invoice is due.
-        total:
-          example:
-            amount: '3.50'
-            currencyCode: USD
-          description: The total amount invoiced.
-          allOf:
-          - $ref: '#/components/schemas/Money'
-        adjustmentSubtotal:
-          example:
-            amount: '3.50'
-            currencyCode: USD
-          description: The total amount invoiced from ADJUSTMENT line items.
-          allOf:
-          - $ref: '#/components/schemas/Money'
-        lineItems:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReceivableInvoiceLineItem'
-        supportingArtifacts:
-          description: Supporting artifacts attached to the receivable invoice. This is an expansion field. To include this field, you must include `supportingArtifacts` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/ArtifactExpanded'
-        shipments:
-          description: Shipments related to the receivable invoice. This is an expansion field. To include this field, you must include `shipments` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/ShipmentExpanded'
-        exceptions:
-          description: The exceptions related to the receivable invoice. This is an expansion field. To include this field, you must include `exceptions` in the query parameters.
-          type: array
-          items:
-            $ref: '#/components/schemas/BusinessException'
-        finalizedAt:
+        unlocode:
           type:
           - string
           - 'null'
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-          description: The date the invoice was finalized.
-        finalizedBy:
-          description: The user who finalized the invoice. This is an expansion field. To include this field, you must include `finalizedBy` in the query parameters.
+          description: The UN/LOCODE for this date if applicable (e.g. port of laden-on-board)
+      required:
+      - qid
+      - dateType
+      - date
+      - unlocode
+    ShipmentJobSeaAirInfo:
+      type: object
+      properties:
+        forwarderOrganizationQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        forwarderOrganization:
+          description: The forwarder associated with this job.
           type:
           - object
           - 'null'
           allOf:
-          - $ref: '#/components/schemas/User'
-        voidReason:
-          example: INTERNAL_PRICING_ERROR
-          allOf:
-          - $ref: '#/components/schemas/ReceivableInvoiceVoidReasonType'
-        voidReasonNote:
-          type: string
-          example: Invoice voided due to error
-          description: Additional information about why the invoice was voided.
-      required:
-      - qid
-      - createdAt
-      - revisionNumber
-      - revisionCreatedAt
-      - invoiceNumber
-      - payorOrganizationQid
-      - payeeOrganizationQid
-      - status
-      - noteToPayor
-      - note
-      - issuedAt
-      - dueDate
-      - total
-      - adjustmentSubtotal
-      - lineItems
-    ShipmentExpanded:
-      type: object
-      properties:
-        qid:
-          type: string
-          description: Qualified unique identifier.
-          example: qid::shipment:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        exceptions:
-          description: A list of business exceptions related to the shipment. This is an expansion field. To include this field, you must include `exceptions` in the query parameters.
-          type: array
-          items:
-            $ref: '#/components/schemas/BusinessException'
-        shipmentJobs:
-          description: Shipment jobs associated with the shipment. This is an expansion field. To include this field, you must include `shipmentJobs` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/ShipmentJobExpanded'
-      required:
-      - qid
-    RateEngineRunRateItemExpanded:
-      type: object
-      properties:
-        qid:
-          type: string
-          description: Qualified unique identifier.
-          example: qid::rate_engine_run_rate_item:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        code:
-          type:
-          - string
-          - 'null'
-          example: '660'
-          description: The client provided code for this charge.
-        description:
-          type:
-          - string
-          - 'null'
-          example: California Fuel Surcharge
-          description: A description of the charge.
-        classification:
-          type: string
-          enum:
-          - LINEHAUL
-          - FUEL_SURCHARGE
-          - OTHER
-          example: FUEL_SURCHARGE
-          description: The classification of the charge.
-        tags:
-          type: object
-          description: The rate engine rate item tags. This is an expansion field. To include this field, you must include `tags` in the query parameters.
-        cost:
-          example:
-            amount: '3.50'
-            currencyCode: USD
-          description: The cost assigned to the rate item.
-          allOf:
-          - $ref: '#/components/schemas/Money'
-      required:
-      - qid
-      - code
-      - description
-      - classification
-      - cost
-    ShipmentJobOceanAddress:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of address
-          enum:
-          - ORIGIN
-          - DESTINATION
-          example: ORIGIN
-        name:
-          type:
-          - string
-          - 'null'
-          description: The name associated with this address
-        addressQid:
+          - $ref: '#/components/schemas/OrganizationExpanded'
+        airCarrierOrganizationQid:
           type:
           - string
           - 'null'
           description: Qualified unique identifier.
-          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
-        address:
-          description: The address details. This is an expansion field. To include this field, you must include `address` in the query parameters.
+        airCarrierOrganization:
+          description: The air carrier associated with this job.
           type:
           - object
           - 'null'
           allOf:
-          - $ref: '#/components/schemas/Address'
+          - $ref: '#/components/schemas/OrganizationExpanded'
+        oceanCarrierOrganizationQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        oceanCarrierOrganization:
+          description: The ocean carrier associated with this job.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/OrganizationExpanded'
+        oceanConsolidationType:
+          type:
+          - string
+          - 'null'
+          description: The ocean consolidation type
+          enum:
+          - FCL
+          - LCL
+        addresses:
+          description: The addresses associated with this sea-air shipment
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentJobSeaAirAddress'
+        containers:
+          description: The containers used for this sea-air shipment
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentJobSeaAirContainer'
+        chargeableWeight:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/Weight'
+        totalVolume:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/Volume'
+        freightChargeTerms:
+          type: string
+          description: The freight charge terms
+          enum:
+          - COLLECT
+          - PREPAID
+          - THIRD_PARTY
+          - UNKNOWN
+          example: PREPAID
       required:
-      - type
-      - name
-      - addressQid
-      - address
+      - forwarderOrganizationQid
+      - forwarderOrganization
+      - airCarrierOrganizationQid
+      - airCarrierOrganization
+      - oceanCarrierOrganizationQid
+      - oceanCarrierOrganization
+      - oceanConsolidationType
+      - addresses
+      - containers
+      - chargeableWeight
+      - totalVolume
+      - freightChargeTerms
     ShipmentJobOceanInfo:
       type: object
       properties:
@@ -1556,142 +2298,6 @@ components:
       - grossWeight
       - freightChargeTerms
       - dates
-    ShipmentJobFtlStop:
-      type: object
-      properties:
-        addressName:
-          type:
-          - string
-          - 'null'
-          description: The name associated with this address on the stop.
-        addressQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        address:
-          description: The address of this stop. This is an expansion field. To include this field, you must include `address` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/Address'
-        date:
-          type:
-          - string
-          - 'null'
-          format: floating-date
-          example: '2023-01-01'
-        organizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        organization:
-          description: The organization associated with this stop. This is an expansion field. To include this field, you must include `organization` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/OrganizationExpanded'
-        stopType:
-          type: string
-          enum:
-          - DROP_OFF
-          - PICK_UP
-          example: DROP_OFF
-        articlesSummary:
-          $ref: '#/components/schemas/ShipmentJobArticlesSummary'
-        articles:
-          type: array
-          items:
-            $ref: '#/components/schemas/ShipmentJobFtlStopArticle'
-        referenceNumbers:
-          description: The reference numbers associated with this stop.
-          type: array
-          items:
-            $ref: '#/components/schemas/ShipmentJobFtlStopReferenceNumber'
-      required:
-      - addressName
-      - addressQid
-      - date
-      - organizationQid
-      - stopType
-      - articlesSummary
-      - articles
-      - referenceNumbers
-    ShipmentJobAirDate:
-      type: object
-      properties:
-        qid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::shipment_job_air_date:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        dateType:
-          type: string
-          description: The type of date
-          enum:
-          - EXECUTED
-          - FLIGHT_DEPARTURE
-          - FLIGHT_ARRIVAL
-          - ESTIMATED_ARRIVAL
-          - DELIVERY
-          example: FLIGHT_DEPARTURE
-        date:
-          type: string
-          format: floating-date
-          example: '2023-01-01'
-        iataCode:
-          type:
-          - string
-          - 'null'
-          description: The IATA airport code for this date if applicable (e.g. departure airport).
-      required:
-      - qid
-      - dateType
-      - date
-      - iataCode
-    ReceivableInvoiceLineItem:
-      type: object
-      properties:
-        description:
-          type: string
-          description: The invoice line item description
-          example: Linehaul
-        amount:
-          example:
-            amount: '3.50'
-            currencyCode: USD
-          allOf:
-          - $ref: '#/components/schemas/Money'
-        kind:
-          type: string
-          enum:
-          - ORIGINAL
-          - ADJUSTMENT
-          description: The kind of line item. ORIGINAL line items are created in the draft invoice. ADJUSTMENT line items are created after the invoice is finalized.
-          example: ORIGINAL
-        invoiceDeliveryMethod:
-          type:
-          - string
-          - 'null'
-          enum:
-          - EMAIL
-          - OFFLINE
-          example: EMAIL
-          description: Optional expansion field to return the invoice delivery method for the given line item.
-        externalChargeCode:
-          type:
-          - string
-          - 'null'
-          description: The external (non-Loop) charge code provided when creating the invoice. This will be null if a charge code was not provided.
-          example: LH
-      required:
-      - description
-      - amount
-      - kind
-      - externalChargeCode
     ShipmentJobFtlInfo:
       type: object
       properties:
@@ -1803,433 +2409,72 @@ components:
       - lastDestinationAddressQid
       - brokerOrganizationQid
       - stops
-    CurrencyCode:
-      type: string
-      enum:
-      - AED
-      - AFN
-      - ALL
-      - AMD
-      - AOA
-      - ARS
-      - AUD
-      - AWG
-      - AZN
-      - BAM
-      - BBD
-      - BDT
-      - BHD
-      - BIF
-      - BMD
-      - BND
-      - BOB
-      - BRL
-      - BSD
-      - BTN
-      - BWP
-      - BYN
-      - BZD
-      - CAD
-      - CDF
-      - CHF
-      - CLP
-      - CNY
-      - COP
-      - CRC
-      - CUP
-      - CVE
-      - CZK
-      - DJF
-      - DKK
-      - DOP
-      - DZD
-      - EGP
-      - ERN
-      - ETB
-      - EUR
-      - FJD
-      - FKP
-      - GBP
-      - GEL
-      - GHS
-      - GIP
-      - GMD
-      - GNF
-      - GTQ
-      - GYD
-      - HKD
-      - HNL
-      - HTG
-      - HUF
-      - IDR
-      - ILS
-      - INR
-      - IQD
-      - IRR
-      - ISK
-      - JMD
-      - JOD
-      - JPY
-      - KES
-      - KGS
-      - KHR
-      - KMF
-      - KPW
-      - KRW
-      - KWD
-      - KYD
-      - KZT
-      - LAK
-      - LBP
-      - LKR
-      - LRD
-      - LSL
-      - LYD
-      - MAD
-      - MDL
-      - MGA
-      - MKD
-      - MMK
-      - MNT
-      - MOP
-      - MRU
-      - MUR
-      - MVR
-      - MWK
-      - MXN
-      - MYR
-      - MZN
-      - NAD
-      - NGN
-      - NIO
-      - NOK
-      - NPR
-      - NZD
-      - OMR
-      - PAB
-      - PEN
-      - PGK
-      - PHP
-      - PKR
-      - PLN
-      - PYG
-      - QAR
-      - RON
-      - RSD
-      - RUB
-      - RWF
-      - SAR
-      - SBD
-      - SCR
-      - SDG
-      - SEK
-      - SGD
-      - SHP
-      - SLE
-      - SOS
-      - SRD
-      - SSP
-      - STN
-      - SVC
-      - SYP
-      - SZL
-      - THB
-      - TJS
-      - TMT
-      - TND
-      - TOP
-      - TRY
-      - TTD
-      - TWD
-      - TZS
-      - UAH
-      - UGX
-      - USD
-      - UYU
-      - UZS
-      - VED
-      - VES
-      - VND
-      - VUV
-      - WST
-      - XAF
-      - XCD
-      - XCG
-      - XOF
-      - XPF
-      - YER
-      - ZAR
-      - ZMW
-      - ZWG
-    NmfcClass:
-      type: string
-      enum:
-      - '50'
-      - '55'
-      - '60'
-      - '65'
-      - '70'
-      - '77.5'
-      - '85'
-      - '92.5'
-      - '100'
-      - '110'
-      - '125'
-      - '150'
-      - '175'
-      - '200'
-      - '250'
-      - '300'
-      - '400'
-      - '500'
-    ShipmentJobSeaAirContainer:
+    ShipmentJobAirAddress:
       type: object
       properties:
-        qid:
+        type:
+          type: string
+          description: The type of address
+          enum:
+          - ORIGIN
+          - DESTINATION
+          example: ORIGIN
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name associated with this address
+        addressQid:
           type:
           - string
           - 'null'
           description: Qualified unique identifier.
-          example: qid::shipment_job_sea_air_container:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
-        containerNumber:
+        address:
+          description: The address details. This is an expansion field. To include this field, you must include `address` in the query parameters.
           type:
-          - string
+          - object
           - 'null'
-          description: The container number
-          example: MSKU1234567
-        containerType:
-          type:
-          - string
-          - 'null'
-          description: The type of container
-          enum:
-          - GP20
-          - GP40
-          - HC40
-          - HC45
-          - RF20
-          - RF40
-          - RF40HC
-          - OT20
-          - OT40
-          - FR20
-          - FR40
-          - TK20
-          example: GP20
+          allOf:
+          - $ref: '#/components/schemas/Address'
       required:
-      - qid
-      - containerNumber
-      - containerType
+      - type
+      - name
+      - addressQid
+      - address
     RawShipmentJobMetadata:
       type: object
       properties: {}
-    ShipmentJobAirRouteUnlocodeLocation:
+    PayableShipmentJobReviewExpanded:
       type: object
       properties:
-        qid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::shipment_job_air_route_location:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        type:
-          type: string
-          description: The type of route location
-          enum:
-          - ORIGIN_AIRPORT
-          - DESTINATION_AIRPORT
-          - INTERMEDIATE_AIRPORT
-          - CONTAINER_FREIGHT_STATION
-          example: CONTAINER_FREIGHT_STATION
-        unlocode:
-          type: string
-          description: The UN/LOCODE for this location
-          example: USNYC
-      required:
-      - qid
-      - type
-      - unlocode
-    Weight:
-      type: object
-      properties:
-        amount:
-          type: string
-          format: decimal-string
-          example: '1.5'
-        unit:
-          type: string
-          enum:
-          - KILOGRAM
-          - OUNCE
-          - POUND
-          - SHORT_TON
-          example: POUND
-      required:
-      - amount
-      - unit
-    ShipmentJobOceanDate:
-      type: object
-      properties:
-        qid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::shipment_job_ocean_date:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        dateType:
-          type: string
-          description: The type of date
-          enum:
-          - CARGO_RECEIVED
-          - LADEN_ON_BOARD
-          - DEPARTURE
-          - ESTIMATED_ARRIVAL
-          - ARRIVAL
-          - DISCHARGE
-          - DELIVERY
-          example: LADEN_ON_BOARD
-        date:
-          type: string
-          format: floating-date
-          example: '2023-01-01'
-        unlocode:
-          type:
-          - string
-          - 'null'
-          description: The UN/LOCODE for this date if applicable (e.g. port of laden-on-board)
-      required:
-      - qid
-      - dateType
-      - date
-      - unlocode
-    ShipmentJobAirRouteAirportLocation:
-      type: object
-      properties:
-        qid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::shipment_job_air_route_location:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        type:
-          type: string
-          description: The type of route location
-          enum:
-          - ORIGIN_AIRPORT
-          - DESTINATION_AIRPORT
-          - INTERMEDIATE_AIRPORT
-          - CONTAINER_FREIGHT_STATION
-          example: ORIGIN_AIRPORT
-        canonicalAirportQid:
-          type: string
-          description: Qualified unique identifier.
-          example: qid::canonical_airport:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-      required:
-      - qid
-      - type
-      - canonicalAirportQid
-    ShipmentJobSeaAirInfo:
-      type: object
-      properties:
-        forwarderOrganizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        forwarderOrganization:
-          description: The forwarder associated with this job.
+        latestRateEngineRun:
+          description: The latest rate engine run for the shipment job. This is an expansion field. To include this field, you must include `latestRateEngineRun` in the query parameters.
           type:
           - object
           - 'null'
           allOf:
-          - $ref: '#/components/schemas/OrganizationExpanded'
-        airCarrierOrganizationQid:
-          type:
-          - string
-          - 'null'
+          - $ref: '#/components/schemas/RateEngineRunExpanded'
+    ShipmentExpanded:
+      type: object
+      properties:
+        qid:
+          type: string
           description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          example: qid::shipment:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
-        airCarrierOrganization:
-          description: The air carrier associated with this job.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/OrganizationExpanded'
-        oceanCarrierOrganizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        oceanCarrierOrganization:
-          description: The ocean carrier associated with this job.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/OrganizationExpanded'
-        oceanConsolidationType:
-          type:
-          - string
-          - 'null'
-          description: The ocean consolidation type
-          enum:
-          - FCL
-          - LCL
-        addresses:
-          description: The addresses associated with this sea-air shipment
+        exceptions:
+          description: A list of business exceptions related to the shipment. This is an expansion field. To include this field, you must include `exceptions` in the query parameters.
           type: array
           items:
-            $ref: '#/components/schemas/ShipmentJobSeaAirAddress'
-        containers:
-          description: The containers used for this sea-air shipment
-          type: array
-          items:
-            $ref: '#/components/schemas/ShipmentJobSeaAirContainer'
-        chargeableWeight:
-          type:
-          - object
-          - 'null'
+            $ref: '#/components/schemas/BusinessException'
+        shipmentJobs:
+          description: Shipment jobs associated with the shipment. This is an expansion field. To include this field, you must include `shipmentJobs` in the query parameters.
           allOf:
-          - $ref: '#/components/schemas/Weight'
-        totalVolume:
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/Volume'
-        freightChargeTerms:
-          type: string
-          description: The freight charge terms
-          enum:
-          - COLLECT
-          - PREPAID
-          - THIRD_PARTY
-          - UNKNOWN
-          example: PREPAID
+          - $ref: '#/components/schemas/ShipmentJobExpanded'
       required:
-      - forwarderOrganizationQid
-      - forwarderOrganization
-      - airCarrierOrganizationQid
-      - airCarrierOrganization
-      - oceanCarrierOrganizationQid
-      - oceanCarrierOrganization
-      - oceanConsolidationType
-      - addresses
-      - containers
-      - chargeableWeight
-      - totalVolume
-      - freightChargeTerms
+      - qid
     User:
       type: object
       properties:
@@ -2294,7 +2539,41 @@ components:
       - artifactType
       - assessedTypes
       - receivedAt
-    ShipmentJobOceanRouteLocation:
+    ShipmentJobOceanAddress:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of address
+          enum:
+          - ORIGIN
+          - DESTINATION
+          example: ORIGIN
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name associated with this address
+        addressQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        address:
+          description: The address details. This is an expansion field. To include this field, you must include `address` in the query parameters.
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/Address'
+      required:
+      - type
+      - name
+      - addressQid
+      - address
+    ShipmentJobAirRouteAirportLocation:
       type: object
       properties:
         qid:
@@ -2302,153 +2581,26 @@ components:
           - string
           - 'null'
           description: Qualified unique identifier.
-          example: qid::shipment_job_ocean_route_location:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          example: qid::shipment_job_air_route_location:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
         type:
           type: string
           description: The type of route location
           enum:
-          - PORT_OF_LOADING
-          - PORT_OF_DISCHARGE
-          - PORT_OF_ENTRY
+          - ORIGIN_AIRPORT
+          - DESTINATION_AIRPORT
+          - INTERMEDIATE_AIRPORT
           - CONTAINER_FREIGHT_STATION
-          - PLACE_OF_RECEIPT
-          - PLACE_OF_DELIVERY
-          example: PORT_OF_LOADING
-        unlocode:
+          example: ORIGIN_AIRPORT
+        canonicalAirportQid:
           type: string
-          description: The UN/LOCODE for this location
-          example: USNYC
-        name:
-          type:
-          - object
-          - 'null'
-          description: The name of this location
+          description: Qualified unique identifier.
+          example: qid::canonical_airport:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
       required:
       - qid
       - type
-      - unlocode
-      - name
-    ShipmentJobFtlStopArticle:
-      type: object
-      properties:
-        description:
-          type:
-          - string
-          - 'null'
-        dimensions:
-          example:
-            height: '2.8'
-            length: '12.1'
-            width: '1.5'
-            unit: INCH
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/Dimensions'
-        grossWeight:
-          example:
-            amount: '20.2'
-            unit: POUND
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/Weight'
-        nmfcClass:
-          allOf:
-          - $ref: '#/components/schemas/NmfcClass'
-        nmfcCode:
-          type:
-          - string
-          - 'null'
-          description: The raw NMFC code string associated with this article.
-          example: '87700'
-        packageCount:
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/PackageCountInput'
-        handlingUnit:
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/HandlingUnit'
-      required:
-      - description
-      - dimensions
-      - grossWeight
-      - nmfcClass
-      - nmfcCode
-      - packageCount
-      - handlingUnit
-    PayableInvoiceReferenceNumber:
-      type: object
-      properties:
-        key:
-          type: string
-          enum:
-          - BILLING_ACCOUNT_NUMBER
-          - BOL_NUMBER
-          - CONSOLIDATED_INVOICE_NUMBER
-          - CONTAINER_NUMBER
-          - CUSTOMER_REFERENCE_NUMBER
-          - HAWB_NUMBER
-          - HBL_NUMBER
-          - INVOICE_NUMBER
-          - MAWB_NUMBER
-          - MBL_NUMBER
-          - PO_NUMBER
-          - PRO_NUMBER
-          - RAIL_WAYBILL_NUMBER
-          - SALES_ORDER_NUMBER
-          - SEA_WAYBILL_NUMBER
-          - UNKNOWN
-          example: PO_NUMBER
-        value:
-          type: string
-          description: The value of the reference number.
-          example: '123'
-        label:
-          type: string
-          description: The raw associated label for the reference number if present.
-          example: po
-      required:
-      - key
-      - value
-    RawShipmentReferenceNumbers:
-      type: object
-      properties:
-        bolNumber:
-          type: string
-        containerNumber:
-          type: string
-        customerReferenceNumber:
-          type: string
-        deliveryNumber:
-          type: string
-        displayIdentifier:
-          type: string
-          description: The human-readable identifier for the shipment.
-        externalIdentifier:
-          type: string
-        invoiceNumber:
-          type: string
-        pickupConfirmationNumber:
-          type: string
-        pickupReferenceNumber:
-          type: string
-        poNumber:
-          type: string
-        proNumber:
-          type: string
-        trackingNumber:
-          type: string
-        trailerNumber:
-          type: string
+      - canonicalAirportQid
     ArtifactExpanded:
       type: object
       properties:
@@ -2484,104 +2636,110 @@ components:
       required:
       - qid
       - artifactType
-    ShipmentJobLtlInfoArticle:
+    ShipmentJobUnknownInfo:
       type: object
       properties:
-        description:
-          type:
-          - object
-          - 'null'
-        dimensions:
-          example:
-            height: '2.8'
-            length: '12.1'
-            width: '1.5'
-            unit: INCH
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/Dimensions'
-        grossWeight:
-          example:
-            amount: '20.2'
-            unit: POUND
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/Weight'
-        nmfcClass:
-          allOf:
-          - $ref: '#/components/schemas/NmfcClass'
-        nmfcCode:
-          type:
-          - string
-          - 'null'
-          description: The NMFC code string associated with this article.
-          example: '87700'
-        packageCount:
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/PackageCount'
-        handlingUnit:
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/HandlingUnit'
-      required:
-      - description
-      - dimensions
-      - grossWeight
-      - nmfcClass
-      - nmfcCode
-      - packageCount
-      - handlingUnit
-    ReceivableInvoiceVoidReasonType:
-      type: string
-      enum:
-      - INTERNAL_PRICING_ERROR
-      - BILLED_TO_BILLED_FROM_ERROR
-      - CURRENCY_ERROR
-      - WRITE_OFF
-      - OTHER
-    BusinessException:
-      type: object
-      properties:
-        qid:
+        vendorOrganizationQid:
           type: string
           description: Qualified unique identifier.
-          example: qid::business_exception:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
           format: qid
-        label:
-          type: string
-          description: The description of the business exception
-          example: Variance over threshold
-        resolvedAt:
-          type:
-          - string
-          - 'null'
-          format: utc-timestamp
-          example: '2023-01-01T00:00:00.000Z'
-          description: If resolved, the time the exception was resolved. If the exception was resolved and re-opened, this will be null.
-        targetQid:
-          type: string
-          description: Qualified unique identifier of the business exception's target entity.
-          format: qid
-          example: qid::payable_invoice:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-        note:
-          type:
-          - string
-          - 'null'
-          description: The note on the business exception
+        vendorOrganization:
+          description: The vendor associated with this job. This is an expansion field. To include this field, you must include `organization` in the query parameters.
+          allOf:
+          - $ref: '#/components/schemas/OrganizationExpanded'
       required:
-      - qid
-      - label
-      - resolvedAt
-      - targetQid
+      - vendorOrganizationQid
+    PackageCount:
+      type: object
+      properties:
+        amount:
+          type: integer
+          example: 8
+        unit:
+          type: string
+          enum:
+          - BAG
+          - BALE
+          - BOX
+          - BUNDLE
+          - CARTON
+          - CASE
+          - COIL
+          - EACH
+          - PACKAGE
+          - PAIL
+          - PIECE
+          - ROLL
+          - SQUARE
+          - TOTE
+          - TUBE
+          example: CARTON
+      required:
+      - amount
+      - unit
+    ShipmentJobFtlStop:
+      type: object
+      properties:
+        addressName:
+          type:
+          - string
+          - 'null'
+          description: The name associated with this address on the stop.
+        addressQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        address:
+          description: The address of this stop. This is an expansion field. To include this field, you must include `address` in the query parameters.
+          allOf:
+          - $ref: '#/components/schemas/Address'
+        date:
+          type:
+          - string
+          - 'null'
+          format: floating-date
+          example: '2023-01-01'
+        organizationQid:
+          type:
+          - string
+          - 'null'
+          description: Qualified unique identifier.
+          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
+          format: qid
+        organization:
+          description: The organization associated with this stop. This is an expansion field. To include this field, you must include `organization` in the query parameters.
+          allOf:
+          - $ref: '#/components/schemas/OrganizationExpanded'
+        stopType:
+          type: string
+          enum:
+          - DROP_OFF
+          - PICK_UP
+          example: DROP_OFF
+        articlesSummary:
+          $ref: '#/components/schemas/ShipmentJobArticlesSummary'
+        articles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentJobFtlStopArticle'
+        referenceNumbers:
+          description: The reference numbers associated with this stop.
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentJobFtlStopReferenceNumber'
+      required:
+      - addressName
+      - addressQid
+      - date
+      - organizationQid
+      - stopType
+      - articlesSummary
+      - articles
+      - referenceNumbers
     ShipmentJobAirInfo:
       type: object
       properties:
@@ -2681,6 +2839,24 @@ components:
       - totalVolume
       - freightChargeTerms
       - dates
+    Weight:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal-string
+          example: '1.5'
+        unit:
+          type: string
+          enum:
+          - KILOGRAM
+          - OUNCE
+          - POUND
+          - SHORT_TON
+          example: POUND
+      required:
+      - amount
+      - unit
     FreightChargeTerms:
       type: string
       enum:
@@ -2688,182 +2864,6 @@ components:
       - PREPAID
       - THIRD_PARTY
       - UNKNOWN
-    ShipmentJobAddress:
-      type: object
-      properties:
-        addressName:
-          type:
-          - string
-          - 'null'
-          description: The name associated with this address
-        addressQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        address:
-          description: The address object. This is an expansion field. To include this field, you must include `address` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/Address'
-        addressType:
-          type: string
-          enum:
-          - PICKUP
-          - DROPOFF
-          - BILL_TO
-          - OTHER
-          example: PICKUP
-      required:
-      - addressName
-      - addressQid
-      - addressType
-    ShipmentJobLtlInfo:
-      type: object
-      properties:
-        billToAddressName:
-          type:
-          - object
-          - 'null'
-          description: The name associated with the bill to address on the job artifact
-        billToAddressQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        billToAddress:
-          description: The bill to address on the job artifact This is an expansion field. To include this field, you must include `address` in the query parameters.
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/Address'
-        carrierOrganizationName:
-          type:
-          - string
-          - 'null'
-          description: The name of the carrier
-        carrierOrganizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        carrierOrganization:
-          description: The carrier associated with this job. This is an expansion field. To include this field, you must include `organization` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/OrganizationExpanded'
-        brokerOrganizationQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::organization:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        brokerOrganization:
-          description: The broker associated with this job. This is an expansion field. To include this field, you must include `organization` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/OrganizationExpanded'
-        freightChargeTerms:
-          allOf:
-          - $ref: '#/components/schemas/FreightChargeTerms'
-        originAddressName:
-          type:
-          - object
-          - 'null'
-          description: The name associated with the origin address
-        originAddressQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        originAddress:
-          description: The origin address of the shipment. This is an expansion field. To include this field, you must include `address` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/Address'
-        pickupDate:
-          type:
-          - string
-          - 'null'
-          format: floating-date
-          example: '2023-01-01'
-        destinationAddressName:
-          type:
-          - object
-          - 'null'
-          description: The name associated with the destination address
-        destinationAddressQid:
-          type:
-          - string
-          - 'null'
-          description: Qualified unique identifier.
-          example: qid::address:0ca6f700-4137-4d09-b44a-43bb8d7900c4
-          format: qid
-        destinationAddress:
-          description: The destination address of the shipment. This is an expansion field. To include this field, you must include `address` in the query parameters.
-          allOf:
-          - $ref: '#/components/schemas/Address'
-        deliveryDate:
-          type:
-          - string
-          - 'null'
-          format: floating-date
-          example: '2023-01-01'
-        articlesSummary:
-          $ref: '#/components/schemas/ShipmentJobArticlesSummary'
-        articles:
-          type: array
-          items:
-            $ref: '#/components/schemas/ShipmentJobLtlInfoArticle'
-      required:
-      - billToAddressName
-      - billToAddressQid
-      - carrierOrganizationName
-      - carrierOrganizationQid
-      - brokerOrganizationQid
-      - freightChargeTerms
-      - originAddressName
-      - originAddressQid
-      - pickupDate
-      - destinationAddressName
-      - destinationAddressQid
-      - deliveryDate
-      - articlesSummary
-      - articles
-    PackageCount:
-      type: object
-      properties:
-        amount:
-          type: integer
-          example: 8
-        unit:
-          type: string
-          enum:
-          - BAG
-          - BALE
-          - BOX
-          - BUNDLE
-          - CARTON
-          - CASE
-          - COIL
-          - EACH
-          - PACKAGE
-          - PAIL
-          - PIECE
-          - ROLL
-          - SQUARE
-          - TOTE
-          - TUBE
-          example: CARTON
-      required:
-      - amount
-      - unit
   securitySchemes:
     bearer:
       scheme: bearer

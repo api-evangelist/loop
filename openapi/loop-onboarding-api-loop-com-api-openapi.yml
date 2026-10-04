@@ -40,6 +40,82 @@ paths:
       - onboarding.api.loop.com
 components:
   schemas:
+    PaymentAccountDetailBankAccount:
+      type: object
+      properties:
+        detailType:
+          type: string
+          description: The type of payment account detail. Currently only BANK_ACCOUNT is supported.
+          enum:
+          - BANK_ACCOUNT
+        routingNumber:
+          type: string
+          example: '021000021'
+        accountNumber:
+          type: string
+          example: '1234567890'
+      required:
+      - detailType
+      - routingNumber
+      - accountNumber
+    OrganizationAsPayeeQuickpayInput:
+      type: object
+      properties:
+        daysToPay:
+          type: number
+          description: Number of days to pay.
+          example: 1
+        discountPercentage:
+          type: string
+          format: decimal-string
+          example: '0.02'
+          description: Discount percentage if the `daysToPay` quickpay requirement is met. Must be between "0" and "1".
+      required:
+      - daysToPay
+      - discountPercentage
+    OrganizationAsPayeePaymentInfoInput:
+      type: object
+      properties:
+        achDisplayName:
+          type:
+          - string
+          - 'null'
+          description: Display name that shows up in ACH records, on statements opposite to this org in a payment. Max 13 characters; otherwise may be truncated.
+          example: ACME
+        businessType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - SOLE_PROPRIETORSHIP
+          - LLC
+          - TRUST
+          - PUBLIC_CORPORATION
+          - PRIVATE_CORPORATION
+          - PARTNERSHIP
+          - UNINCORPORATED_ASSOCIATION
+          - UNINCORPORATED_NONPROFIT
+          - INCORPORATED_NONPROFIT
+          example: LLC
+          description: Business type of the organization.
+        remittanceEmails:
+          example:
+          - acme@acme.com
+          items:
+            type: string
+          description: Array of emails that should receive remittance emails for payments to this organization.
+        primaryAddress:
+          description: Primary payment (billing) address of the organization.
+          allOf:
+          - $ref: '#/components/schemas/RawAddressValue'
+        remittanceAddress:
+          description: Payment remittance address of the organization, if different from the primary address.
+          allOf:
+          - $ref: '#/components/schemas/RawAddressValue'
+      required:
+      - discountPercentage
+      - remittanceEmails
+      - primaryAddress
     OrganizationAsPayeeInput:
       type: object
       properties:
@@ -125,6 +201,9 @@ components:
       required:
       - daysToPay
       - discountPercentage
+    FactorInfo:
+      type: object
+      properties: {}
     CreateOrganizationWithPaymentDetailInput:
       type: object
       properties:
@@ -207,6 +286,45 @@ components:
       - legalName
       - tags
       - asPayee
+    TruckingCarrierInfo:
+      type: object
+      properties:
+        factorOrganizationQid:
+          type:
+          - object
+          - 'null'
+          example: qid::organization:31ab766e-f991-4374-8e58-391aaadf29f1
+          description: QID of the organization the carrier currently uses for factoring
+        mcNumber:
+          type:
+          - string
+          - 'null'
+          example: MC-179059
+          description: Motor Carrier Number
+        scac:
+          type:
+          - string
+          - 'null'
+          example: FDEG
+          description: Standard Carrier Alpha Code (SCAC)
+        usdotNumber:
+          type:
+          - string
+          - 'null'
+          example: '265752'
+          description: US Department of Transportation Number
+        offersFtl:
+          type:
+          - boolean
+          - 'null'
+          example: true
+          description: Whether the carrier offers LTL services
+        offersLtl:
+          type:
+          - boolean
+          - 'null'
+          example: true
+          description: Whether the carrier offers LTL services
     Organization:
       type: object
       properties:
@@ -279,124 +397,6 @@ components:
       - parentOrganizationQid
       - truckingCarrierInfo
       - factorInfo
-    OrganizationAsPayeePaymentInfoInput:
-      type: object
-      properties:
-        achDisplayName:
-          type:
-          - string
-          - 'null'
-          description: Display name that shows up in ACH records, on statements opposite to this org in a payment. Max 13 characters; otherwise may be truncated.
-          example: ACME
-        businessType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - SOLE_PROPRIETORSHIP
-          - LLC
-          - TRUST
-          - PUBLIC_CORPORATION
-          - PRIVATE_CORPORATION
-          - PARTNERSHIP
-          - UNINCORPORATED_ASSOCIATION
-          - UNINCORPORATED_NONPROFIT
-          - INCORPORATED_NONPROFIT
-          example: LLC
-          description: Business type of the organization.
-        remittanceEmails:
-          example:
-          - acme@acme.com
-          items:
-            type: string
-          description: Array of emails that should receive remittance emails for payments to this organization.
-        primaryAddress:
-          description: Primary payment (billing) address of the organization.
-          allOf:
-          - $ref: '#/components/schemas/RawAddressValue'
-        remittanceAddress:
-          description: Payment remittance address of the organization, if different from the primary address.
-          allOf:
-          - $ref: '#/components/schemas/RawAddressValue'
-      required:
-      - discountPercentage
-      - remittanceEmails
-      - primaryAddress
-    OrganizationAsPayeeQuickpayInput:
-      type: object
-      properties:
-        daysToPay:
-          type: number
-          description: Number of days to pay.
-          example: 1
-        discountPercentage:
-          type: string
-          format: decimal-string
-          example: '0.02'
-          description: Discount percentage if the `daysToPay` quickpay requirement is met. Must be between "0" and "1".
-      required:
-      - daysToPay
-      - discountPercentage
-    PaymentAccountDetailBankAccount:
-      type: object
-      properties:
-        detailType:
-          type: string
-          description: The type of payment account detail. Currently only BANK_ACCOUNT is supported.
-          enum:
-          - BANK_ACCOUNT
-        routingNumber:
-          type: string
-          example: '021000021'
-        accountNumber:
-          type: string
-          example: '1234567890'
-      required:
-      - detailType
-      - routingNumber
-      - accountNumber
-    TruckingCarrierInfo:
-      type: object
-      properties:
-        factorOrganizationQid:
-          type:
-          - object
-          - 'null'
-          example: qid::organization:31ab766e-f991-4374-8e58-391aaadf29f1
-          description: QID of the organization the carrier currently uses for factoring
-        mcNumber:
-          type:
-          - string
-          - 'null'
-          example: MC-179059
-          description: Motor Carrier Number
-        scac:
-          type:
-          - string
-          - 'null'
-          example: FDEG
-          description: Standard Carrier Alpha Code (SCAC)
-        usdotNumber:
-          type:
-          - string
-          - 'null'
-          example: '265752'
-          description: US Department of Transportation Number
-        offersFtl:
-          type:
-          - boolean
-          - 'null'
-          example: true
-          description: Whether the carrier offers LTL services
-        offersLtl:
-          type:
-          - boolean
-          - 'null'
-          example: true
-          description: Whether the carrier offers LTL services
-    FactorInfo:
-      type: object
-      properties: {}
   securitySchemes:
     bearer:
       scheme: bearer
